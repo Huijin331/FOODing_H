@@ -1,0 +1,129 @@
+body {
+        font-family: Arial, sans-serif;
+}
+
+h2 {
+        text-align: left;
+        color: #333;
+        margin-left: 20px;
+}
+
+/*.section-reviews {*/
+/*        display: flex;*/
+/*        flex-direction: column;*/
+/*        align-items: flex-start;*/
+/*        margin-left: 100px;*/
+/*        margin-top: 100px;*/
+/*        margin-right: 100px;*/
+/*}*/
+
+.form-group {
+        text-align: left;
+        margin-bottom: 100px;
+        width: 100%;
+}
+
+.custom-textarea {
+        width: 700px;
+        height: 200px;
+        resize: none;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+}
+
+.star-rating {
+        display: flex;
+        direction: rtl;
+        justify-content: left;
+}
+
+.star {
+        display: none; /* radio 버튼 숨기기 */
+}
+
+.star + label {
+        font-size: 2em;
+        cursor: pointer;
+        color: gold;
+}
+
+.star + label::before {
+        content: '☆'; /* 기본 상태에서는 빈 별 표시 */
+}
+
+/* 선택한 별 위치 */
+.star:checked + label::before {
+        content: "★";
+}
+/* 커서가 올라가 있는 별 */
+.star:hover + label::before {
+        content: "★";
+}
+/* 커서가 올라간 곳 이후 (왼쪽) 별 */
+.star:hover ~ .star + label::before {
+        content: "★";
+}
+
+.star:checked ~ .star + label::before {
+        content: "★";
+}
+
+
+.review-container {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px 0;
+        width: 700px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        background-color: #fff;
+        position: relative;
+}
+
+.review-item {
+        margin-bottom: 10px;
+}
+
+.review-item strong {
+        font-weight: bold;
+}
+
+.review-item .star-rating {
+        color: gold;
+        font-size: 20px;
+}
+
+.review-item .review-content {
+        border: 1px solid #ddd;
+        padding: 30px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+}
+
+.review-item-left {
+        position: absolute;
+        top: 10px;
+        left: 30px;
+}
+
+.review-item-right {
+        position: absolute;
+        top: 10px;
+        right: 30px;
+}
+
+.review-item-content {
+        padding: 10px;
+        margin: 10px;
+        max-width: 680px;
+        border-radius: 5px;
+        margin-top: 50px;
+}
+
+.all-review-div {
+        display: flex;
+        flex-direction: column;
+}
