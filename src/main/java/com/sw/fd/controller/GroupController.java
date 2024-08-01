@@ -1,5 +1,6 @@
 package com.sw.fd.controller;
 
+import com.sw.fd.dto.GroupDTO;
 import com.sw.fd.entity.Group;
 import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class GroupController {
@@ -38,19 +40,17 @@ public class GroupController {
         String nick = member.getMnick();
         System.out.println("Member의 이름: " + nick);
 
-        List<Group> groups = groupService.getGroupsByMember(member);
-        model.addAttribute("group", new Group());
+        List<GroupDTO> groups = groupService.getGroupsByMember(member);
+        model.addAttribute("group", new GroupDTO());
         model.addAttribute("memberGroup", new MemberGroup());
+        model.addAttribute("groups", groups);
 
-        List<Integer> gnos = new ArrayList<>();
-        for(Group group : groups) {
-            gnos.add(group.getGno());
-        }
+        List<Integer> gnos = groups.stream().map(GroupDTO::getGno).collect(Collectors.toList());
 
         List<MemberGroup> allMembers = memberService.getMemberGroupsByGnos(gnos);
 
         List<MemberGroup> leaderList = new ArrayList<>();
-        for(MemberGroup memberGroup : allMembers) {
+        for (MemberGroup memberGroup : allMembers) {
             if (memberGroup.getJauth() == 1) {
                 leaderList.add(memberGroup);
             }
@@ -62,29 +62,35 @@ public class GroupController {
     }
 
     @PostMapping("/groupList")
-    public String groupListSubmit(@ModelAttribute Group group, Model model, HttpSession session) {
+    public String groupListSubmit(@ModelAttribute GroupDTO groupDTO, Model model, HttpSession session) {
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {
             return "redirect:/login";
         }
-        groupService.createGroup(group);
+        groupService.createGroup(groupDTO);
+        GroupDTO createdGroupDTO = groupService.getGroupById(groupDTO.getGno());
+        Group group = new Group();
+        group.setGno(createdGroupDTO.getGno());
+        group.setGname(createdGroupDTO.getGname());
         memberGroupService.addMemberToGroup(member, group, 1);
 
         return "redirect:/groupList";
     }
 
     @PostMapping("/addMember")
-    public String addMemberSubmit(@ModelAttribute MemberGroup memberGroup, HttpSession session) {
+    public String addMemberSubmit(@ModelAttribute MemberGroup memberGroup, Model model, HttpSession session) {
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {
             return "redirect:/login";
         }
 
         Member newMember = memberService.getMemberById(memberGroup.getMember().getMid());
-        Group group = groupService.getGroupById(memberGroup.getGroup().getGno());
+        GroupDTO groupDTO = groupService.getGroupById(memberGroup.getGroup().getGno());
+        Group group = new Group();
+        group.setGno(groupDTO.getGno());
+        group.setGname(groupDTO.getGname());
 
         memberGroupService.addMemberToGroup(newMember, group, 0);
-
 
         return "redirect:/groupList";
     }
