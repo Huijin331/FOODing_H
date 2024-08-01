@@ -15,4 +15,5 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
 
     @Query(value = "SELECT g.* FROM group_table g JOIN join_t j ON g.gno = j.gno WHERE j.mno = :mno", nativeQuery = true)
     List<Group> findGroupsByMember(@Param("mno") int mno);
+
 }

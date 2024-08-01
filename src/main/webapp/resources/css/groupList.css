@@ -97,6 +97,10 @@ h1 {
     margin: 0 auto;
 }
 
+.groupMember-add-area input[type="submit"] {
+    display: block;
+}
+
 input[type="submit"] {
     padding: 10px 20px;
     background-color: saddlebrown;

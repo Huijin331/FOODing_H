@@ -27,6 +27,7 @@ public class GroupService {
         return groupRepository.findGroupsByMember(member.getMno());
     }
 
+
     public void createGroup(Group group) {
         groupRepository.save(group);
     }

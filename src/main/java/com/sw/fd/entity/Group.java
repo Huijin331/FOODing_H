@@ -3,6 +3,7 @@ package com.sw.fd.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +13,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

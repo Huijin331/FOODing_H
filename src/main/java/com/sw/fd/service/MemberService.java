@@ -64,4 +64,8 @@ public class MemberService {
     public List<MemberGroup> getMemberGroupsByGnos(List<Integer> gnos) {
         return memberGroupRepository.findByGroupGnoIn(gnos);
     }
+
+    public Member getMemberById(String mid) {
+        return  memberRepository.findByMid(mid).orElse(null);
+    }
 }

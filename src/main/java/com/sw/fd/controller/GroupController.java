@@ -37,8 +37,10 @@ public class GroupController {
         }
         String nick = member.getMnick();
         System.out.println("Member의 이름: " + nick);
+
         List<Group> groups = groupService.getGroupsByMember(member);
         model.addAttribute("group", new Group());
+        model.addAttribute("memberGroup", new MemberGroup());
 
         List<Integer> gnos = new ArrayList<>();
         for(Group group : groups) {
@@ -63,7 +65,7 @@ public class GroupController {
     public String groupListSubmit(@ModelAttribute Group group, Model model, HttpSession session) {
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {
-            return "error";
+            return "redirect:/login";
         }
         groupService.createGroup(group);
         memberGroupService.addMemberToGroup(member, group, 1);
@@ -71,13 +73,19 @@ public class GroupController {
         return "redirect:/groupList";
     }
 
-//    @PostMapping("/addMember")
-//    public String addMemberSubmit(@ModelAttribute Group group, Model model, HttpSession session) {
-//        Member member = (Member) session.getAttribute("loggedInMember");
-//        if (member == null) {
-//            return "error";
-//        }
-//
-//        return "redirect:/groupList";
-//    }
+    @PostMapping("/addMember")
+    public String addMemberSubmit(@ModelAttribute MemberGroup memberGroup, HttpSession session) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+
+        Member newMember = memberService.getMemberById(memberGroup.getMember().getMid());
+        Group group = groupService.getGroupById(memberGroup.getGroup().getGno());
+
+        memberGroupService.addMemberToGroup(newMember, group, 0);
+
+
+        return "redirect:/groupList";
+    }
 }

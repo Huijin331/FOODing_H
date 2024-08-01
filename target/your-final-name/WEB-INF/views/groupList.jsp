@@ -64,22 +64,32 @@
                 </table>
             </div>
         </form:form>
-            <div class="groupMember-add-area">
-                <h1>모임 회원 추가</h1>
-                <table class="groupMember-table">
-                    <tr>
-                        <td>모임명</td>
-                        <td>그냥 모임명</td>
-                    </tr>
-                    <tr>
-                        <td>회원ID</td>
-                        <td>그냥 회원ID</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="center">버튼 자리</td>
-                    </tr>
-                </table>
+        <c:if test="${not empty errorMessage}">
+            <div class="error-message">
+                    ${errorMessage}
             </div>
+        </c:if>
+        <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post">
+            <table class="groupMember-table">
+                <tr>
+                    <td><form:label path="group.gno">모임명</form:label></td>
+                    <td>
+                        <form:select path="group.gno">
+                            <form:options items="${groups}" itemValue="gno" itemLabel="gname"/>
+                        </form:select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><form:label path="member.mid">회원ID</form:label></td>
+                    <td><form:input path="member.mid"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" value="추가"/>
+                    </td>
+                </tr>
+            </table>
+        </form:form>
     </div>
 </section>
 <c:import url="/bottom.jsp"/>
