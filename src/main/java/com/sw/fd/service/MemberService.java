@@ -65,6 +65,7 @@ public class MemberService {
         return memberGroupRepository.findByGroupGnoIn(gnos);
     }
 
+    // 모임방 기능을 위한 추가 (수정자 : 희진)
     public Member getMemberById(String mid) {
         return  memberRepository.findByMid(mid).orElse(null);
     }
