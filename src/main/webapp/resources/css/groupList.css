@@ -99,6 +99,7 @@ h1 {
 
 .groupMember-add-area input[type="submit"] {
     display: block;
+    margin: 0 auto;
 }
 
 input[type="submit"] {
