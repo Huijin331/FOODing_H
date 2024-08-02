@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class PickContainer {
+public class PickController {
 
     @Autowired
     private PickService pickService;

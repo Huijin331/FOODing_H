@@ -48,6 +48,11 @@ public class GroupService {
     public void createGroup(GroupDTO groupDTO) {
         Group group = new Group();
         group.setGname(groupDTO.getGname());
-        groupRepository.save(group);
+
+        // 그룹을 저장하고 자동 생성된 gno 값을 설정
+        Group savedGroup = groupRepository.save(group);
+
+        // 저장된 그룹의 gno 값을 groupDTO에 설정
+        groupDTO.setGno(savedGroup.getGno());
     }
 }

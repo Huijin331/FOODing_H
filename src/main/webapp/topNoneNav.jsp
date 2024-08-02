@@ -12,9 +12,9 @@
 <header>
     <div class = "header-div">
         <div class = "hello1"></div>
-        <a class = "header1" href = "main">FOOD</a>
-        <a class = "header2" href = "main">ing</a>
-        <a class = "header2" href = "main">
+        <a class = "header1" href = "${pageContext.request.contextPath}/main">FOOD</a>
+        <a class = "header2" href = "${pageContext.request.contextPath}/main">ing</a>
+        <a class = "header2" href = "${pageContext.request.contextPath}/main">
             <img src = "${pageContext.request.contextPath}/resources/images/chefudding.png" width = "100px" height = "100px">
         </a>
         <div class = "hello2">
@@ -39,7 +39,7 @@
                         <span>|</span>
                         <span>
                              <c:if test="${sessionScope.loggedInMember != null}">
-                                 <a class="helloBox" href="<%= request.getContextPath() %>/member/view?mid=${sessionScope.loggedInMember.mid}">개인정보</a>
+                                 <a class="helloBox" href="<%= request.getContextPath() %>/myPage">마이페이지</a>
                              </c:if>
                             <c:if test="${sessionScope.loggedInMember == null}">
                                 <a class="helloBox" href = "<%= request.getContextPath() %>/registerSelect">회원가입</a>

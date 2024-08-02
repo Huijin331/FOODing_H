@@ -89,13 +89,13 @@
                         </td>
                     </tr>
                 </table>
+                <c:if test="${not empty error}">
+                    <p id="temporaryText" class="error-message">
+                        <c:out value="${error}" />
+                    </p>
+                </c:if>
             </div>
         </form:form>
-        <c:if test="${not empty errorMessage}">
-            <script type="text/javascript">
-                alert("${errorMessage}");
-            </script>
-        </c:if>
     </div>
 </section>
 <c:import url="/bottom.jsp"/>

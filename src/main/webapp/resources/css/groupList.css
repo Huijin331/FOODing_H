@@ -126,3 +126,8 @@ input[type="submit"]:hover {
     color : saddlebrown;
     font-weight : bold;
 }
+
+.error-message {
+    text-align: center;
+    color:red;
+}
