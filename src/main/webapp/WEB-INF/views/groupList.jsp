@@ -65,7 +65,7 @@
                 </table>
             </div>
         </form:form>
-        <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post" onsubmit="return memderAddForm()">
+        <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post" onsubmit="return memberAddForm()">
             <c:if test="${not empty errorMessage}">
                 <script type="text/javascript">
                     alert("${errorMessage}");
