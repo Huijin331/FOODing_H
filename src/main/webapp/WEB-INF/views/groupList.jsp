@@ -90,12 +90,12 @@
                     </tr>
                 </table>
             </div>
-            <c:if test="${not empty errorMessage}">
-                <script type="text/javascript">
-                    alert("${errorMessage}");
-                </script>
-            </c:if>
         </form:form>
+        <c:if test="${not empty errorMessage}">
+            <script type="text/javascript">
+                alert("${errorMessage}");
+            </script>
+        </c:if>
     </div>
 </section>
 <c:import url="/bottom.jsp"/>
