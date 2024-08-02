@@ -85,6 +85,11 @@ public class GroupController {
         }
 
         Member newMember = memberService.getMemberById(memberGroup.getMember().getMid());
+        if (newMember == null) {
+            model.addAttribute("errorMessage", "해당 ID의 회원은 존재하지 않습니다.");
+            return groupList(model, session);
+        }
+
         GroupDTO groupDTO = groupService.getGroupById(memberGroup.getGroup().getGno());
         Group group = new Group();
         group.setGno(groupDTO.getGno());

@@ -11,6 +11,7 @@
     <meta charset="UTF-8">
     <title>FOODing 모임관리</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/groupList.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/alertHandler.js"></script>
 </head>
 <body>
 <c:import url="/top.jsp"/>
@@ -50,7 +51,7 @@
                 </tbody>
             </table>
         </div>
-        <form:form name="group-createForm" action="${pageContext.request.contextPath}/groupList" modelAttribute="group" method="post" onsubmit="return validateForm()">
+        <form:form name="group-createForm" action="${pageContext.request.contextPath}/groupList" modelAttribute="group" method="post" onsubmit="return groupForm()">
             <div class="group-create-area">
                 <h1>모임 생성</h1>
                 <table class="group-create-table">
@@ -64,31 +65,36 @@
                 </table>
             </div>
         </form:form>
-        <c:if test="${not empty errorMessage}">
-            <div class="error-message">
-                    ${errorMessage}
+        <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post" onsubmit="return validateForm()">
+            <c:if test="${not empty errorMessage}">
+                <script type="text/javascript">
+                    alert("${errorMessage}");
+                </script>
+            </c:if>
+            <div class="groupMember-add-area">
+                <h1>모임 회원 추가</h1>
+                <table class="groupMember-table">
+                    <tr>
+                        <td><form:label path="group.gno">모임명</form:label></td>
+                        <td>
+                            <form:select path="group.gno">
+                                <form:options items="${groups}" itemValue="gno" itemLabel="gname"/>
+                            </form:select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><form:label path="member.mid">회원ID</form:label></td>
+                        <td><form:input path="member.mid"/>
+                            <form:errors path="member.mid" cssClass="error"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="submit" value="추가"/>
+                        </td>
+                    </tr>
+                </table>
             </div>
-        </c:if>
-        <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post">
-            <table class="groupMember-table">
-                <tr>
-                    <td><form:label path="group.gno">모임명</form:label></td>
-                    <td>
-                        <form:select path="group.gno">
-                            <form:options items="${groups}" itemValue="gno" itemLabel="gname"/>
-                        </form:select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><form:label path="member.mid">회원ID</form:label></td>
-                    <td><form:input path="member.mid"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <input type="submit" value="추가"/>
-                    </td>
-                </tr>
-            </table>
         </form:form>
     </div>
 </section>
