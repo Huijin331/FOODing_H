@@ -66,11 +66,6 @@
             </div>
         </form:form>
         <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post" onsubmit="return memberAddForm()">
-            <c:if test="${not empty errorMessage}">
-                <script type="text/javascript">
-                    alert("${errorMessage}");
-                </script>
-            </c:if>
             <div class="groupMember-add-area">
                 <h1>모임 회원 추가</h1>
                 <table class="groupMember-table">
@@ -96,6 +91,11 @@
                 </table>
             </div>
         </form:form>
+        <c:if test="${not empty errorMessage}">
+            <script type="text/javascript">
+                alert("${errorMessage}");
+            </script>
+        </c:if>
     </div>
 </section>
 <c:import url="/bottom.jsp"/>
