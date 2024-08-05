@@ -12,4 +12,9 @@ import java.util.List;
 public interface MemberGroupRepository extends JpaRepository<MemberGroup, Integer> {
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.group.gno IN :gnos")
     List<MemberGroup> findByGroupGnoIn(@Param("gnos") List<Integer> gnos);
+
+    // 특정 그룹(gno)과 회원(mid)으로 회원이 그룹에 존재하는지 확인하는 메서드
+    @Query("SELECT CASE WHEN COUNT(mg) > 0 THEN true ELSE false END " +
+            "FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.member.mid = :mid")
+    boolean existsByGroupGnoAndMemberMid(@Param("gno") int gno, @Param("mid") String mid);
 }

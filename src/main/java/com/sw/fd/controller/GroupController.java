@@ -96,6 +96,12 @@ public class GroupController {
         group.setGno(groupDTO.getGno());
         group.setGname(groupDTO.getGname());
 
+        // 추가하려는 회원이 이미 모임에 존재하는지 확인
+        if (memberGroupService.isMemberInGroup(newMember.getMid(), group.getGno())) {
+            model.addAttribute("error", "이미 모임에 참여하고 있는 회원입니다.");
+            return groupList(model, session);
+        }
+
         memberGroupService.addMemberToGroup(newMember, group, 0);
 
         return "redirect:/groupList";

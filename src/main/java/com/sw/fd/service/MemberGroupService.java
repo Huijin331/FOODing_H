@@ -13,6 +13,10 @@ public class MemberGroupService {
     @Autowired
     private MemberGroupRepository memberGroupRepository;
 
+    public boolean isMemberInGroup(String memberId, int gno) {
+        return memberGroupRepository.existsByGroupGnoAndMemberMid(gno, memberId);
+    }
+
     public void addMemberToGroup(Member member, Group group, int jauth) {
         MemberGroup memberGroup = new MemberGroup();
         memberGroup.setGroup(group);
