@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>FOODing 모임관리</title>
+    <title>FOODing 내 모임</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/groupList.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/alertHandler.js"></script>
 </head>
