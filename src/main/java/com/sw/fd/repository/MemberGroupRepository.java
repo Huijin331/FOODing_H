@@ -17,4 +17,7 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
     @Query("SELECT CASE WHEN COUNT(mg) > 0 THEN true ELSE false END " +
             "FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.member.mid = :mid")
     boolean existsByGroupGnoAndMemberMid(@Param("gno") int gno, @Param("mid") String mid);
+
+    @Query("SELECT mg FROM MemberGroup mg WHERE mg.member.mid = :mid AND mg.jauth = :jauth")
+    List<MemberGroup> findByMemberMidAndJauth(@Param("mid") String memberId, @Param("jauth") int jauth);
 }

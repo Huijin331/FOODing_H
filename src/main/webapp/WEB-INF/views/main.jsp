@@ -13,8 +13,12 @@
 </head>
 <body>
 <c:import url = "/top.jsp" />
+<c:if test="${not empty error}">
+<script>
+    alert('${error}');
+</script>
+</c:if>
 <section>
-
     <div class = "section-div">
         <button class = "preBtn"></button>
         <ul class = "mainSliderList">

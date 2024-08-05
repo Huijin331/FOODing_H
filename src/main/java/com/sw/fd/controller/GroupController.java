@@ -106,4 +106,22 @@ public class GroupController {
 
         return "redirect:/groupList";
     }
+
+    @GetMapping("/groupManage")
+    public String groupManage(Model model, HttpSession session) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+
+        // 회원이 모임장인 모임이 있는지 확인
+        List<Group> leaderGroups = memberGroupService.findGroupsWhereMemberIsLeader(member.getMid());
+        if (leaderGroups.isEmpty()) {
+            // 모임장이 아닌 경우, 오류 메시지와 함께 메인 화면으로 이동
+            model.addAttribute("error", "모임장 권한이 없으므로 메인 화면으로 이동합니다.");
+            return "main";
+        }
+        // 모임장인 경우 groupManage.jsp 페이지로 이동
+        return "groupManage";
+    }
 }
