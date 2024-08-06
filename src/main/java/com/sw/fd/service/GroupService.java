@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -23,9 +23,14 @@ public class GroupService {
     }
 
     public List<GroupDTO> getAllGroups() {
-        return groupRepository.findAll().stream()
-                .map(group -> new GroupDTO(group.getGno(), group.getGname(), group.getGdate()))
-                .collect(Collectors.toList());
+        List<Group> groups = groupRepository.findAll();
+        List<GroupDTO> groupDTOs = new ArrayList<>();
+
+        for (Group group : groups) {
+            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate()));
+        }
+
+        return groupDTOs;
     }
 
     public GroupDTO getGroupById(int gno) {
@@ -39,9 +44,13 @@ public class GroupService {
 
     public List<GroupDTO> getGroupsByMember(Member member) {
         List<Group> groups = groupRepository.findGroupsByMember(member.getMno());
-        return groups.stream()
-                .map(group -> new GroupDTO(group.getGno(), group.getGname(), group.getGdate()))
-                .collect(Collectors.toList());
+        List<GroupDTO> groupDTOs = new ArrayList<>();
+
+        for (Group group : groups) {
+            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate()));
+        }
+
+        return groupDTOs;
     }
 
     @Transactional

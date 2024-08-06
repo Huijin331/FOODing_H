@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class GroupController {
@@ -46,7 +44,10 @@ public class GroupController {
         model.addAttribute("memberGroup", new MemberGroup());
         model.addAttribute("groups", groups);
 
-        List<Integer> gnos = groups.stream().map(GroupDTO::getGno).collect(Collectors.toList());
+        List<Integer> gnos = new ArrayList<>();
+        for (GroupDTO groupDTO : groups) {
+            gnos.add(groupDTO.getGno());
+        }
 
         List<MemberGroup> allMembers = memberService.getMemberGroupsByGnos(gnos);
 
@@ -123,20 +124,19 @@ public class GroupController {
             return "main";
         }
 
-        // 각 모임의 모든 회원 목록을 가져온다
-        Map<Integer, List<MemberGroup>> groupMembersMap = leaderGroups.stream()
-                .collect(Collectors.toMap(
-                        Group::getGno,
-                        group -> memberGroupService.findMembersByGroupGno(group.getGno())
-                ));
+        List<MemberGroup> allMemberGroups = new ArrayList<>();
+        for (Group group : leaderGroups) {
+            List<MemberGroup> memberGroupsForGroup = memberGroupService.findMembersByGroupGno(group.getGno());
+            allMemberGroups.addAll(memberGroupsForGroup);
+        }
 
         model.addAttribute("leaderGroups", leaderGroups);
-        model.addAttribute("groupMembersMap", groupMembersMap);
+        model.addAttribute("allMemberGroups", allMemberGroups);
 
         // 모임장인 경우 groupManage.jsp 페이지로 이동
         return "groupManage";
     }
-//@ModelAttribute GroupDTO groupDTO,
+
     @PostMapping("/updateGroupName")
     public String updateGroupName(HttpSession session, Model model, String newGname, int gno) {
         Member member = (Member) session.getAttribute("loggedInMember");

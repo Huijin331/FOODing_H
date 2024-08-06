@@ -7,8 +7,8 @@ import com.sw.fd.repository.MemberGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class MemberGroupService {
@@ -32,9 +32,13 @@ public class MemberGroupService {
     // 회원이 모임장인 모임을 찾는 메서드 추가
     public List<Group> findGroupsWhereMemberIsLeader(String memberId) {
         List<MemberGroup> memberGroups = memberGroupRepository.findByMemberMidAndJauth(memberId, 1);
-        return memberGroups.stream()
-                .map(MemberGroup::getGroup)
-                .collect(Collectors.toList());
+        List<Group> groups = new ArrayList<>();
+
+        for (MemberGroup memberGroup : memberGroups) {
+            groups.add(memberGroup.getGroup());
+        }
+
+        return groups;
     }
 
     // 특정 그룹(gno)의 모든 회원 목록을 조회하는 메서드
