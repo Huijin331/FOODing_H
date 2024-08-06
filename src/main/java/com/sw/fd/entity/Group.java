@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,10 +27,10 @@ public class Group {
     private String gname;
 
     @Column(name = "gdate", nullable = false)
-    private LocalDate gdate;
+    private LocalDateTime gdate;
 
     @PrePersist
     protected void onCreate() {
-        gdate = LocalDate.now();
+        gdate = LocalDateTime.now();
     }
 }

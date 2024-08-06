@@ -25,6 +25,7 @@
                     <th>번호</th>
                     <th>모임명</th>
                     <th>모임장</th>
+                    <th>모임 생성 날짜</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,7 @@
                         <td>${status.index + 1}</td>
                         <td><a href="#">${memberGroup.group.gname}</a></td>
                         <td>${memberGroup.member.mnick}</td>
+                        <td>${memberGroup.group.gdate}</td>
                     </tr>
                     <c:set var="mnickString" value=""/>
                     <c:forEach var="allMemberGroup" items="${allMembers}" varStatus="status">
@@ -43,7 +45,7 @@
                         </c:choose>
                     </c:forEach>
                     <tr>
-                        <td colspan="3" align="center">
+                        <td colspan="4" align="center">
                             ${mnickString}
                         </td>
                     </tr>
