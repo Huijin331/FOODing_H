@@ -136,4 +136,27 @@ public class GroupController {
         // 모임장인 경우 groupManage.jsp 페이지로 이동
         return "groupManage";
     }
+//@ModelAttribute GroupDTO groupDTO,
+    @PostMapping("/updateGroupName")
+    public String updateGroupName(HttpSession session, Model model, String newGname, int gno) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+        System.out.println("gno = " + gno);
+        System.out.println("newGname = " + newGname);
+        // GroupDTO에서 gno를 통해 그룹 엔티티를 조회
+        GroupDTO gDTO = groupService.getGroupById(gno);
+        if (gDTO != null) {
+            // GroupDTO의 newGname으로 그룹명 업데이트
+            Group group = new Group();
+            group.setGno(gDTO.getGno());
+            group.setGname(newGname);
+            group.setGdate(gDTO.getGdate());
+            // 그룹 엔티티를 저장하여 업데이트 수행
+            groupService.save(group);
+        }
+
+        return "redirect:/groupManage";
+    }
 }

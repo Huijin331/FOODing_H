@@ -24,14 +24,14 @@ public class GroupService {
 
     public List<GroupDTO> getAllGroups() {
         return groupRepository.findAll().stream()
-                .map(group -> new GroupDTO(group.getGno(), group.getGname()))
+                .map(group -> new GroupDTO(group.getGno(), group.getGname(), group.getGdate()))
                 .collect(Collectors.toList());
     }
 
     public GroupDTO getGroupById(int gno) {
         Group group = groupRepository.findByGno(gno).orElse(null);
         if (group != null) {
-            return new GroupDTO(group.getGno(), group.getGname());
+            return new GroupDTO(group.getGno(), group.getGname(), group.getGdate());
         } else {
             return null;
         }
@@ -40,7 +40,7 @@ public class GroupService {
     public List<GroupDTO> getGroupsByMember(Member member) {
         List<Group> groups = groupRepository.findGroupsByMember(member.getMno());
         return groups.stream()
-                .map(group -> new GroupDTO(group.getGno(), group.getGname()))
+                .map(group -> new GroupDTO(group.getGno(), group.getGname(), group.getGdate()))
                 .collect(Collectors.toList());
     }
 
@@ -48,6 +48,7 @@ public class GroupService {
     public void createGroup(GroupDTO groupDTO) {
         Group group = new Group();
         group.setGname(groupDTO.getGname());
+        group.setGdate(groupDTO.getGdate());
 
         // 그룹을 저장하고 자동 생성된 gno 값을 설정
         Group savedGroup = groupRepository.save(group);
