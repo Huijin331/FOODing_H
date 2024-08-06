@@ -36,4 +36,9 @@ public class MemberGroupService {
                 .map(MemberGroup::getGroup)
                 .collect(Collectors.toList());
     }
+
+    // 특정 그룹(gno)의 모든 회원 목록을 조회하는 메서드
+    public List<MemberGroup> findMembersByGroupGno(Integer gno) {
+        return memberGroupRepository.findByGroupGnoIn(List.of(gno));
+    }
 }

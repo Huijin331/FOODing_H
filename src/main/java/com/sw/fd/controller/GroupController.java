@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -121,6 +122,18 @@ public class GroupController {
             model.addAttribute("error", "모임장 권한이 없으므로 메인 화면으로 이동합니다.");
             return "main";
         }
+
+        // 각 모임의 모든 회원 목록을 가져온다
+        Map<Integer, List<MemberGroup>> groupMembersMap = leaderGroups.stream()
+                .collect(Collectors.toMap(
+                        Group::getGno,
+                        group -> memberGroupService.findMembersByGroupGno(group.getGno())
+                ));
+
+        model.addAttribute("leaderGroups", leaderGroups);
+        model.addAttribute("groupMembersMap", groupMembersMap);
+
+
         // 모임장인 경우 groupManage.jsp 페이지로 이동
         return "groupManage";
     }
