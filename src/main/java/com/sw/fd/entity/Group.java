@@ -3,9 +3,9 @@ package com.sw.fd.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -22,6 +22,14 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private List<MemberGroup> memberGroupList;
 
-    @Column(name = "gname")
+    @Column(name = "gname", nullable = false)
     private String gname;
+
+    @Column(name = "gdate", nullable = false)
+    private LocalDate gdate;
+
+    @PrePersist
+    protected void onCreate() {
+        gdate = LocalDate.now();
+    }
 }

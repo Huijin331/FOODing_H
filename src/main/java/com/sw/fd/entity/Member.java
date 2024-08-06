@@ -3,14 +3,13 @@ package com.sw.fd.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "member_t") // 데이터베이스 테이블과 매핑
+@Table(name = "member_t")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,14 +18,13 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mno;
 
-    @OneToMany(mappedBy = "member") // 수정사항
-    private List<MemberGroup> memberGroupList; // 수정사항
+    @OneToMany(mappedBy = "member")
+    private List<MemberGroup> memberGroupList;
 
     private String mid;
     private String mname;
     private String mpass;
 
-    // 비밀번호 확인 필드 (테이블에 저장되지 않음)
     private transient String mpassConfirm;
 
     private int mtype;
@@ -36,6 +34,8 @@ public class Member {
     private String memail;
     private String maddr;
     private LocalDate mdate;
+
+    private int mwarning;
 
     @PrePersist
     protected void onCreate() {
@@ -49,5 +49,4 @@ public class Member {
     public void setMpassConfirm(String mpassConfirm) {
         this.mpassConfirm = mpassConfirm;
     }
-
 }
