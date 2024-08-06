@@ -133,7 +133,6 @@ public class GroupController {
         model.addAttribute("leaderGroups", leaderGroups);
         model.addAttribute("groupMembersMap", groupMembersMap);
 
-
         // 모임장인 경우 groupManage.jsp 페이지로 이동
         return "groupManage";
     }
