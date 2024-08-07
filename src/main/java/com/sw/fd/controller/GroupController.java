@@ -148,6 +148,14 @@ public class GroupController {
         // GroupDTO에서 gno를 통해 그룹 엔티티를 조회
         GroupDTO gDTO = groupService.getGroupById(gno);
         if (gDTO != null) {
+            String originalGname = gDTO.getGname();
+
+            // 새로운 이름이 원래의 이름과 같은지 비교
+            if (newGname.equals(originalGname)) {
+                model.addAttribute("error", "입력한 모임명이 기존 모임명과 동일합니다.");
+                return groupManage(model, session); // 수정 페이지로 이동
+            }
+
             // GroupDTO의 newGname으로 그룹명 업데이트
             Group group = new Group();
             group.setGno(gDTO.getGno());
