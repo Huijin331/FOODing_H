@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -192,8 +191,8 @@ public class GroupController {
     }
 
     @PostMapping("/addMemberToGroup")
-    public String addMemberToGroup(@RequestParam("gno") int gno,
-                                   @RequestParam("mid") String mid,
+    public String addMemberToGroup(int gno,
+                                   String mid,
                                    HttpSession session,
                                    Model model) {
         Member member = (Member) session.getAttribute("loggedInMember");
