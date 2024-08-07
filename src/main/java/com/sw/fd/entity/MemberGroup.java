@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "join_t")
@@ -31,10 +32,10 @@ public class MemberGroup {
 
     // 새로 추가된 부분
     @Column(name = "jdate", nullable = false)
-    private LocalDate jdate;
+    private LocalDateTime jdate;
 
     @PrePersist
     protected void onCreate() {
-        jdate = LocalDate.now();
+        jdate = LocalDateTime.now();
     }
 }
