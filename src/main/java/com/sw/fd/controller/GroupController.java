@@ -143,12 +143,12 @@ public class GroupController {
         if (member == null) {
             return "redirect:/login";
         }
-        System.out.println("gno = " + gno);
         System.out.println("newGname = " + newGname);
         // GroupDTO에서 gno를 통해 그룹 엔티티를 조회
         GroupDTO gDTO = groupService.getGroupById(gno);
         if (gDTO != null) {
             String originalGname = gDTO.getGname();
+            System.out.println("originalGname = " + originalGname);
 
             // 새로운 이름이 원래의 이름과 같은지 비교
             if (newGname.equals(originalGname)) {
