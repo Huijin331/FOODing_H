@@ -98,6 +98,20 @@
                 </c:if>
             </div>
         </form:form>
+        <div class="groupMember-leave-area">
+            <h1>모임 탈퇴</h1>
+            <table class="groupMember-leave-table">
+                <tr>
+                    <td>모임명</td>
+                    <td>탈퇴할 모임명</td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        탈퇴 버튼
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </section>
 <c:import url="/bottom.jsp"/>
