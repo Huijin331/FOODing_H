@@ -18,6 +18,12 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
             "FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.member.mid = :mid")
     boolean existsByGroupGnoAndMemberMid(@Param("gno") int gno, @Param("mid") String mid);
 
+    @Query("SELECT mg " +
+            "FROM MemberGroup mg " +
+            "WHERE mg.group.gno = :gno AND mg.member.mid = :mid")
+    MemberGroup findByGroupGnoAndMemberMid(@Param("gno") int gno, @Param("mid") String mid);
+
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.member.mid = :mid AND mg.jauth = :jauth")
     List<MemberGroup> findByMemberMidAndJauth(@Param("mid") String memberId, @Param("jauth") int jauth);
-}
+
+ }

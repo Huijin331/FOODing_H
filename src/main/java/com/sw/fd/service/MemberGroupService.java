@@ -45,4 +45,12 @@ public class MemberGroupService {
     public List<MemberGroup> findMembersByGroupGno(Integer gno) {
         return memberGroupRepository.findByGroupGnoIn(List.of(gno));
     }
+
+    public MemberGroup getMemberGroupByGroupGnoAndMemberMid(int gno, String mid) {
+        return memberGroupRepository.findByGroupGnoAndMemberMid(gno, mid);
+    }
+
+    public void removeMemberGroup(MemberGroup memberGroup) {
+        memberGroupRepository.delete(memberGroup);
+    }
 }

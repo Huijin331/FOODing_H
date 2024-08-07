@@ -167,4 +167,26 @@ public class GroupController {
 
         return "redirect:/groupManage";
     }
+
+    @PostMapping("/deleteMember")
+    public String deleteMember(@ModelAttribute("gno") int gno,
+                               @ModelAttribute("mid") String memberId,
+                               HttpSession session,
+                               Model model) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+
+        // 모임장만 특정 그룹에서 회원을 삭제할 수 있습니다.
+        if (!memberGroupService.isMemberInGroup(memberId, gno)) {
+            model.addAttribute("errorMessage", "입력한 회원은 해당 모임에 없습니다.");
+            return groupManage(model, session);
+        }
+
+        MemberGroup deleteMg = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, memberId);
+        memberGroupService.removeMemberGroup(deleteMg);
+
+        return "redirect:/groupManage";
+    }
 }
