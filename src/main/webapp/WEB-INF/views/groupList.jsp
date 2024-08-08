@@ -100,17 +100,23 @@
         </form:form>
         <div class="groupMember-leave-area">
             <h1>모임 탈퇴</h1>
+            <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group">
             <table class="groupMember-leave-table">
                 <tr>
-                    <td>모임명</td>
-                    <td>탈퇴할 모임명</td>
+                    <td><form:label path="gno">모임명</form:label></td>
+                    <td>
+                        <form:select path="gno">
+                            <form:options items="${groups}" itemValue="gno" itemLabel="gname"/>
+                        </form:select>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        탈퇴 버튼
+                        <input type="submit" value="탈퇴"/>
                     </td>
                 </tr>
             </table>
+            </form:form>
         </div>
     </div>
 </section>
