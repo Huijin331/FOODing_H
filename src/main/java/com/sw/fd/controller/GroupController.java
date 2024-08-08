@@ -224,22 +224,4 @@ public class GroupController {
 
         return "redirect:/groupManage";
     }
-
-    @PostMapping("/leaveGroup")
-    public String leaveGroup(int gno, HttpSession session, Model model) {
-        Member member = (Member) session.getAttribute("loggedInMember");
-        if (member == null) {
-            return "redirect:/login";
-        }
-
-        System.out.println("Attempting to leave group: " + gno);
-        System.out.println("Member ID: " + member.getMid());
-
-        MemberGroup memberGroup = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, member.getMid());
-        if (memberGroup != null && memberGroup.getJauth() == 0) {
-            memberGroupService.removeMemberGroup(memberGroup);
-        }
-
-        return "redirect:/groupList";
-    }
 }

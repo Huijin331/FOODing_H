@@ -16,7 +16,7 @@
 <section>
     <div class="view-container">
     <h2 class="head">회원 정보 조회</h2>
-        <form class="form-container">
+        <form class="form-container" action="${pageContext.request.contextPath}/member/view" method="post">
             <table>
                 <tr>
                     <td><label for="mid">아이디</label></td>
@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="button">
-                        <a href="${pageContext.request.contextPath}/member/edit/${member.mid}">
+                        <a href="${pageContext.request.contextPath}/member/edit">
                             <button type="button">회원 정보 수정</button>
                         </a>
                     </td>

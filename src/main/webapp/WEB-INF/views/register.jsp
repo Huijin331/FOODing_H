@@ -6,6 +6,8 @@
     <title>회원등록 화면</title>
 </head>
 <body>
+
+<section>
 <h2>회원등록</h2>
 <form:form action="register" modelAttribute="member" method="post">
     <form:label path="mid">ID</form:label>
@@ -37,5 +39,4 @@
 
     <input type="submit" value="등록" />
 </form:form>
-</body>
-</html>
+</section>

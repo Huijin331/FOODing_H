@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "review_t") // 데이터베이스 테이블과 매핑
@@ -28,9 +33,25 @@ public class Review {
 
     private int rstar;
     private String rcomm;
-    private LocalDate rdate;
+    private LocalDateTime rdate;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<ReviewTag> reviewTags;
+
+    @Transient
+    private List<Tag> tags;
+
+    @Transient
+    private String dateToString;
 
     @PrePersist
-    protected void onCreate() { rdate = LocalDate.now(); }
+    protected void onCreate() {
+        rdate = LocalDateTime.now();
+        /*rsdate = rdate.toString();
+        String[] parts = rsdate.split("T");
+        rsdate = parts[0];
+        rstime = parts[1].substring(0, parts[1].indexOf('.'));*/
+    }
+
 
 }

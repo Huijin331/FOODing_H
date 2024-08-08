@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,9 +34,27 @@
             </c:otherwise>
         </c:choose>
         <div class="store-head">
-            <p id="store-title">${store.sname}</p>
-            <a id="star-area" class="star-area"><img class="pickStar" src="${pageContext.request.contextPath}/resources/images/starE.png" alt="StarE"/></a>
-            <p>${store.scate}</p>
+            <div class="head-elements">
+            <a id="star-area" class="star-area"><img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon.png" alt="StarE"/></a>
+            <div class ="title-area">
+                <p id="store-title">${store.sname}</p>
+                <c:choose>
+                    <c:when test="${store.scoreArg != 0}">
+                        <img id="score-img" src="${pageContext.request.contextPath}/resources/images/score_icon.png"/>
+                        <p id="store-score"><fmt:formatNumber value="${store.scoreArg}" pattern="0.0"/>점</p>
+                    </c:when>
+                </c:choose>
+            </div>
+            </div>
+            <div class="tag-area">
+                <div class="tag-area">
+                    <c:forEach var="stag" items="${storeTags}">
+                        <c:if test="${stag.tagCount > (rCount*0.3)}">
+                            <button type="button" class="main-tag-button">${stag.tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            </div>
             <p id="store-explain">${store.seg}</p>
         </div>
 
@@ -95,6 +115,33 @@
         window.addEventListener('resize', adjustMapHeight);
     }
 
+
+    /*document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('review').addEventListener('submit', function(event) {
+            var starSelected = document.querySelector('input[name="rstar"]:checked');
+            if (!starSelected) {
+                alert("별점을 선택하세요.");
+                event.preventDefault(); // 폼 제출을 막음
+            }
+        });
+    });*/
+
+    var selectedTags = [];
+
+    function toggleTag(tno, button) {
+        var index = selectedTags.indexOf(tno);
+        if (index === -1) {
+            // 태그가 선택되지 않았으면 추가
+            selectedTags.push(tno);
+            button.classList.add('selected');
+        } else {
+            // 태그가 이미 선택되었으면 제거
+            selectedTags.splice(index, 1);
+            button.classList.remove('selected');
+        }
+        // 선택된 태그 ID를 hidden input에 설정
+        document.getElementById('tnos').value = selectedTags.join(',');
+    }
     function initializeReviewScript() {
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.star').forEach(star => {
@@ -133,6 +180,27 @@
                 });
             }
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var message = urlParams.get('message');
+        if (message === 'deleted') {
+            alert('삭제가 완료되었습니다.');
+        }
+        if (message === 'login_required') {
+            alert('로그인 후 이용 가능합니다.');
+        }
+        /*if (message === 'rstar_required') {
+            alert('별점을 선택해야 합니다.')
+        }*/
+    });
+
+    function openEditWindow(rno) {
+        var url = "${pageContext.request.contextPath}/review/edit?rno=" + rno;
+        var name = "editReview";
+        var specs = "width=750,height=600";
+        window.open(url, name, specs);
     }
 
     initializeReviewScript();
@@ -181,10 +249,10 @@
         $.post("${pageContext.request.contextPath}/checkPick", { sno: sno }, function(response) {
             if (response === "picked") {
                 // star.classList.add("picked");
-                starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/star.png" alt="Star"/>'; // 꽉 찬 별 모양
+                starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon_full.png" alt="Star"/>'; // 꽉 찬 별 모양
             } else {
                 // star.classList.remove("picked");
-                starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/starE.png" alt="StarE"/>'; // 빈 별 모양
+                starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon.png" alt="StarE"/>'; // 빈 별 모양
             }
         });
 
@@ -193,12 +261,13 @@
             $.post("${pageContext.request.contextPath}/pick", { sno: sno }, function(response) {
                 if (response === "picked") {
                     // starArea.classList.add("picked");
-                    starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/star.png" alt="Star"/>'; // 꽉 찬 별 모양
+                    starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon_full.png" alt="Star"/>'; // 꽉 찬 별 모양
                 } else if (response === "unpicked") {
                     // star.classList.remove("picked");
-                    starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/starE.png" alt="StarE"/>'; // 빈 별 모양
+                    starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon.png" alt="StarE"/>'; // 빈 별 모양
                 } else {
                     alert("찜 기능을 사용하려면 로그인이 필요합니다.");
+                    window.location.href = "${pageContext.request.contextPath}/login";
                 }
             });
         });

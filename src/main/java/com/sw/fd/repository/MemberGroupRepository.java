@@ -25,4 +25,5 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
 
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.member.mid = :mid AND mg.jauth = :jauth")
     List<MemberGroup> findByMemberMidAndJauth(@Param("mid") String memberId, @Param("jauth") int jauth);
+
  }

@@ -60,6 +60,39 @@ public class MemberService {
     }
 
 
+    public void deleteMemberByMno(int mno) {
+        memberRepository.deleteByMno(mno);
+    }
+
+
+    public String findIdByMnameEmailAndPhone(String mname, String memail, String mphone) {
+        Member memberByEmail = memberRepository.findByMnameAndMemail(mname, memail);
+        Member memberByPhone = memberRepository.findByMnameAndMphone(mname, mphone);
+
+        if (memberByEmail != null && memberByPhone != null && memberByEmail.getMno() == memberByPhone.getMno()) {
+            return maskId(memberByEmail.getMid());
+        } else {
+            return null;
+        }
+    }
+
+    private String maskId(String id) {
+        if (id.length() <= 3) {
+            return id.charAt(0) + "**";
+        }
+        StringBuilder maskedId = new StringBuilder();
+        maskedId.append(id.charAt(0));
+        for (int i = 1; i < id.length() - 2; i++) {
+            maskedId.append("*");
+        }
+        maskedId.append(id.substring(id.length() - 2));
+        return maskedId.toString();
+    }
+
+    public Optional<Member> findByMember(String mid, String mname, String memail) {
+        return memberRepository.findByMidAndMnameAndMemail(mid, mname, memail);
+    }
+
     // 모임방 기능을 위한 추가 (수정자 : 희진)
     public List<MemberGroup> getMemberGroupsByGnos(List<Integer> gnos) {
         return memberGroupRepository.findByGroupGnoIn(gnos);

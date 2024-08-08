@@ -19,7 +19,7 @@
     </div>
     <div class="button-container">
         <a href="${pageContext.request.contextPath}/register/user" class="btn-user">일반 회원가입</a>
-        <a href="${pageContext.request.contextPath}/register/owner" class="btn-owner">사장님 회원가입</a>
+        <a href="${pageContext.request.contextPath}/checkBusiness" class="btn-owner">사장님 회원가입</a>
     </div>
 </div>
 </section>

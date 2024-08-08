@@ -14,53 +14,58 @@
 <body>
 <c:import url = "/top.jsp" />
 
-<div class="edit-container">
-<h2 class="head">회원 정보 수정</h2>
-<form:form action="${pageContext.request.contextPath}/member/edit" modelAttribute="member" method="post">
-    <table border="1" align="center">
-        <tr>
-            <td><label for="mname">이름</label></td>
-            <td><p>${member.mname}</p></td>
-        </tr>
-        <tr>
-            <td><form:label path="mpass">비밀번호</form:label></td>
-            <td><form:input path="mpass" type="password" value=""/></td>
-        </tr>
-        <tr>
-            <td><form:label path="mpassConfirm">비밀번호 확인</form:label></td>
-            <td>
-                <form:input path="mpassConfirm" id="mpassConfirm" name="mpassConfirm" type="password" />
-                <button type="button" onclick="validatePassword()">비밀번호 확인</button>
-                <span id="confirmMessage" class="error"></span><br/>
-                <form:errors path="mpassConfirm" cssClass="error" />
-            </td>
-        </tr>
-        <tr>
-            <td><form:label path="mnick">닉네임</form:label></td>
-            <td><form:input path="mnick" /></td>
-        </tr>
-        <tr>
-            <td><form:label path="mbirth">생년월일</form:label></td>
-            <td><form:input path="mbirth" /></td>
-        </tr>
-        <tr>
-            <td><form:label path="mphone">전화번호</form:label></td>
-            <td><form:input path="mphone" /></td>
-        </tr>
-        <tr>
-            <td><form:label path="memail">이메일</form:label></td>
-            <td><form:input path="memail" /></td>
-        </tr>
-        <tr>
-            <td><form:label path="maddr">주소</form:label></td>
-            <td><form:input path="maddr" /></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center"><input type="submit" value="수정" /></td>
-        </tr>
-    </table>
-    <form:hidden path="mid" />
-</form:form>
-</div>
-
+<section>
+    <div class="edit-container">
+        <h2 class="head">회원 정보 수정</h2>
+        <form:form action="${pageContext.request.contextPath}/member/edit" modelAttribute="member" method="post">
+            <table border="1" align="center">
+                <tr>
+                    <td><label for="mname">이름</label></td>
+                    <td><p>${member.mname}</p></td>
+                </tr>
+                <tr>
+                    <td><form:label path="mpass">비밀번호</form:label></td>
+                    <td><form:input path="mpass" type="password" value=""/></td>
+                </tr>
+                <tr>
+                    <td><form:label path="mpassConfirm">비밀번호 확인</form:label></td>
+                    <td>
+                        <form:input path="mpassConfirm" id="mpassConfirm" name="mpassConfirm" type="password" />
+                        <button type="button" onclick="validatePassword()">비밀번호 확인</button>
+                        <span id="confirmMessage" class="error"></span><br/>
+                        <form:errors path="mpassConfirm" cssClass="error" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><form:label path="mnick">닉네임</form:label></td>
+                    <td><form:input path="mnick" /></td>
+                </tr>
+                <tr>
+                    <td><form:label path="mbirth">생년월일</form:label></td>
+                    <td><form:input path="mbirth" /></td>
+                </tr>
+                <tr>
+                    <td><form:label path="mphone">전화번호</form:label></td>
+                    <td><form:input path="mphone" /></td>
+                </tr>
+                <tr>
+                    <td><form:label path="memail">이메일</form:label></td>
+                    <td><form:input path="memail" /></td>
+                </tr>
+                <tr>
+                    <td><form:label path="maddr">주소</form:label></td>
+                    <td><form:input path="maddr" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><input type="submit" value="수정" /></td>
+                </tr>
+            </table>
+            <form:hidden path="mid" />
+        </form:form>
+        <form action="${pageContext.request.contextPath}/${loggedInMember.mno}" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="회원탈퇴">
+        </form>
+    </div>
+</section>
 <c:import url = "/bottom.jsp" />

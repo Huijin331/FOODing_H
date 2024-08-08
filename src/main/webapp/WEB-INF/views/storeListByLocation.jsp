@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri = "http://java.sun.com/jstl/core_rt" prefix = "c"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,8 +14,30 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/storeList.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/nav_hover.js"></script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc442228556bbf4d02c4a71483482345"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bc442228556bbf4d02c4a71483482345&libraries=services"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
+        function sample5_execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = data.address; // 최종 주소 변수
+
+                    // 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById("inputAddr").value = addr;
+                }
+            }).open();
+        }
+
+        function validateAndSubmitForm() {
+            var addr = document.getElementById("inputAddr").value;
+            if (addr.trim() === "") {
+                alert("주소를 입력하세요.");
+            } else {
+                document.getElementById("inputLocationForm").submit();
+            }
+        }
+
+
         function getLocationAndSubmit() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -22,7 +45,7 @@
                     var lon = position.coords.longitude;
                     document.getElementById('userLat').value = lat;
                     document.getElementById('userLon').value = lon;
-                    document.getElementById('storeListByLocationForm').submit();
+                    document.getElementById('userLocationForm').submit();
                 });
             } else {
                 alert("Geolocation is not supported by this browser.");
@@ -34,11 +57,19 @@
 <c:import url="/top.jsp" />
 <section class="content">
     <h1>위치별 가게 리스트</h1>
-    <form id="storeListByLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
+    <p>현재 위치: ${nowAddr}</p>
+    <div class="location-set">
+    <form id="inputLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
+        <input type="text" id="inputAddr" name="inputAddr" placeholder="주소"/>
+        <button class="location-btn" type="button" onclick="sample5_execDaumPostcode()">주소 찾기</button>
+        <button class="location-btn" type="button" onclick="validateAndSubmitForm()">해당 주소로 검색</button>
+    </form>
+    <form id="userLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
         <input type="hidden" id="userLat" name="userLat" value="${defaultLat}" />
         <input type="hidden" id="userLon" name="userLon" value="${defaultLon}" />
-        <button type="button" onclick="getLocationAndSubmit()">현재 위치로 검색</button>
+        <button class="location-btn" type="button" onclick="getLocationAndSubmit()">내 위치로 검색</button>
     </form>
+    </div>
     <table class="store-table">
         <thead>
         <tr>
@@ -48,6 +79,7 @@
             <th>주소</th>
             <th>영업시간</th>
             <th>주차장</th>
+            <th>거리</th>
         </tr>
         </thead>
         <tbody>
@@ -98,10 +130,10 @@
                         </c:otherwise>
                     </c:choose>
                 </td>
+                <td><fmt:formatNumber value="${store.distance}" pattern="0.00"/>km</td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 </section>
 <c:import url="/bottom.jsp" />
-

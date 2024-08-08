@@ -17,7 +17,7 @@
 
     <div class="mypage-content">
         <span class="profile-info">
-            <a href="${pageContext.request.contextPath}/member/view?mid=${sessionScope.loggedInMember.mid}">개인 정보 조회</a>
+            <a href="${pageContext.request.contextPath}/member/view">개인 정보 조회</a>
         </span>
         <span class="myreviews-list">
             <a href="${pageContext.request.contextPath}/myReviews">내가 쓴 리뷰 보기</a>

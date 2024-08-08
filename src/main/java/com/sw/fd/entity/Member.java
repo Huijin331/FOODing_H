@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "member_t")
+@Table(name = "member_t") // 데이터베이스 테이블과 매핑
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,13 +18,14 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mno;
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberGroup> memberGroupList;
+    @OneToMany(mappedBy = "member") // 수정사항
+    private List<MemberGroup> memberGroupList; // 수정사항
 
     private String mid;
     private String mname;
     private String mpass;
 
+    // 비밀번호 확인 필드 (테이블에 저장되지 않음)
     private transient String mpassConfirm;
 
     private int mtype;

@@ -1,16 +1,23 @@
 package com.sw.fd.controller;
 
 import com.sw.fd.entity.Menu;
+import com.sw.fd.entity.Review;
 import com.sw.fd.entity.Store;
+import com.sw.fd.entity.StoreTag;
+import com.sw.fd.service.LocationService;
 import com.sw.fd.service.MenuService;
+import com.sw.fd.service.ReviewService;
 import com.sw.fd.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -20,7 +27,12 @@ public class StoreController {
     private StoreService storeService;
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private ReviewService reviewService;
+    @Autowired
+    private LocationService locationService;
 
+    private static final String DEFAULT_ARRD = "대구광역시 동구 동부로 121";
     private static final double DEFAULT_LAT = 35.8799906; // 대구광역시 동구 동부로 121의 위도
     private static final double DEFAULT_LON = 128.6286206; // 대구광역시 동구 동부로 121의 경도
 
@@ -38,38 +50,82 @@ public class StoreController {
 
     @GetMapping("/storeDetail")
     public String storeDetail(@RequestParam("sno") int sno, Model model) {
-        Store store = storeService.getStoreById(sno);
+        Store store = storeService.getStoreAllInfo(sno);
         List<Menu> menus = menuService.getMenuBySno(sno);
+        List<StoreTag> storeTags = storeService.getStoreTagsByStoreSno(sno);
+        int rCount = reviewService.getReviewsBySno(sno).size();
+        System.out.println("rCount = " + rCount);
+        System.out.println("<s" + sno + "가게의 태그수>");
+        for(StoreTag storeTag : storeTags) {
+            System.out.println(storeTag.getTag().getTtag() +"의 수: " + storeTag.getTagCount());
+        }
+        model.addAttribute("rCount", rCount);
         model.addAttribute("store", store);
         model.addAttribute("menus", menus);
+        model.addAttribute("storeTags", storeTags);
         return "storeDetail";
     }
+
     @GetMapping("/storeInfo")
     public String storeInfo(@RequestParam("sno") int sno, Model model) {
         Store store = storeService.getStoreById(sno);
         List<Menu> menus = menuService.getMenuBySno(sno);
         model.addAttribute("store", store);
         model.addAttribute("menus", menus);
-        return "storeInfo"; // storeInfo.jsp로 포워드
+        return "storeInfo";
     }
 
     @GetMapping("/storeListByLocation")
     public String showStoreListByLocation(
             @RequestParam(value = "userLat", required = false) Double userLat,
             @RequestParam(value = "userLon", required = false) Double userLon,
-            Model model) {
+            @RequestParam(value = "inputAddr", required = false) String inputAddr,
+            Model model) throws Exception {
 
+        System.out.println("inputAddr = "+ inputAddr);
         if (userLat == null || userLon == null) {
             userLat = DEFAULT_LAT;
             userLon = DEFAULT_LON;
         }
+        if (inputAddr != null) {
+            double[] coordinates = locationService.getCoordinates(inputAddr);
+            userLat = coordinates[0];
+            userLon = coordinates[1];
+        }
+
+        if(inputAddr == null)
+            inputAddr = LocationService.getAddr(userLat, userLon);
 
         List<Store> stores = storeService.getNearbyStores(userLat, userLon);
+        stores.sort(Comparator.comparingDouble(Store::getDistance));
+
+/*        for (Store store : stores) {
+            System.out.println(store.getSname() + "의 거리는 " + store.getDistance());
+        }*/
+
+
         model.addAttribute("stores", stores);
+        model.addAttribute("nowAddr", inputAddr);
         model.addAttribute("defaultLat", DEFAULT_LAT);
         model.addAttribute("defaultLon", DEFAULT_LON);
         return "storeListByLocation";
     }
 
 
+    @GetMapping("/storeListByRank")
+    public String showStoreListByPick(@RequestParam(value = "sortBy", required = false) String sortBy, Model model) {
+        List<Store> stores = storeService.getAllStores();
+
+        if ("score".equals(sortBy)) {
+            stores.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
+            model.addAttribute("sortStandard", "score");
+        } else {
+            stores.sort(Comparator.comparingInt(Store::getPickNum).reversed());
+            model.addAttribute("sortStandard", "pick");
+        }
+
+        model.addAttribute("stores", stores);
+
+        return "storeListByRank";
+    }
 }
