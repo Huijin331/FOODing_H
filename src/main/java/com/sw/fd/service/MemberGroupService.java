@@ -53,4 +53,8 @@ public class MemberGroupService {
     public void removeMemberGroup(MemberGroup memberGroup) {
         memberGroupRepository.delete(memberGroup);
     }
+
+    public List<MemberGroup> getMemberGroupsByMember(Member member) {
+        return memberGroupRepository.findByMember(member);
+    }
 }

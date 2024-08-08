@@ -46,7 +46,7 @@
                     </c:forEach>
                     <tr>
                         <td colspan="4" align="center">
-                            ${mnickString}
+                                ${mnickString}
                         </td>
                     </tr>
                 </c:forEach>

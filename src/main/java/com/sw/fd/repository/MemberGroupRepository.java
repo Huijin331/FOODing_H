@@ -1,5 +1,6 @@
 package com.sw.fd.repository;
 
+import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,5 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.member.mid = :mid AND mg.jauth = :jauth")
     List<MemberGroup> findByMemberMidAndJauth(@Param("mid") String memberId, @Param("jauth") int jauth);
 
+    List<MemberGroup> findByMember(Member member);
  }
