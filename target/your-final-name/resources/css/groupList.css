@@ -27,6 +27,11 @@ body {
     padding : 0 20px;
 }
 
+.groupMember-leave-area {
+    min-height : 600px;
+    padding : 0 20px;
+}
+
 h1 {
     text-align : center;
     margin-top : 20px;
@@ -102,6 +107,11 @@ h1 {
     margin: 0 auto;
 }
 
+.groupMember-leave-area input[type="submit"] {
+    display: block;
+    margin: 0 auto;
+}
+
 input[type="submit"] {
     padding: 10px 20px;
     background-color: saddlebrown;
@@ -122,6 +132,11 @@ input[type="submit"]:hover {
 }
 
 .groupMember-table td {
+    color : saddlebrown;
+    font-weight : bold;
+}
+
+.groupMember-leave-table td {
     color : saddlebrown;
     font-weight : bold;
 }
