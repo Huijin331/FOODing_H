@@ -21,7 +21,7 @@ h1 {
 .store-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .store-table th, .store-table td {
@@ -73,4 +73,32 @@ h1 {
 .store-table td:first-child {
     font-weight: bold;
     color: saddlebrown;
+}
+
+.sort-area {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sort-element {
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+
+/*storeListByLocation에 대한 css*/
+.location-set {
+    display: flex;
+    width: 100%;
+}
+.location-set form:first-child{
+    width: 50%;
+}
+.location-set form:nth-child(2){
+    width: 50%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.location-btn{
+    height: 30px;
 }

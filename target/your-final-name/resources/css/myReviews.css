@@ -1,4 +1,15 @@
-.section-reviews {
+section {
+    height: 600px;
+    align-content: center;
+    flex: 1;
+}
+
+h2 {
+    color : saddlebrown;
+    font-weight: bold;
+    text-align: center;
+}
+.reviews-Box {
     width: 70%;
     margin: 0 auto;
     padding: 20px;

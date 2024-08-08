@@ -1,5 +1,9 @@
 @charset "UTF-8";
-
+section{
+    height: 600px;
+    align-content: center;
+    flex: 1;
+}
 .registerSelect-container {
     width: 100%;
     height: 100%;

@@ -1,5 +1,9 @@
 @charset "UTF-8";
-
+section {
+    height: 600px;
+    align-content: center;
+    flex: 1;
+}
 .view-container {
     width: 650px;
     margin: 50px auto; /* 가운데 정렬을 위해 margin 사용 */

@@ -4,6 +4,9 @@
     padding: 20px;
     border-radius: 5px;
     text-align: center;
+    height: 600px;
+    align-content: center;
+    flex: 1;
 }
 
 .section-mypage h2 {
