@@ -19,11 +19,9 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <ul>
-                            <c:forEach var="member" items="${membersWithoutLeader}">
-                                <li>${member.member.mnick}</li>
-                            </c:forEach>
-                        </ul>
+                        <c:forEach var="regularMemberGroup" items="${regularMembers}">
+                            ${regularMemberGroup.member.mnick}<br/>
+                        </c:forEach>
                     </td>
                 </tr>
                 <tr>

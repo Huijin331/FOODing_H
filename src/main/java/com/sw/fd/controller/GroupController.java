@@ -174,8 +174,8 @@ public class GroupController {
         return "redirect:/groupManage";
     }
 
-    @PostMapping("/deleteMember")
-    public String deleteMember(@ModelAttribute("gno") int gno,
+    @PostMapping("/deleteMemberToGroup")
+    public String deleteMemberToGroup(@ModelAttribute("gno") int gno,
                                @ModelAttribute("mid") String memberId,
                                HttpSession session,
                                Model model) {
@@ -263,7 +263,18 @@ public class GroupController {
             return "redirect:/groupList";
         }
 
+        // 현재 모임장의 ID를 제외한 일반 회원 목록을 가져옴
+        List<MemberGroupDTO> memberGroups = memberGroupService.findMembersByGroupGnoWithDTO(memberGroup.getGroup().getGno());
+        List<MemberGroupDTO> regularMembers = new ArrayList<>();
+        for (MemberGroupDTO mg : memberGroups) {
+            if (mg.getJauth() == 0 ) {
+                regularMembers.add(mg);
+                System.out.println(mg.getMemberNick());
+            }
+        }
+
         model.addAttribute("memberGroup", memberGroup);
+        model.addAttribute("regularMembers", regularMembers);
 
         return "transferJauth";
     }

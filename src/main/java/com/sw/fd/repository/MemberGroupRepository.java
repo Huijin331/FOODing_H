@@ -28,4 +28,6 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
     List<MemberGroup> findByMemberMidAndJauth(@Param("mid") String memberId, @Param("jauth") int jauth);
 
     List<MemberGroup> findByMember(Member member);
+
+    List<MemberGroup> findByGroupGno(int gno);
  }

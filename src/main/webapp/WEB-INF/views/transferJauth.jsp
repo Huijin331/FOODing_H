@@ -18,7 +18,11 @@
                     <td>${memberGroup.member.mnick}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">일반 회원 목록</td>
+                    <td colspan="2" align="center">
+                        <c:forEach var="regularMemberGroup" items="${regularMembers}">
+                            ${regularMemberGroup.member.mnick}<br/>
+                        </c:forEach>
+                    </td>
                 </tr>
                 <tr>
                     <td>모임장 권한 위임 회원</td>

@@ -62,7 +62,7 @@
         </div>
         <div class="groupManage-delete-area">
             <h1>모임 회원 삭제</h1>
-            <form action="${pageContext.request.contextPath}/deleteMember" method="post">
+            <form action="${pageContext.request.contextPath}/deleteMemberToGroup" method="post">
                 <table class="groupManage-delete-table">
                     <tr>
                         <td>모임명</td>
