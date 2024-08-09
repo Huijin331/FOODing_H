@@ -129,7 +129,7 @@
     function openEditWindow(gno) {
         var url = "${pageContext.request.contextPath}/transferJauth?gno=" + gno; // 새로운 URL로 변경
         var name = "transferJauth";
-        var specs = "width=750,height=600";
+        var specs = "width=750,height=400";
         window.open(url, name, specs);
     }
 
@@ -138,23 +138,18 @@
 
         // 'gnoSelect' id를 가진 select 요소에서 선택된 값을 가져옴
         var selectedGno = document.querySelector('#leaveGnoSelect').value.toString();
-        alert("Selected Gno:" + selectedGno);
 
         var query = "#leaveGnoSelect option[value='" + selectedGno + "']";
-        alert("Query Selector:" + query);
 
         // 선택된 gno에 해당하는 option의 data-jauth 값을 가져옴
         var selectedOption = document.querySelector(query);
-        alert("Selected Option:" + selectedOption);
 
         if (!selectedOption) {
             alert("선택한 option이 null입니다");
             return;
         }
 
-
         var jauth = selectedOption ? selectedOption.getAttribute('data-jauth') : null;
-        alert("Jauth Value: " + jauth);
 
         if (parseInt(jauth) === 1) {
             openEditWindow(selectedGno);

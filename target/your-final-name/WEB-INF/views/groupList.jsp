@@ -101,39 +101,12 @@
         </form:form>
         <div class="groupMember-leave-area">
             <h1>모임 탈퇴</h1>
-            <script>
-                function openEditWindow(gno) {
-                    var url = "${pageContext.request.contextPath}/transferJauth?gno=" + gno; // 새로운 URL로 변경
-                    var name = "transferJauth";
-                    var specs = "width=750,height=600";
-                    window.open(url, name, specs);
-                }
-
-                function submitLeaveForm(event) {
-                    event.preventDefault(); // 폼의 기본 제출 동작을 막음
-                    // var selectedGno = document.querySelector('select[name="gno"]').value;
-                    var selectElement = document.querySelector('select[name="gno"]');
-                    var selectedGno = selectElement.value;
-
-                    // 선택된 gno에 해당하는 option의 data-jauth 값을 가져옴
-                    // var selectedOption = document.querySelector(`option[value="${selectedGno}"]`);
-                    var selectedOption = selectElement.querySelector(`option[value="${selectedGno}"]`);
-                    var jauth = selectedOption ? selectedOption.dataset.jauth : null;
-
-                    if (jauth === "1") {
-                        openEditWindow(selectedGno);
-                    } else {
-                        document.forms['group-leaveForm'].submit();
-                    }
-                }
-            </script>
-
             <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group" onsubmit="submitLeaveForm(event)">
                 <table class="groupMember-leave-table">
                     <tr>
                         <td><form:label path="gno">모임명</form:label></td>
                         <td>
-                            <form:select path="gno">
+                            <form:select path="gno" id="leaveGnoSelect">
                                 <c:forEach var="memberGroup" items="${memberGroups}">
                                     <option value="${memberGroup.group.gno}" data-jauth="${memberGroup.jauth}">
                                             ${memberGroup.group.gname}
@@ -152,4 +125,37 @@
         </div>
     </div>
 </section>
+<script>
+    function openEditWindow(gno) {
+        var url = "${pageContext.request.contextPath}/transferJauth?gno=" + gno; // 새로운 URL로 변경
+        var name = "transferJauth";
+        var specs = "width=750,height=400";
+        window.open(url, name, specs);
+    }
+
+    function submitLeaveForm(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 막음
+
+        // 'gnoSelect' id를 가진 select 요소에서 선택된 값을 가져옴
+        var selectedGno = document.querySelector('#leaveGnoSelect').value.toString();
+
+        var query = "#leaveGnoSelect option[value='" + selectedGno + "']";
+
+        // 선택된 gno에 해당하는 option의 data-jauth 값을 가져옴
+        var selectedOption = document.querySelector(query);
+
+        if (!selectedOption) {
+            alert("선택한 option이 null입니다");
+            return;
+        }
+
+        var jauth = selectedOption ? selectedOption.getAttribute('data-jauth') : null;
+
+        if (parseInt(jauth) === 1) {
+            openEditWindow(selectedGno);
+        } else {
+            document.forms['group-leaveForm'].submit();
+        }
+    }
+</script>
 <c:import url="/bottom.jsp"/>
