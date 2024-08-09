@@ -9,11 +9,11 @@
 </head>
 <body>
     <section>
-        <h1>모임장 권한 위임</h1>
+        <h1>모임장 권한 위임  for ${memberGroup.group.gname}</h1>
         <div class="transfer-area">
             <table class="transfer-table">
                 <tr>
-                    <td>모임 참여 회원</td>
+                    <td>현재 모임장: ${memberGroup.member.mid}</td>
                     <td>모임장 권한 위임할 회원</td>
                 </tr>
                 <tr>
