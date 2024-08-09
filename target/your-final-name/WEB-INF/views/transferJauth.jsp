@@ -10,7 +10,8 @@
 <body>
     <section>
         <div class="transfer-area">
-            <h1>모임장 권한 위임  for ${memberGroup.group.gname}</h1>
+            <h1>모임장 권한 위임 - ${memberGroup.group.gname}</h1>
+            <form action="${pageContext.request.contextPath}/transferJauth" method="post">
             <table class="transfer-table">
                 <tr>
                     <td>현재 모임장</td>
@@ -25,10 +26,11 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        위임 버튼
+                        <input type="submit" value="위임"/>
                     </td>
                 </tr>
             </table>
+            </form>
         </div>
     </section>
 </body>

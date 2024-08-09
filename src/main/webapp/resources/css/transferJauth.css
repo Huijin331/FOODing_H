@@ -34,3 +34,18 @@ h1 {
     color : saddlebrown;
     font-weight : bold;
 }
+
+.transfer-area input[type="submit"] {
+    display: block;
+    margin: 0 auto;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: saddlebrown;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
