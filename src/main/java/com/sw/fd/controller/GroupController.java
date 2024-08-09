@@ -1,6 +1,7 @@
 package com.sw.fd.controller;
 
 import com.sw.fd.dto.GroupDTO;
+import com.sw.fd.dto.MemberGroupDTO;
 import com.sw.fd.entity.Group;
 import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -39,14 +41,18 @@ public class GroupController {
         String nick = member.getMnick();
         System.out.println("Member의 이름: " + nick);
 
-        List<GroupDTO> groups = groupService.getGroupsByMember(member);
+        List<MemberGroupDTO> memberGroups = memberGroupService.getMemberGroupsWithGroup(member);
+        for (MemberGroupDTO memberGroup : memberGroups) {
+            System.out.println(memberGroup.getJno() + "의 getGroup().getGname() = :" + memberGroup.getGroup().getGname());
+        }
+
         model.addAttribute("group", new GroupDTO());
         model.addAttribute("memberGroup", new MemberGroup());
-        model.addAttribute("groups", groups);
+        model.addAttribute("memberGroups", memberGroups);
 
         List<Integer> gnos = new ArrayList<>();
-        for (GroupDTO groupDTO : groups) {
-            gnos.add(groupDTO.getGno());
+        for (MemberGroupDTO memberGroup : memberGroups) {
+            gnos.add(memberGroup.getGroup().getGno());
         }
 
         List<MemberGroup> allMembers = memberService.getMemberGroupsByGnos(gnos);
@@ -241,5 +247,24 @@ public class GroupController {
         }
 
         return "redirect:/groupList";
+    }
+
+    @GetMapping("/transferJauth")
+    public String showTransferJauth(@RequestParam("gno") int gno, Model model, HttpSession session) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+
+        // gno와 현재 로그인된 멤버의 ID를 사용하여 해당 MemberGroup 객체를 가져옴
+        MemberGroup memberGroup = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, member.getMid());
+        if (memberGroup == null) {
+            model.addAttribute("error", "해당 그룹을 찾을 수 없습니다.");
+            return "redirect:/groupList";
+        }
+
+        model.addAttribute("memberGroup", memberGroup);
+
+        return "transferJauth";
     }
 }

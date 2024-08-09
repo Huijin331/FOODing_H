@@ -74,8 +74,9 @@
                     <tr>
                         <td><form:label path="group.gno">모임명</form:label></td>
                         <td>
+                            <%--아래의 form안의 group.gno은 get컨트롤러에서 가져온 것! 위의  group.gno는 modelAttribute="memberGroup"에 담겨서 /addMember post 컨트롤러로 보내질 것!--%>
                             <form:select path="group.gno">
-                                <form:options items="${groups}" itemValue="gno" itemLabel="gname"/>
+                                <form:options items="${memberGroups}" itemValue="group.gno" itemLabel="group.gname"/>
                             </form:select>
                         </td>
                     </tr>
@@ -100,13 +101,41 @@
         </form:form>
         <div class="groupMember-leave-area">
             <h1>모임 탈퇴</h1>
-            <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group">
+            <script>
+                function openEditWindow(gno) {
+                    var url = "${pageContext.request.contextPath}/transferJauth?gno=" + gno; // 새로운 URL로 변경
+                    var name = "transferJauth";
+                    var specs = "width=750,height=600";
+                    window.open(url, name, specs);
+                }
+
+                function submitLeaveForm(event) {
+                    event.preventDefault(); // 폼의 기본 제출 동작을 막음
+                    var selectedGno = document.querySelector('select[name="gno"]').value;
+
+                    // 선택된 gno에 해당하는 option의 data-jauth 값을 가져옴
+                    var selectedOption = document.querySelector(`option[value="${selectedGno}"]`);
+                    var jauth = selectedOption ? selectedOption.dataset.jauth : null;
+
+                    if (jauth == 1) {
+                        openEditWindow(selectedGno);
+                    } else {
+                        document.forms['group-leaveForm'].submit();
+                    }
+                }
+            </script>
+
+            <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group" onsubmit="submitLeaveForm(event)">
                 <table class="groupMember-leave-table">
                     <tr>
                         <td><form:label path="gno">모임명</form:label></td>
                         <td>
                             <form:select path="gno">
-                                <form:options items="${groups}" itemValue="gno" itemLabel="gname"/>
+                                <c:forEach var="memberGroup" items="${memberGroups}">
+                                    <option value="${memberGroup.group.gno}" data-jauth="${memberGroup.jauth}">
+                                            ${memberGroup.group.gname}
+                                    </option>
+                                </c:forEach>
                             </form:select>
                         </td>
                     </tr>

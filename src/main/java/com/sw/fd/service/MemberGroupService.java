@@ -1,8 +1,11 @@
 package com.sw.fd.service;
 
+import com.sw.fd.dto.GroupDTO;
+import com.sw.fd.dto.MemberGroupDTO;
 import com.sw.fd.entity.Group;
 import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
+import com.sw.fd.repository.GroupRepository;
 import com.sw.fd.repository.MemberGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ public class MemberGroupService {
 
     @Autowired
     private MemberGroupRepository memberGroupRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     public boolean isMemberInGroup(String memberId, int gno) {
         return memberGroupRepository.existsByGroupGnoAndMemberMid(gno, memberId);
@@ -54,7 +60,29 @@ public class MemberGroupService {
         memberGroupRepository.delete(memberGroup);
     }
 
-    public List<MemberGroup> getMemberGroupsByMember(Member member) {
+ /*   public List<MemberGroup> getMemberGroupsWithGroup(Member member) {
         return memberGroupRepository.findByMember(member);
+    } */
+
+    public List<MemberGroupDTO> getMemberGroupsWithGroup(Member member) {
+        List<MemberGroup> memberGroups = memberGroupRepository.findByMember(member);
+        List<MemberGroupDTO> memberGroupDTOs = new ArrayList<>();
+
+        for (MemberGroup memberGroup : memberGroups) {
+            Group group = memberGroup.getGroup();
+            if (group != null) {
+                GroupDTO groupDTO = new GroupDTO(group.getGno(), group.getGname(), group.getGdate());
+                MemberGroupDTO memberGroupDTO = new MemberGroupDTO(
+                        memberGroup.getJno(),
+                        groupDTO,
+                        memberGroup.getMember().getMnick(),
+                        memberGroup.getJauth(),
+                        memberGroup.getJdate()
+                );
+                memberGroupDTOs.add(memberGroupDTO);
+            }
+        }
+
+        return memberGroupDTOs;
     }
 }
