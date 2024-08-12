@@ -11,13 +11,18 @@
         function setMemberNick(nick) {
             document.getElementById('transferJauth').value = nick;
         }
+
+        function closePopup() {
+            // 브라우저의 기본 팝업 닫기 방법
+            window.close();
+        }
     </script>
 </head>
 <body>
     <section>
         <div class="transfer-area">
             <h1>모임장 권한 위임 - ${memberGroup.group.gname}</h1>
-            <form action="${pageContext.request.contextPath}/transferJauth" method="post">
+            <form action="${pageContext.request.contextPath}/transferJauth" method="post" onsubmit="closePopup()">
             <table class="transfer-table">
                 <tr>
                     <td colspan="2" align="">현재 모임장 : ${memberGroup.member.mnick}</td>
@@ -31,7 +36,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        모임장 권한 위임 회원 : <input type="text" id="transferJauth" name="memberNick" required/>
+                        모임장 권한 위임 회원 : <input type="text" id="transferJauth" name="memberId" required/>
                     </td>
                 </tr>
             </table>
