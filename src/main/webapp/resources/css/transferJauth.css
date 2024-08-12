@@ -37,7 +37,7 @@ h1 {
 
 .transfer-area input[type="submit"] {
     display: block;
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 input[type="submit"] {

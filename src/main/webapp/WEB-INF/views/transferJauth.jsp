@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,13 +15,12 @@
             <form action="${pageContext.request.contextPath}/transferJauth" method="post">
             <table class="transfer-table">
                 <tr>
-                    <td>현재 모임장</td>
-                    <td>${memberGroup.member.mnick}</td>
+                    <td colspan="2" align="">현재 모임장 : ${memberGroup.member.mnick}</td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        <c:forEach var="regularMemberGroup" items="${regularMembers}">
-                            ${regularMemberGroup.member.mnick}<br/>
+                        <c:forEach var="rg" items="${regularMembers}">
+                            <p>${rg.memberNick}</p>
                         </c:forEach>
                     </td>
                 </tr>
@@ -28,12 +28,8 @@
                     <td>모임장 권한 위임 회원</td>
                     <td>선택된 회원</td>
                 </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <input type="submit" value="위임"/>
-                    </td>
-                </tr>
             </table>
+                <input type="submit" value="위임"/>
             </form>
         </div>
     </section>

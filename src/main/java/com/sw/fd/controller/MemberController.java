@@ -214,7 +214,7 @@ public class MemberController {
     }
 
     // 회원 탈퇴
-    @PostMapping("/{mno}")
+    @PostMapping("/delete{mno}")
     public String deleteMember(HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
         if (loggedInMember != null) {

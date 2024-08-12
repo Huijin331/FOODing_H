@@ -62,7 +62,7 @@
             </table>
             <form:hidden path="mid" />
         </form:form>
-        <form action="${pageContext.request.contextPath}/${loggedInMember.mno}" method="post">
+        <form action="${pageContext.request.contextPath}/delete${loggedInMember.mno}" method="post">
             <input type="hidden" name="_method" value="delete">
             <input type="submit" value="회원탈퇴">
         </form>
