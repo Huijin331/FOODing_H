@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
-                        모임장 권한 위임 회원 : <input type="text" id="transferJauth" name="memberId" required/>
+                        모임장 권한 위임 회원 : <input type="text" id="transferJauth" name="memberNick" required/>
                     </td>
                 </tr>
             </table>
