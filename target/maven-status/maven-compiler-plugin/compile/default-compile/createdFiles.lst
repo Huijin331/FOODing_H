@@ -1,7 +1,10 @@
 com\sw\fd\controller\LoginController.class
+com\sw\fd\entity\Business.class
 com\sw\fd\entity\Group.class
 com\sw\fd\repository\GroupRepository.class
+com\sw\fd\dto\MemberGroupDTO.class
 com\sw\fd\repository\PickRepository.class
+com\sw\fd\entity\StoreTag.class
 com\sw\fd\entity\Menu.class
 com\sw\fd\entity\Pick.class
 com\sw\fd\service\MemberGroupService.class
@@ -14,10 +17,12 @@ com\sw\fd\controller\MainController.class
 com\sw\fd\entity\MemberGroup.class
 com\sw\fd\repository\ReviewRepository.class
 com\sw\fd\service\ReviewService.class
+com\sw\fd\entity\ReviewTag.class
 com\sw\fd\controller\ReviewController.class
 com\sw\fd\repository\MenuRepository.class
 com\sw\fd\service\StoreService.class
 com\sw\fd\entity\Member.class
+com\sw\fd\repository\TagRepository.class
 com\sw\fd\service\GroupService.class
 com\sw\fd\StoreDataLoader.class
 com\sw\fd\controller\MemberController.class
@@ -29,6 +34,12 @@ com\sw\fd\StoreDataLoader$1.class
 com\sw\fd\service\PickService.class
 com\sw\fd\controller\MenuController.class
 com\sw\fd\controller\StoreController.class
+com\sw\fd\repository\StoreTagRepository.class
 com\sw\fd\WebConfig.class
 com\sw\fd\entity\Review.class
+com\sw\fd\service\ApiService.class
+com\sw\fd\entity\Tag.class
+com\sw\fd\service\TagService.class
+com\sw\fd\entity\Report.class
 com\sw\fd\service\MemberService.class
+com\sw\fd\repository\ReviewTagRepository.class

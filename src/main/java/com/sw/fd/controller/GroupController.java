@@ -11,14 +11,13 @@ import com.sw.fd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class GroupController {
@@ -277,5 +276,36 @@ public class GroupController {
         model.addAttribute("regularMembers", regularMembers);
 
         return "transferJauth";
+    }
+
+    @PostMapping("/transferJauth")
+    @ResponseBody
+    public Map<String, String> transferJauth(@RequestParam("gno") int gno,
+                                @RequestParam("memberNick") String newLeaderNick,
+                                HttpSession session, Model model) {
+        Map<String, String> response = new HashMap<>();
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            response.put("status", "error");
+            response.put("message", "로그인된 회원 정보가 없습니다.");
+            return response;
+        }
+
+        // 현재 모임장 확인
+        MemberGroup currentLeaderGroup = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, member.getMid());
+
+        // 새로운 모임장으로 설정할 회원 찾기
+        MemberGroup newLeaderGroup = memberGroupService.findMemberGroupByGroupGnoAndNick(gno, newLeaderNick);
+
+        // 권한 위임 및 기존 모임장 권한 변경
+        memberGroupService.updateMemberGroupJauth(gno, newLeaderGroup.getMember().getMid(), 1);
+        memberGroupService.updateMemberGroupJauth(gno, member.getMid(), 0);
+
+        // 기존 모임장 그룹에서 제거
+        memberGroupService.removeMemberGroup(currentLeaderGroup);
+
+        response.put("status", "success");
+        response.put("message", "모임장 권한 위임이 성공했습니다.");
+        return response;
     }
 }

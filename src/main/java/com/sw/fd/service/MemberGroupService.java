@@ -105,4 +105,16 @@ public class MemberGroupService {
             );
         }).collect(Collectors.toList());
     }
+
+    public MemberGroup findMemberGroupByGroupGnoAndNick(int gno, String nick) {
+        return memberGroupRepository.findByGroupGnoAndMemberNick(gno, nick);
+    }
+
+    public void updateMemberGroupJauth(int gno, String mid, int newJauth) {
+        MemberGroup memberGroup = memberGroupRepository.findByGroupGnoAndMemberMid(gno, mid);
+        if (memberGroup != null) {
+            memberGroup.setJauth(newJauth);
+            memberGroupRepository.save(memberGroup);
+        }
+    }
 }
