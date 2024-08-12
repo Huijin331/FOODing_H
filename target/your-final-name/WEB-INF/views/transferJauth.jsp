@@ -7,6 +7,11 @@
     <meta charset="UTF-8">
     <title>FOODing 모임장 권한 위임</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/transferJauth.css">
+    <script type="text/javascript">
+        function setMemberNick(nick) {
+            document.getElementById('transferJauth').value = nick;
+        }
+    </script>
 </head>
 <body>
     <section>
@@ -20,7 +25,7 @@
                 <tr>
                     <td colspan="2" align="center">
                         <c:forEach var="rg" items="${regularMembers}">
-                            <p>${rg.memberNick}</p>
+                            <p class="clickable-nickname" onclick="setMemberNick('${rg.memberNick}')">${rg.memberNick}</p>
                         </c:forEach>
                     </td>
                 </tr>

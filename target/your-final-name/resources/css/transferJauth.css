@@ -49,3 +49,22 @@ input[type="submit"] {
     cursor: pointer;
     font-size: 16px;
 }
+
+.clickable-nickname {
+    cursor: pointer;
+    color: saddlebrown;
+    text-decoration: none;
+    font-weight : bold;
+}
+
+.clickable-nickname:hover {
+    color: #ffea00;
+    text-decoration: none;
+    font-weight : bold;
+}
+
+.clickable-nickname:active {
+    color: orange;
+    text-decoration: none;
+    font-weight : bold;
+}
