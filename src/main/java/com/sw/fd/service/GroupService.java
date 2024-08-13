@@ -4,6 +4,7 @@ import com.sw.fd.dto.GroupDTO;
 import com.sw.fd.entity.Group;
 import com.sw.fd.entity.Member;
 import com.sw.fd.repository.GroupRepository;
+import com.sw.fd.repository.MemberGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class GroupService {
     @Autowired
     private GroupRepository groupRepository;
 
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
+
     @Transactional
     public void save(Group group) {
         groupRepository.save(group);
@@ -27,7 +31,7 @@ public class GroupService {
         List<GroupDTO> groupDTOs = new ArrayList<>();
 
         for (Group group : groups) {
-            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate()));
+            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0));
         }
 
         return groupDTOs;
@@ -36,7 +40,7 @@ public class GroupService {
     public GroupDTO getGroupById(int gno) {
         Group group = groupRepository.findByGno(gno).orElse(null);
         if (group != null) {
-            return new GroupDTO(group.getGno(), group.getGname(), group.getGdate());
+            return new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0);
         } else {
             return null;
         }
@@ -47,7 +51,7 @@ public class GroupService {
         List<GroupDTO> groupDTOs = new ArrayList<>();
 
         for (Group group : groups) {
-            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate()));
+            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0));
         }
 
         return groupDTOs;
@@ -67,5 +71,9 @@ public class GroupService {
 
     public void deleteGroupByGno(int gno) {
         groupRepository.delete(gno);
+    }
+
+    public int groupMemberCount(int gno) {
+        return memberGroupRepository.countByGroupGno(gno);
     }
 }

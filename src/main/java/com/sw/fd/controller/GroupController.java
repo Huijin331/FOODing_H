@@ -42,6 +42,8 @@ public class GroupController {
 
         List<MemberGroupDTO> memberGroups = memberGroupService.getMemberGroupsWithGroup(member);
         for (MemberGroupDTO memberGroup : memberGroups) {
+            memberGroup.getGroup().setMCount(groupService.groupMemberCount(memberGroup.getGroup().getGno()));
+            System.out.println("mCount 값 = " + memberGroup.getGroup().getMCount());
             System.out.println(memberGroup.getJno() + "의 getGroup().getGname() = :" + memberGroup.getGroup().getGname());
         }
 
@@ -241,7 +243,22 @@ public class GroupController {
         System.out.println("Member ID: " + member.getMid());
 
         MemberGroup memberGroup = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, member.getMid());
-        if (memberGroup != null && memberGroup.getJauth() == 0) {
+
+        // 현재 모임장 권한을 가진 사용자가 모임을 탈퇴하려는 경우
+        if (memberGroup.getJauth() == 1) {
+            // 모임에 참여하는 회원 수를 가져옴
+            List<MemberGroup> membersInGroup = memberGroupService.findMembersByGroupGno(gno);
+
+            // 모임에 참여하는 회원이 모임장 한 명만 있는 경우
+            if (membersInGroup.size() == 1) {
+                // 모임을 삭제
+                groupService.deleteGroupByGno(gno);
+            } else {
+                // 일반 회원의 경우 모임에서 삭제
+                memberGroupService.removeMemberGroup(memberGroup);
+            }
+        } else {
+            // 일반 회원의 경우 모임에서 삭제
             memberGroupService.removeMemberGroup(memberGroup);
         }
 

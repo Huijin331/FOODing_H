@@ -33,4 +33,7 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
 
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.member.mnick = :nick")
     MemberGroup findByGroupGnoAndMemberNick(@Param("gno") int gno, @Param("nick") String nick);
- }
+
+    @Query("SELECT COUNT(mg) FROM MemberGroup mg WHERE mg.group.gno = :gno")
+    int countByGroupGno(@Param("gno") int gno);
+}

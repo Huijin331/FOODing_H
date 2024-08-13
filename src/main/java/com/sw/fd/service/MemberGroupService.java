@@ -76,7 +76,7 @@ public class MemberGroupService {
         for (MemberGroup memberGroup : memberGroups) {
             Group group = memberGroup.getGroup();
             if (group != null) {
-                GroupDTO groupDTO = new GroupDTO(group.getGno(), group.getGname(), group.getGdate());
+                GroupDTO groupDTO = new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0);
                 MemberGroupDTO memberGroupDTO = new MemberGroupDTO(
                         memberGroup.getJno(),
                         groupDTO,
