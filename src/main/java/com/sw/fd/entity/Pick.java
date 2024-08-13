@@ -17,12 +17,22 @@ public class Pick {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pno;
 
-    private String pfold;
-    private int mno;
-    private int sno;
+    @ManyToOne
+    @JoinColumn(name = "pfno", nullable = false)
+    private Pick pick;
 
-    public Pick(int mno, int sno) {
-        this.mno = mno;
-        this.sno = sno;
+    @ManyToOne
+    @JoinColumn(name = "mno", nullable = false)
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "sno", nullable = false)
+    private Store store;
+
+
+    public Pick(Member member, Store store) {
+        this.member = member;
+        this.store = store;
     }
+
 }

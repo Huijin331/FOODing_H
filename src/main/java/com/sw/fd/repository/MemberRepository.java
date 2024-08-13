@@ -25,6 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
     Member findByMnameAndMemail(String mname, String memail);
     Member findByMnameAndMphone(String mname, String mphone);
+    boolean existsByMno(int mno);
 
     Optional<Member> findByMidAndMnameAndMemail(String mid,String mname, String memail);
 }

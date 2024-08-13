@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PickRepository extends JpaRepository<Pick, Integer> {
-    Pick findByMnoAndSno(int mno, int sno);
+    Pick findByMemberMnoAndStoreSno(@Param("mno")int mno, @Param("sno") int sno);
 
     // pick수 계산을 위해 추가한 부분 (다혜)
-    @Query("SELECT COUNT(p) FROM Pick p WHERE p.sno = :sno")
+    @Query("SELECT COUNT(p) FROM Pick p WHERE p.store.sno = :sno")
     int countBySno(@Param("sno") int sno);
 }

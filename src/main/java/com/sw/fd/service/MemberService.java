@@ -46,6 +46,8 @@ public class MemberService {
         return memberRepository.findByMid(mid).orElse(null);
     }
 
+    public boolean isMnoExists(int mno) {return memberRepository.existsByMno(mno);}
+
     public void updateMember(Member member) {
         if (memberRepository.existsByMid(member.getMid())) {
             memberRepository.save(member);

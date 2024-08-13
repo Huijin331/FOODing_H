@@ -50,11 +50,11 @@ public class StoreController {
         List<Menu> menus = menuService.getMenuBySno(sno);
         List<StoreTag> storeTags = storeService.getStoreTagsByStoreSno(sno);
         int rCount = reviewService.getReviewsBySno(sno).size();
-        System.out.println("rCount = " + rCount);
-        System.out.println("<s" + sno + "가게의 태그수>");
-        for(StoreTag storeTag : storeTags) {
+/*        System.out.println("rCount = " + rCount);
+        System.out.println("<s" + sno + "가게의 태그수>");*/
+/*        for(StoreTag storeTag : storeTags) {
             System.out.println(storeTag.getTag().getTtag() +"의 수: " + storeTag.getTagCount());
-        }
+        }*/
         model.addAttribute("rCount", rCount);
         model.addAttribute("store", store);
         model.addAttribute("menus", menus);
@@ -136,7 +136,7 @@ public class StoreController {
             List<Integer> numTnos = new ArrayList<>();
             // 가져온 태그들을 서버로그에 띄우기 위해서 사용
             for (String tno : stringTnos) {
-                System.out.println(tno);
+/*                System.out.println(tno);*/
                 numTnos.add(Integer.parseInt(tno));
             }
 

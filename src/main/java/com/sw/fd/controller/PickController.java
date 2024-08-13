@@ -25,6 +25,7 @@ public class PickController {
         }
 
         int mno = loggedInMember.getMno();
+
         boolean isPicked = pickService.togglePick(mno, sno);
         return isPicked ? "picked" : "unpicked";
     }
