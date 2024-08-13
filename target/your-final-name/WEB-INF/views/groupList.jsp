@@ -108,7 +108,7 @@
                         <td>
                             <form:select path="gno" id="leaveGnoSelect">
                                 <c:forEach var="memberGroup" items="${memberGroups}">
-                                    <option value="${memberGroup.group.gno}" data-jauth="${memberGroup.jauth}">
+                                    <option value="${memberGroup.group.gno}" data-mcount="${memberGroup.group.mcount}" data-jauth="${memberGroup.jauth}">
                                             ${memberGroup.group.gname}
                                     </option>
                                 </c:forEach>
@@ -143,6 +143,8 @@
 
         // 선택된 gno에 해당하는 option의 data-jauth 값을 가져옴
         var selectedOption = document.querySelector(query);
+        var mCount = selectedOption.getAttribute('data-mcount');
+        console.log('mCount:', mCount);
 
         if (!selectedOption) {
             alert("선택한 option이 null입니다");
@@ -152,7 +154,13 @@
         var jauth = selectedOption ? selectedOption.getAttribute('data-jauth') : null;
 
         if (parseInt(jauth) === 1) {
-            openEditWindow(selectedGno);
+            if (mCount > 1) {
+                // 모임장이며, 다른 회원이 존재하는 경우 팝업창을 띄움
+                openEditWindow(selectedGno);
+            }
+            else {
+                document.forms['group-leaveForm'].submit();
+            }
         } else {
             document.forms['group-leaveForm'].submit();
         }
