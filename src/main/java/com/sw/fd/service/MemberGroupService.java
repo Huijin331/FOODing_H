@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,6 +116,39 @@ public class MemberGroupService {
         if (memberGroup != null) {
             memberGroup.setJauth(newJauth);
             memberGroupRepository.save(memberGroup);
+        }
+    }
+
+    public void delegateGroupLeadership(Member leavingMember) {
+        // 1. 탈퇴하는 회원이 모임장인 모임을 찾습니다.
+        List<Group> groups = findGroupsWhereMemberIsLeader(leavingMember.getMid());
+
+        for (Group group : groups) {
+            // 2. 각 모임의 모든 회원을 조회합니다.
+            List<MemberGroup> memberGroups = findMembersByGroupGno(group.getGno());
+            List<Member> eligibleMembers = new ArrayList<>();
+
+            // 3. 모임장 권한이 없는 일반회원들만 필터링
+            for (MemberGroup memberGroup : memberGroups) {
+                if (memberGroup.getJauth() == 0) { // 일반회원
+                    eligibleMembers.add(memberGroup.getMember());
+                }
+            }
+
+            if (!eligibleMembers.isEmpty()) {
+                // 4. 무작위로 한 명의 일반회원 선택
+                Random rand = new Random();
+                Member newLeader = eligibleMembers.get(rand.nextInt(eligibleMembers.size()));
+
+                // 5. 새 모임장 권한 부여
+                updateMemberGroupJauth(group.getGno(), newLeader.getMid(), 1); // 1: 모임장 권한
+
+                // 기존 모임장 권한 제거
+                MemberGroup currentLeaderGroup = getMemberGroupByGroupGnoAndMemberMid(group.getGno(), leavingMember.getMid());
+                if (currentLeaderGroup != null) {
+                    removeMemberGroup(currentLeaderGroup);
+                }
+            }
         }
     }
 }

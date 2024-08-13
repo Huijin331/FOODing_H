@@ -4,6 +4,7 @@ import com.sw.fd.entity.Business;
 import com.sw.fd.entity.Member;
 import com.sw.fd.repository.MemberRepository;
 import com.sw.fd.service.ApiService;
+import com.sw.fd.service.MemberGroupService;
 import com.sw.fd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,6 +30,10 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+
+    // 모임 기능을 위해 추가 (희진)
+    @Autowired
+    private MemberGroupService memberGroupService;
 
     @Autowired
     private ApiService apiService;
@@ -277,6 +282,14 @@ public class MemberController {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
         if (loggedInMember != null) {
             int mno = loggedInMember.getMno();
+
+            // 1. 탈퇴할 회원 찾기 (희진 추가)
+            Member leavingMember = memberService.findMemberByMno(mno);
+            if (leavingMember != null) {
+                // 2. 모임장 권한 위임 (희진 추가)
+                memberGroupService.delegateGroupLeadership(leavingMember);
+            }
+
             memberService.deleteMemberByMno(mno);
             session.invalidate(); // 세션 무효화
             return "redirect:/deleteSuccess";
