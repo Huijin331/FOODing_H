@@ -22,7 +22,7 @@ body {
     padding : 0 20px;
 }
 
-.groupManage-add-area {
+.groupManage-delete-group-area {
     min-height : 600px;
     padding : 0 20px;
 }
@@ -78,7 +78,7 @@ h1 {
     display: block;
     margin: 0 auto;
 }
-.groupManage-add-area input[type="submit"] {
+.groupManage-delete-group-area input[type="submit"] {
     display: block;
     margin: 0 auto;
 }
@@ -102,7 +102,7 @@ input[type="submit"]:hover {
     font-weight : bold;
 }
 
-.groupManage-add-table td {
+.groupManage-delete-group-table td {
     color : saddlebrown;
     font-weight : bold;
 }
