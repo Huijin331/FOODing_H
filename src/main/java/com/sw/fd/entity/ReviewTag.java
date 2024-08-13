@@ -24,4 +24,9 @@ public class ReviewTag {
     @ManyToOne
     @JoinColumn(name = "tno")
     private Tag tag; // 태그와의 다대일 관계
+
+    @Override
+    public String toString() {
+        return "ReviewTag{id=" + rtno + ", tag='" + tag + "'}";
+    }
 }

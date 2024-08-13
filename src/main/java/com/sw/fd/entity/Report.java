@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "report_t")
@@ -17,22 +17,5 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int rpno;
 
-    @ManyToOne
-    @JoinColumn(name = "rno", nullable = false)
-    private Review review;
-
-    @ManyToOne
-    @JoinColumn(name = "mno", nullable = false)
-    private Member member;
-
-    @Column(name = "rptype", nullable = false)
-    private int rptype;
-
-    @Column(name = "rpdate", nullable = false)
-    private LocalDate rpdate;
-
-    @PrePersist
-    protected void onCreate() {
-        rpdate = LocalDate.now();
-    }
+    private String rptype;
 }

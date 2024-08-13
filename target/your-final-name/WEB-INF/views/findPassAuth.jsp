@@ -8,6 +8,15 @@
     <meta charset="UTF-8">
     <title>비밀번호 찾기</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/findPassAuth.css">
+    <script>
+        window.onload = function() {
+            if (${not empty num}) {
+                document.getElementById('auth').focus();
+            } else {
+                document.getElementById('mid').focus();
+            }
+        };
+    </script>
 </head>
 <body>
 <c:import url="/topNoneNav.jsp" />
@@ -21,10 +30,10 @@
                 <input type="text" id="mid" name="mid" value="${mid}" required>
 
                 <label for="mname">이름</label>
-                <input type="text" id="mname" name="mname" required>
+                <input type="text" id="mname" name="mname" value="${mname}" required>
 
                 <label for="memail">이메일</label>
-                <input type="email" id="memail" name="memail" required>
+                <input type="email" id="memail" name="memail" value="${memail}" required>
 
 
             <button type="submit" class="btnPass">비밀번호 인증번호 받기</button>
@@ -43,6 +52,7 @@
                     <p>${messageAuth}</p>
                 </c:if>
                 <input type="hidden" id="num" name="num" value="${num}">
+                <input type="hidden" id="mno" name="mno" value="${mno}">
                 <button type="submit" class="btnAuth">인증받기</button>
             </div>
         </form>

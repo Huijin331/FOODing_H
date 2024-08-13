@@ -1,13 +1,7 @@
 package com.sw.fd.controller;
 
-import com.sw.fd.entity.Menu;
-import com.sw.fd.entity.Review;
-import com.sw.fd.entity.Store;
-import com.sw.fd.entity.StoreTag;
-import com.sw.fd.service.LocationService;
-import com.sw.fd.service.MenuService;
-import com.sw.fd.service.ReviewService;
-import com.sw.fd.service.StoreService;
+import com.sw.fd.entity.*;
+import com.sw.fd.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +23,8 @@ public class StoreController {
     private MenuService menuService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private TagService tagService;
     @Autowired
     private LocationService locationService;
 
@@ -114,7 +110,7 @@ public class StoreController {
 
     @GetMapping("/storeListByRank")
     public String showStoreListByPick(@RequestParam(value = "sortBy", required = false) String sortBy, Model model) {
-        List<Store> stores = storeService.getAllStores();
+        List<Store> stores = storeService.getAllStoresWithRank();
 
         if ("score".equals(sortBy)) {
             stores.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
@@ -127,5 +123,38 @@ public class StoreController {
         model.addAttribute("stores", stores);
 
         return "storeListByRank";
+    }
+    @GetMapping("/storeListByTag")
+    public String showStoreListByTag(@RequestParam(value = "sortBy", required = false) String sortBy, @RequestParam(value = "tnos", required = false) String tnos, Model model/*, Integer tno*/) {
+
+        List<Tag> allTags = tagService.getAllTags();
+        model.addAttribute("allTags", allTags);
+
+        List<Store> storesByTag = storeService.getAllStoresWithRank();
+        if (tnos != null && !tnos.isEmpty()) {
+            String[] stringTnos = tnos.split(",");
+            List<Integer> numTnos = new ArrayList<>();
+            // 가져온 태그들을 서버로그에 띄우기 위해서 사용
+            for (String tno : stringTnos) {
+                System.out.println(tno);
+                numTnos.add(Integer.parseInt(tno));
+            }
+
+            for (int tno : numTnos) {
+                storesByTag = storeService.getStoresByTagCountAndTno(tno, storesByTag);
+            }
+        }
+
+        if ("score".equals(sortBy)) {
+            storesByTag.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
+            model.addAttribute("sortStandard", "score");
+        } else {
+            storesByTag.sort(Comparator.comparingInt(Store::getPickNum).reversed());
+            model.addAttribute("sortStandard", "pick");
+        }
+
+        model.addAttribute("stores", storesByTag);
+
+        return "storeListByTag";
     }
 }

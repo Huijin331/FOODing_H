@@ -18,7 +18,7 @@
         <form action="${pageContext.request.contextPath}/findPass_IdAuth" method="post">
             <div>
                 <label for="mid">ID</label>
-                <input type="text" id="mid" name="mid" required>
+                <input type="text" id="mid" name="mid" value="" required>
 
                 <p>${message}</p>
 

@@ -53,5 +53,9 @@ public class Review {
         rstime = parts[1].substring(0, parts[1].indexOf('.'));*/
     }
 
+    @Override
+    public String toString() {
+        return "Review{id=" + rno + ", content='" + rcomm + "'}";
+    }
 
 }

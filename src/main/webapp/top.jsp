@@ -86,7 +86,7 @@
             <div class="submenu">
                 <li><a href="${pageContext.request.contextPath}/storeListByLocation">위치별</a></li>
                 <li><a href="${pageContext.request.contextPath}/storeListByRank">순위별</a></li>
-                <li><a href="#">태그별</a></li>
+                <li><a href="${pageContext.request.contextPath}/storeListByTag">태그별</a></li>
             </div>
             <div class = "submenu">
                 <li><a href = "${pageContext.request.contextPath}/groupList">내 모임</a></li>

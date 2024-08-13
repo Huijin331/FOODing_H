@@ -1,24 +1,28 @@
 package com.sw.fd.controller;
 
 import com.sw.fd.entity.*;
+import com.sw.fd.repository.ReportRepository;
+import com.sw.fd.repository.ReviewReportRepository;
 import com.sw.fd.service.MemberService;
 import com.sw.fd.service.ReviewService;
 import com.sw.fd.service.StoreService;
 import com.sw.fd.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.CheckedOutputStream;
 
 @Controller
 public class ReviewController {
@@ -34,6 +38,12 @@ public class ReviewController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private ReportRepository reportRepository;
+
+    @Autowired
+    private ReviewReportRepository reviewReportRepository;
 
     @GetMapping("/review")
     public String review(@RequestParam("sno") int sno, @RequestParam(value = "sortBy", required = false) String sortBy, Model model, HttpServletRequest request) {
@@ -215,9 +225,34 @@ public class ReviewController {
         return response;
     }
 
-    @PostMapping("/review/report")
-    public String reportReview(@ModelAttribute Review review, @RequestParam("sno") int sno, HttpSession session) {
-        return "redirect:/review?sno=" + sno + "&message=report_completed"; // 수정해야 함
+    @GetMapping("/review/report")
+    public String reportReview(@RequestParam("rno") int rno, @RequestParam("sno") int sno, Model model, HttpSession session) {
+        Store store = storeService.getStoreById(sno);
+        List<Report> reportTypes = reportRepository.findAll();
+
+        model.addAttribute("store", store);
+        model.addAttribute("reportTypes", reportTypes);
+
+        return "reportReview";
     }
 
+    @Transactional
+    @PostMapping("/review/reportConfirm")
+    public String reportReviewConfirm(@RequestParam("rno") int rno, @RequestParam("sno") int sno, @RequestParam("rptype") int rptype, HttpSession session) {
+        Review review = reviewService.getReviewByRno(rno);
+        Member member = review.getMember();
+
+        ReviewReport reviewReport = new ReviewReport();
+        reviewReport.setMember(member);
+        reviewReport.setReview(review);
+
+        Report report = reportRepository.findByRpno(rptype);
+        reviewReport.setReport(report);
+
+        reviewReport.setRrdate(LocalDateTime.now());
+
+        reviewReportRepository.save(reviewReport);
+
+        return "redirect:/review?sno=" + sno + "&message=report_completed";
+    }
 }

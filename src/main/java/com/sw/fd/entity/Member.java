@@ -50,4 +50,9 @@ public class Member {
     public void setMpassConfirm(String mpassConfirm) {
         this.mpassConfirm = mpassConfirm;
     }
+
+    @Override
+    public String toString() {
+        return "Member{mno=" + mno + ", mid='" + mid + "', mname='" + mname + "'}";
+    }
 }

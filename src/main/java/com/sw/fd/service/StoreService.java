@@ -35,9 +35,13 @@ public class StoreService {
     private LocationService locationService;
 
     @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
     private TagRepository tagRepository;
 
     public void saveStore(Store store) {
+        System.out.println("saveStore에 진입");
         storeRepository.save(store);
         updateStoreTags(store);
     }
@@ -46,11 +50,25 @@ public class StoreService {
         return storeTagRepository.findByStore_Sno(sno);
     }
 
+    public List<StoreTag> getStoreTagsByTno(int tno) {
+        List<StoreTag> storeTags = storeTagRepository.findByTag_Tno(tno);
+        for (StoreTag storeTag : storeTags) {
+            Double averageScore = reviewRepository.findAverageScoreBySno(storeTag.getStore().getSno());
+            System.out.println("averageScore = "+averageScore);
+            storeTag.getStore().setScoreArg(averageScore);
+
+            int pickCount = pickRepository.countBySno(storeTag.getStore().getSno());
+            System.out.println("pickCount = "+pickCount);
+            storeTag.getStore().setPickNum(pickCount);
+        }
+        return storeTags;
+    }
+
     @Transactional
     public void updateStoreTags(Store store) {
         List<ReviewTag> reviewTags = reviewTagRepository.findByReview_Store_Sno(store.getSno());
 
-        if (reviewTags.isEmpty()) {
+        if (reviewTags ==null && reviewTags.isEmpty()) {
             return;
         }
 
@@ -64,17 +82,15 @@ public class StoreService {
             int tno = entry.getKey();
             long count = entry.getValue();
 
-            List<StoreTag> storeTags = storeTagRepository.findByStore_SnoAndTag_Tno(store.getSno(), tno);
-            StoreTag storeTag;
+            StoreTag storeTag = storeTagRepository.findByStore_SnoAndTag_Tno(store.getSno(), tno);
 
-            if (storeTags.isEmpty()) {
+            if (storeTag == null) {
                 storeTag = new StoreTag();
                 storeTag.setStore(store);
                 Tag tag = tagRepository.findByTno(tno);
                 storeTag.setTag(tag);
                 storeTag.setTagCount((int) count);
             } else {
-                storeTag = storeTags.get(0);
                 /*System.out.println("값 갱신전: " + storeTag.getTag().getTtag() + "의 수: " + storeTag.getTagCount());*/
                 storeTag.setTagCount((int) count);
                 /*System.out.println("값 갱신후: " + storeTag.getTag().getTtag() + "의 수: " + storeTag.getTagCount());*/
@@ -87,6 +103,7 @@ public class StoreService {
     }
 
     public List<Store> getAllStores() {
+        System.out.println("getAllStores에 진입");
         List<Store> stores = storeRepository.findAll();
         for (Store store : stores) {
             updateStoreTags(store);
@@ -94,7 +111,23 @@ public class StoreService {
         return stores;
     }
 
+    public List<Store> getAllStoresWithRank(){
+        System.out.println("getAllStoresWithRank에 진입");
+        List<Store> stores = storeRepository.findAll();
+        for (Store store : stores) {
+            Double averageScore = reviewRepository.findAverageScoreBySno(store.getSno());
+            store.setScoreArg(averageScore != null ? averageScore : 0);
+
+            // Pick 수 계산
+            int pickCount = pickRepository.countBySno(store.getSno());
+            store.setPickNum(pickCount);
+            updateStoreTags(store);
+        }
+        return stores;
+    }
+
     public Store getStoreAllInfo(int sno) {
+        System.out.println("getStoreAllInfo에 진입");
         Store store = storeRepository.findBySno(sno).orElse(null);
         if (store != null) {
             updateStoreTags(store);
@@ -111,7 +144,34 @@ public class StoreService {
         return store;
     }
 
+    public List<StoreTag> getStoreTagsByTnos(List<Integer> tnos){
+        return storeTagRepository.findByTag_tno(tnos);
+    }
+
+    public List<Store> getStoresByTagCountAndTno(int tno, List<Store> stores) {
+        int rCount;
+        int minTagCount = 3;
+        List<Store> selectedStores = new ArrayList<>();
+
+        for (Store store : stores) {
+            StoreTag storeTag = storeTagRepository.findByStore_SnoAndTag_Tno(tno, store.getSno());
+
+            System.out.println("서비스 단계에서 " + store.getSname() +"의 별점 평균: " + store.getScoreArg());
+            System.out.println("서비스 단계에서 " + store.getSname() +"의 픽 수: " + store.getPickNum());
+
+
+            // 해당 가게의 전체 리뷰수를 가져와서 태그가 리뷰의 30%이상을 차지했을 때 대표 태그로 판단
+            rCount = reviewService.getReviewsBySno(store.getSno()).size();
+            if (storeTag != null && storeTag.getTagCount() >= rCount*0.3) {
+                selectedStores.add(store);
+            }
+        }
+
+        return selectedStores;
+    }
+
     public Store getStoreById(int sno) {
+        System.out.println("getStoreById에 진입");
         Store store = storeRepository.findBySno(sno).orElse(null);
         if (store != null) {
             updateStoreTags(store);
@@ -120,6 +180,7 @@ public class StoreService {
     }
 
     public List<Store> getStoresByCategory(String scate) {
+        System.out.println("getStoresByCategory에 진입");
         List<Store> stores = storeRepository.findByScate(scate);
         for (Store store : stores) {
             updateStoreTags(store);

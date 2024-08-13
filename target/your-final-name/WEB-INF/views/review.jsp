@@ -17,33 +17,40 @@
         <div class="form-group">
             <form:textarea path="rcomm" id="rcomm" class="custom-textarea" placeholder="리뷰 내용을 입력하세요."></form:textarea>
         </div>
-        <div class="form group">
-            <h6>태그를 선택하세요</h6>
-            <div class="tag-buttons">
-                <c:forEach var="tag" items="${tags}">
-                    <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">${tag.ttag}</button>
-                </c:forEach>
+        <div class="form-group">
+            <button type="button" class="toggle-button" onclick="toggleTagList()">태그를 선택하세요 ▼</button>
+            <button type="submit" class="submit-button">리뷰 작성</button>
+            <div class="tag-buttons" id="tagList">
+                <div class="tag-group">
+                    <c:forEach var="tag" items="${tags}">
+                        <c:if test="${tag.tno >=101 && tag.tno <=107}">
+                            <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">
+                                <img src="${pageContext.request.contextPath}/resources/tag_images/${tag.tno}.svg" class="tag-icon">${tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="tag-group">
+                    <c:forEach var="tag" items="${tags}">
+                        <c:if test="${tag.tno >=201 && tag.tno <=207}">
+                            <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">
+                                <img src="${pageContext.request.contextPath}/resources/tag_images/${tag.tno}.svg" class="tag-icon">${tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="tag-group">
+                    <c:forEach var="tag" items="${tags}">
+                        <c:if test="${tag.tno >=301 && tag.tno <=307}">
+                            <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">
+                                <img src="${pageContext.request.contextPath}/resources/tag_images/${tag.tno}.svg" class="tag-icon">${tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <button type="submit" class="submit-button">리뷰 작성</button>
-        </div>
         <input type="hidden" name="tnos" id="tnos" />
-
     </form:form>
 
 
-    <h2>리뷰 목록</h2>
-
-    <%--    <div class="dropdown" style="float: right;">
-            <button class="dropdown-btn">최신순</button>
-            <ul class="dropdown-content">
-                <li><a href="?sort=latest">최신순</a></li>
-                <li><a href="?sort=oldest">오래된순</a></li>
-                <li><a href="?sort=lowRating">별점 낮은순</a></li>
-                <li><a href="?sort=highRating">별점 높은순</a></li>
-            </ul>
-        </div>--%>
     <div class="sort-area">
         <select id="sort-options" class="sort-element">
             <option value="latest">최신순</option>
@@ -78,11 +85,7 @@
                                     </form>
                                 </c:if>
                                 <c:if test="${loggedInMember != null && review.member.mno != loggedInMember.mno}">
-                                    <form method="post" action="${pageContext.request.contextPath}/review/report" style="display: inline;">
-                                        <input type="hidden" name="rno" value="${review.rno}" />
-                                        <input type="hidden" name="sno" value="${sno}" />
-                                        <button type="submit" onclick="return confirmReport()">신고하기</button>
-                                    </form>
+                                        <button type="button" onclick="openReportWindow(${review.rno}, ${sno})">신고</button>
                                 </c:if>
                                 <c:if test="${loggedInMember == null}">
                                     <button type="submit" onclick="alert('로그인 후 이용 가능합니다.'); window.location.href='${pageContext.request.contextPath}/login';">신고하기</button>

@@ -24,17 +24,8 @@
                     <td><p>${member.mname}</p></td>
                 </tr>
                 <tr>
-                    <td><form:label path="mpass">비밀번호</form:label></td>
-                    <td><form:input path="mpass" type="password" value=""/></td>
-                </tr>
-                <tr>
-                    <td><form:label path="mpassConfirm">비밀번호 확인</form:label></td>
-                    <td>
-                        <form:input path="mpassConfirm" id="mpassConfirm" name="mpassConfirm" type="password" />
-                        <button type="button" onclick="validatePassword()">비밀번호 확인</button>
-                        <span id="confirmMessage" class="error"></span><br/>
-                        <form:errors path="mpassConfirm" cssClass="error" />
-                    </td>
+                    <td><label>비밀번호</label></td>
+                    <td> <a class="edit-button" href="${pageContext.request.contextPath}/editChangePass">비밀번호 변경</a></td>
                 </tr>
                 <tr>
                     <td><form:label path="mnick">닉네임</form:label></td>

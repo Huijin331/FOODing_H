@@ -102,4 +102,5 @@ public class MemberService {
     public Member getMemberById(String mid) {
         return  memberRepository.findByMid(mid).orElse(null);
     }
+
 }

@@ -13,4 +13,7 @@ public interface TagRepository extends JpaRepository<Tag, Integer> {
     Tag findByTno(int tno);
     @Query("SELECT t FROM Tag t JOIN t.reviewTags rt WHERE rt.review.rno = :rno")
     List<Tag> findTagsByRno(@Param("rno") int rno);
+
+    //storeListByTag를 위해 추가한 부분(다혜)
+    //List<Tag> findAll();
 }

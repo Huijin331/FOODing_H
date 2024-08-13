@@ -3,6 +3,7 @@ package com.sw.fd.controller;
 import com.sw.fd.entity.Member;
 import com.sw.fd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +25,11 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(String id, String password,HttpServletRequest request, Model model) {
-        Member member = memberService.login(id, password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        if (member != null) {
+        Member member = memberService.findMemberById(id);
+
+        if (member != null && passwordEncoder.matches(password, member.getMpass())) {
             // 로그인 성공
             HttpSession session = request.getSession();
             session.setAttribute("loggedInMember", member); // 세션에 로그인 정보 저장
