@@ -91,14 +91,14 @@
                 </p>
             </c:if>
         </div>
-        <div class="groupManage-add-area">
-            <h1>모임 회원 추가</h1>
-            <form action="${pageContext.request.contextPath}/addMemberToGroup" method="post">
-                <table class="groupManage-add-table">
+        <div class="groupManage-delete-group-area">
+            <h1>모임 삭제</h1>
+            <form action="${pageContext.request.contextPath}/deleteGroup" method="post">
+                <table class="groupManage-delete-group-table">
                     <tr>
-                        <td>모임명</td>
+                        <td>삭제할 모임</td>
                         <td>
-                            <select name="gno" id="addGroup">
+                            <select name="gno" id="delete-group">
                                 <c:forEach var="group" items="${leaderGroups}">
                                     <option value="${group.gno}">${group.gname}</option>
                                 </c:forEach>
@@ -106,21 +106,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>회원ID</td>
-                        <td><input type="text" id="addMid" name="mid" required/></td>
-                    </tr>
-                    <tr>
                         <td colspan="2" align="center">
-                            <input type="submit" value="추가"/>
+                            <input type="submit" value="삭제"/>
                         </td>
                     </tr>
                 </table>
             </form>
-            <c:if test="${not empty errorMessage2}">
-                <p id="temporaryText" class="error-message">
-                    <c:out value="${errorMessage2}" />
-                </p>
-            </c:if>
         </div>
     </div>
 </section>

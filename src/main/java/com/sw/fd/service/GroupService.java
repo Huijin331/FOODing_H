@@ -64,4 +64,8 @@ public class GroupService {
         // 저장된 그룹의 gno 값을 groupDTO에 설정
         groupDTO.setGno(savedGroup.getGno());
     }
+
+    public void deleteGroupByGno(int gno) {
+        groupRepository.delete(gno);
+    }
 }

@@ -308,4 +308,17 @@ public class GroupController {
         response.put("message", "모임장 권한 위임이 성공했습니다.");
         return response;
     }
+
+    @PostMapping("/deleteGroup")
+    public String deleteGroup(@RequestParam("gno") int gno, HttpSession session, Model model) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+
+        // 그룹 삭제
+        groupService.deleteGroupByGno(gno);
+
+        return "redirect:/groupManage";
+    }
 }
