@@ -135,12 +135,18 @@ public class MemberGroupService {
                 }
             }
 
-            if (!eligibleMembers.isEmpty()) {
-                // 4. 무작위로 한 명의 일반회원 선택
+            // 4. 모임장 권한이 없는 회원이 없는 경우 (모임장 본인만 있는 경우)
+            if(eligibleMembers.isEmpty()) {
+                groupService.deleteGroupByGno(group.getGno());
+            }
+
+            else {
+                // 5. 일반회원이 있는 경우
+                // 무작위로 한 명의 일반회원 선택
                 Random rand = new Random();
                 Member newLeader = eligibleMembers.get(rand.nextInt(eligibleMembers.size()));
 
-                // 5. 새 모임장 권한 부여
+                // 6. 새 모임장 권한 부여
                 updateMemberGroupJauth(group.getGno(), newLeader.getMid(), 1); // 1: 모임장 권한
 
                 // 기존 모임장 권한 제거
