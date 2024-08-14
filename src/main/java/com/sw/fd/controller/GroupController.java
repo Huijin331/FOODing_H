@@ -184,9 +184,9 @@ public class GroupController {
 
     @PostMapping("/deleteMemberToGroup")
     public String deleteMemberToGroup(@ModelAttribute("gno") int gno,
-                               @ModelAttribute("mid") String memberId,
-                               HttpSession session,
-                               Model model) {
+                                      @ModelAttribute("mid") String memberId,
+                                      HttpSession session,
+                                      Model model) {
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {
             return "redirect:/login";
@@ -200,6 +200,41 @@ public class GroupController {
 
         MemberGroup deleteMg = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, memberId);
         memberGroupService.removeMemberGroup(deleteMg);
+
+        return "redirect:/groupManage";
+    }
+
+    @PostMapping("/addMemberToGroup")
+    public String addMemberToGroup(int gno,
+                                   String mid,
+                                   HttpSession session,
+                                   Model model) {
+        Member member = (Member) session.getAttribute("loggedInMember");
+        if (member == null) {
+            return "redirect:/login";
+        }
+
+        // 입력된 회원 ID와 그룹 번호를 이용해 추가하려는 회원과 그룹을 조회
+        Member newMember = memberService.getMemberById(mid);
+        if (newMember == null) {
+            model.addAttribute("errorMessage2", "해당 ID의 회원은 존재하지 않습니다.");
+            return groupManage(model, session);
+        }
+
+        // 추가하려는 회원이 이미 모임에 존재하는지 확인
+        if (memberGroupService.isMemberInGroup(mid, gno)) {
+            model.addAttribute("errorMessage2", "이미 모임에 참여하고 있는 회원입니다.");
+            return groupManage(model, session);
+        }
+
+        // GroupDTO를 통해 그룹 정보를 가져오고, Group 객체를 생성
+        GroupDTO groupDTO = groupService.getGroupById(gno);
+        Group group = new Group();
+        group.setGno(groupDTO.getGno());
+        group.setGname(groupDTO.getGname());
+
+        // 회원을 그룹에 추가
+        memberGroupService.addMemberToGroup(newMember, group, 0);
 
         return "redirect:/groupManage";
     }
@@ -237,6 +272,7 @@ public class GroupController {
         return "redirect:/groupList";
     }
 
+
     @GetMapping("/transferJauth")
     public String showTransferJauth(@RequestParam("gno") int gno, Model model, HttpSession session) {
         Member member = (Member) session.getAttribute("loggedInMember");
@@ -270,8 +306,8 @@ public class GroupController {
     @PostMapping("/transferJauth")
     @ResponseBody
     public Map<String, String> transferJauth(@RequestParam("gno") int gno,
-                                @RequestParam("memberNick") String newLeaderNick,
-                                HttpSession session, Model model) {
+                                             @RequestParam("memberNick") String newLeaderNick,
+                                             HttpSession session, Model model) {
         Map<String, String> response = new HashMap<>();
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {

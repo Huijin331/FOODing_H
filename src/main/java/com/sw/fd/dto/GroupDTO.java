@@ -13,5 +13,4 @@ public class GroupDTO {
     private int gno;
     private String gname;
     private LocalDateTime gdate;
-    private int mCount = 0;
 }

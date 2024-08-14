@@ -14,8 +14,6 @@ import java.util.List;
 
 @Service
 public class GroupService {
-    @Autowired
-    private MemberGroupRepository memberGroupRepository;
 
     @Autowired
     private GroupRepository groupRepository;
@@ -33,7 +31,7 @@ public class GroupService {
         List<GroupDTO> groupDTOs = new ArrayList<>();
 
         for (Group group : groups) {
-            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0));
+            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate()));
         }
 
         return groupDTOs;
@@ -42,7 +40,7 @@ public class GroupService {
     public GroupDTO getGroupById(int gno) {
         Group group = groupRepository.findByGno(gno).orElse(null);
         if (group != null) {
-            return new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0);
+            return new GroupDTO(group.getGno(), group.getGname(), group.getGdate());
         } else {
             return null;
         }
@@ -53,7 +51,7 @@ public class GroupService {
         List<GroupDTO> groupDTOs = new ArrayList<>();
 
         for (Group group : groups) {
-            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate(), 0));
+            groupDTOs.add(new GroupDTO(group.getGno(), group.getGname(), group.getGdate()));
         }
 
         return groupDTOs;

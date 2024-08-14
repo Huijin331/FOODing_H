@@ -32,7 +32,4 @@ public class Group {
     protected void onCreate() {
         gdate = LocalDateTime.now();
     }
-
-    @Transient
-    private int mCount;
 }
