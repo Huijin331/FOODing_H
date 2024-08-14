@@ -74,7 +74,7 @@
                     <tr>
                         <td><form:label path="group.gno">모임명</form:label></td>
                         <td>
-                            <%--아래의 form안의 group.gno은 get컨트롤러에서 가져온 것! 위의  group.gno는 modelAttribute="memberGroup"에 담겨서 /addMember post 컨트롤러로 보내질 것!--%>
+                                <%--아래의 form안의 group.gno은 get컨트롤러에서 가져온 것! 위의  group.gno는 modelAttribute="memberGroup"에 담겨서 /addMember post 컨트롤러로 보내질 것!--%>
                             <form:select path="group.gno">
                                 <form:options items="${memberGroups}" itemValue="group.gno" itemLabel="group.gname"/>
                             </form:select>
@@ -101,14 +101,29 @@
         </form:form>
         <div class="groupMember-leave-area">
             <h1>모임 탈퇴</h1>
+            <%--          <script>
+                          var memberCount = {
+                              <c:forEach var="entry" items="${memberCount}">
+                              "${entry.key}": ${entry.value}<c:if test="${!entry.last}">,</c:if>
+                              </c:forEach>
+                          };
+                      </script>--%>
             <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group" onsubmit="submitLeaveForm(event)">
                 <table class="groupMember-leave-table">
                     <tr>
                         <td><form:label path="gno">모임명</form:label></td>
                         <td>
+                            <script type="text/javascript">
+                                var memberCount = {
+                                    <c:forEach var="entry" items="${memberCount}">
+                                    "${entry.key}": ${entry.value},
+                                    </c:forEach>
+                                };
+                                console.log(memberCount);
+                            </script>
                             <form:select path="gno" id="leaveGnoSelect">
                                 <c:forEach var="memberGroup" items="${memberGroups}">
-                                    <option value="${memberGroup.group.gno}" data-mcount="${memberGroup.group.mcount}" data-jauth="${memberGroup.jauth}">
+                                    <option value="${memberGroup.group.gno}" data-jauth="${memberGroup.jauth}">
                                             ${memberGroup.group.gname}
                                     </option>
                                 </c:forEach>
@@ -141,10 +156,10 @@
 
         var query = "#leaveGnoSelect option[value='" + selectedGno + "']";
 
+        var count = memberCount[selectedGno];
+
         // 선택된 gno에 해당하는 option의 data-jauth 값을 가져옴
         var selectedOption = document.querySelector(query);
-        var mCount = selectedOption.getAttribute('data-mcount');
-        console.log('mCount:', mCount);
 
         if (!selectedOption) {
             alert("선택한 option이 null입니다");
@@ -153,12 +168,12 @@
 
         var jauth = selectedOption ? selectedOption.getAttribute('data-jauth') : null;
 
+        console.log("Selected Group Member Count: " + count); // 값이 제대로 들어오는지 확인
+
         if (parseInt(jauth) === 1) {
-            if (mCount > 1) {
-                // 모임장이며, 다른 회원이 존재하는 경우 팝업창을 띄움
+            if(count > 1)
                 openEditWindow(selectedGno);
-            }
-            else {
+            else{
                 document.forms['group-leaveForm'].submit();
             }
         } else {

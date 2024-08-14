@@ -14,6 +14,8 @@ import java.util.List;
 
 @Service
 public class GroupService {
+    @Autowired
+    private MemberGroupRepository memberGroupRepository;
 
     @Autowired
     private GroupRepository groupRepository;

@@ -40,10 +40,10 @@ public class GroupController {
         String nick = member.getMnick();
         System.out.println("Member의 이름: " + nick);
 
+        Map<Integer, Integer> memberCount = new HashMap<>();
         List<MemberGroupDTO> memberGroups = memberGroupService.getMemberGroupsWithGroup(member);
         for (MemberGroupDTO memberGroup : memberGroups) {
-            memberGroup.getGroup().setMCount(groupService.groupMemberCount(memberGroup.getGroup().getGno()));
-            System.out.println("mCount 값 = " + memberGroup.getGroup().getMCount());
+            memberCount.put(memberGroup.getGroup().getGno(), groupService.groupMemberCount(memberGroup.getGroup().getGno()));
             System.out.println(memberGroup.getJno() + "의 getGroup().getGname() = :" + memberGroup.getGroup().getGname());
         }
 
@@ -64,8 +64,15 @@ public class GroupController {
                 leaderList.add(memberGroup);
             }
         }
+
+        if (memberCount.isEmpty()) {
+            System.out.println("memberCount is empty.");
+        } else {
+            System.out.println("memberCount: " + memberCount);
+        }
         model.addAttribute("allMembers", allMembers);
         model.addAttribute("leaderList", leaderList);
+        model.addAttribute("memberCount", memberCount);
 
         return "groupList";
     }
@@ -193,41 +200,6 @@ public class GroupController {
 
         MemberGroup deleteMg = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(gno, memberId);
         memberGroupService.removeMemberGroup(deleteMg);
-
-        return "redirect:/groupManage";
-    }
-
-    @PostMapping("/addMemberToGroup")
-    public String addMemberToGroup(int gno,
-                                   String mid,
-                                   HttpSession session,
-                                   Model model) {
-        Member member = (Member) session.getAttribute("loggedInMember");
-        if (member == null) {
-            return "redirect:/login";
-        }
-
-        // 입력된 회원 ID와 그룹 번호를 이용해 추가하려는 회원과 그룹을 조회
-        Member newMember = memberService.getMemberById(mid);
-        if (newMember == null) {
-            model.addAttribute("errorMessage2", "해당 ID의 회원은 존재하지 않습니다.");
-            return groupManage(model, session);
-        }
-
-        // 추가하려는 회원이 이미 모임에 존재하는지 확인
-        if (memberGroupService.isMemberInGroup(mid, gno)) {
-            model.addAttribute("errorMessage2", "이미 모임에 참여하고 있는 회원입니다.");
-            return groupManage(model, session);
-        }
-
-        // GroupDTO를 통해 그룹 정보를 가져오고, Group 객체를 생성
-        GroupDTO groupDTO = groupService.getGroupById(gno);
-        Group group = new Group();
-        group.setGno(groupDTO.getGno());
-        group.setGname(groupDTO.getGname());
-
-        // 회원을 그룹에 추가
-        memberGroupService.addMemberToGroup(newMember, group, 0);
 
         return "redirect:/groupManage";
     }
