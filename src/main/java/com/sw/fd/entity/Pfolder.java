@@ -12,10 +12,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pfolder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int pfno;
+    public int pfno;
 
-    private String pfname;
-
+    public String pfname;
 }

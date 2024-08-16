@@ -31,7 +31,7 @@ header {
     font-weight : bold;
 }
 
-.header1:link { color : #ffea00; text-decoration : none; }
+.header1:link {  color : #ffea00; text-decoration : none; }
 .header1:visited { color : #ffea00; text-decoration : none; }
 .header1:active { color : #ffea00; text-decoration : none; }
 .header1:hover { color : #ffea00; text-decoration : none; }

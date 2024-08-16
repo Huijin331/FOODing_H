@@ -35,7 +35,7 @@
         </c:choose>
         <div class="store-head">
             <div class="head-elements">
-                <a id="star-area" class="star-area" onclick="openPickWindow()">
+                <a id="star-area" class="star-area">
                     <img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon.png" alt="StarE"/>
                 </a>
                 <div class ="title-area">
@@ -218,12 +218,12 @@
         window.open(url, name, specs);
     }
 
-    function openPickWindow(sno, pfno) {
+/*    function openPickWindow(sno, pfno) {
         var url = "${pageContext.request.contextPath}/pick?sno=" + sno + "&pfno=" + pfno;
         var name = "pickFolder";
         var specs = "width=500,height=350";
         window.open(url, name, specs);
-    }
+    }*/
     initializeReviewScript();
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -265,6 +265,7 @@
 
         const starArea = document.getElementById("star-area");
         const sno = "${store.sno}"; // 가게 sno 값 할당
+        const pfno = 1;
 
         // 초기 상태 확인
         $.post("${pageContext.request.contextPath}/checkPick", { sno: sno }, function(response) {
@@ -279,7 +280,7 @@
 
         starArea.addEventListener("click", function() {
             // AJAX 요청으로 서버에 찜 상태 저장 요청
-            $.post("${pageContext.request.contextPath}/pick", { sno: sno }, function(response) {
+            $.post("${pageContext.request.contextPath}/pick", { sno: sno, pfno: pfno }, function(response) {
                 if (response === "picked") {
                     // starArea.classList.add("picked");
                     starArea.innerHTML = '<img class="pickStar" src="${pageContext.request.contextPath}/resources/images/bookmark_icon_full.png" alt="Star"/>'; // 꽉 찬 별 모양
@@ -290,6 +291,10 @@
                     alert("찜 기능을 사용하려면 로그인이 필요합니다.");
                     window.location.href = "${pageContext.request.contextPath}/login";
                 }
+            }).fail(function(xhr, status, error) {
+                console.error("Error occurred:", error);
+                console.error("Status:", status);
+                console.error("Response:", xhr.responseText);
             });
         });
     });

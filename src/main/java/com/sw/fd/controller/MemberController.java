@@ -289,7 +289,6 @@ public class MemberController {
                 // 2. 모임장 권한 위임 (희진 추가)
                 memberGroupService.delegateGroupLeadership(leavingMember);
             }
-
             memberService.deleteMemberByMno(mno);
             session.invalidate(); // 세션 무효화
             return "redirect:/deleteSuccess";

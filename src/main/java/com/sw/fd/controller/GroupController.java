@@ -43,7 +43,7 @@ public class GroupController {
         Map<Integer, Integer> memberCount = new HashMap<>();
         List<MemberGroupDTO> memberGroups = memberGroupService.getMemberGroupsWithGroup(member);
         for (MemberGroupDTO memberGroup : memberGroups) {
-            memberCount.put(memberGroup.getGroup().getGno(), groupService.groupMemberCount(memberGroup.getGroup().getGno()));
+             memberCount.put(memberGroup.getGroup().getGno(), groupService.groupMemberCount(memberGroup.getGroup().getGno()));
             System.out.println(memberGroup.getJno() + "의 getGroup().getGname() = :" + memberGroup.getGroup().getGname());
         }
 
@@ -184,9 +184,9 @@ public class GroupController {
 
     @PostMapping("/deleteMemberToGroup")
     public String deleteMemberToGroup(@ModelAttribute("gno") int gno,
-                                      @ModelAttribute("mid") String memberId,
-                                      HttpSession session,
-                                      Model model) {
+                               @ModelAttribute("mid") String memberId,
+                               HttpSession session,
+                               Model model) {
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {
             return "redirect:/login";
@@ -306,8 +306,8 @@ public class GroupController {
     @PostMapping("/transferJauth")
     @ResponseBody
     public Map<String, String> transferJauth(@RequestParam("gno") int gno,
-                                             @RequestParam("memberNick") String newLeaderNick,
-                                             HttpSession session, Model model) {
+                                @RequestParam("memberNick") String newLeaderNick,
+                                HttpSession session, Model model) {
         Map<String, String> response = new HashMap<>();
         Member member = (Member) session.getAttribute("loggedInMember");
         if (member == null) {

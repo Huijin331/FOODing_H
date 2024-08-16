@@ -145,3 +145,9 @@ input[type="submit"]:hover {
     text-align: center;
     color:red;
 }
+
+section {
+    height: 600px;
+    align-content: center;
+    flex: 1;
+}

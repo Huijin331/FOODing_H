@@ -1,0 +1,13 @@
+package com.sw.fd.repository;
+
+import com.sw.fd.entity.Pfolder;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface PfolderRepository extends JpaRepository<Pfolder, Integer> {
+    Optional<Pfolder> findByPfno(int pfno);
+
+}

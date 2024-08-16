@@ -16,11 +16,11 @@ section {
     flex : 1;
 }
 
-.section-div {
+.show-area1 {
     color : saddlebrown;
     background : white;
     text-align : center;
-    width : 95%;
+    width : 100%;
     height : 100%;
     display : flex;
     justify-content : center;
@@ -30,12 +30,18 @@ section {
     position : relative;
 }
 
+.slider-div{
+    width: 90%;
+    display: flex;
+    align-items: center;
+}
+
 .mainSliderList {
     border : 1px solid black;
     border-radius : 10px;
-    width : 90%;
+    width : 80%;
     height : 500px;
-    margin : 3% 0;
+    margin : 3% auto;
     position : relative;
     overflow : hidden;
     list-style : none;
@@ -97,4 +103,41 @@ section {
     height: 100px; /* 버튼의 높이 설정 */
     cursor: pointer; /* 마우스를 올리면 포인터 모양으로 변경 */
     background-color: transparent; /* 배경 색상 투명으로 설정 */
+}
+
+.show-area2{
+    display: flex;
+    justify-content: center;
+    min-height: 160px;
+}
+
+.show-area2 > div{
+    margin: 0 auto;
+    width: 45%;
+    border: 2px solid #f5ba00;
+    border-radius: 30px;
+}
+.category-area table{
+    width: 100%;
+    height: 100%
+}
+
+.category-area tr{
+
+}
+
+.category-area td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.category-area td img,
+.category-area td button {
+    display: block;
+    margin: 0 auto;
+}
+
+.category-area table img{
+    width: 40px;
+    height: 40px;
 }

@@ -19,7 +19,7 @@ public class Pick {
 
     @ManyToOne
     @JoinColumn(name = "pfno", nullable = false)
-    private Pick pick;
+    private Pfolder pfolder;
 
     @ManyToOne
     @JoinColumn(name = "mno", nullable = false)
@@ -30,9 +30,9 @@ public class Pick {
     private Store store;
 
 
-    public Pick(Member member, Store store) {
+    public Pick(Member member, Store store, Pfolder pfolder) {
         this.member = member;
         this.store = store;
+        this.pfolder = pfolder;
     }
-
 }

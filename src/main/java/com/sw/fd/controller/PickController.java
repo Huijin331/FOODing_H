@@ -18,15 +18,14 @@ public class PickController {
 
     @PostMapping("/pick")
     @ResponseBody
-    public String pickStore(@RequestParam("sno") int sno, HttpSession session) {
+    public String pickStore(@RequestParam("sno") int sno, @RequestParam(value = "pfno", defaultValue = "1") int pfno, HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
         if (loggedInMember == null) {
             return "error"; // 로그인되지 않은 상태에서 예외 처리
         }
 
         int mno = loggedInMember.getMno();
-
-        boolean isPicked = pickService.togglePick(mno, sno);
+        boolean isPicked = pickService.togglePick(mno, sno, pfno);
         return isPicked ? "picked" : "unpicked";
     }
 

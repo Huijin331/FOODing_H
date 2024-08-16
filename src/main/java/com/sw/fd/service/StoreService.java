@@ -82,7 +82,7 @@ public class StoreService {
             int tno = entry.getKey();
             long count = entry.getValue();
 
-            StoreTag storeTag = storeTagRepository.findByStore_SnoAndTag_Tno(store.getSno(), tno);
+            StoreTag storeTag = storeTagRepository.findStoreTagByStoreSnoAndTagTno(store.getSno(), tno);
 
             if (storeTag == null) {
                 storeTag = new StoreTag();
@@ -150,14 +150,14 @@ public class StoreService {
 
     public List<Store> getStoresByTagCountAndTno(int tno, List<Store> stores) {
         int rCount;
-        int minTagCount = 3;
+        int minTagCount = 2;
         List<Store> selectedStores = new ArrayList<>();
 
         for (Store store : stores) {
-            StoreTag storeTag = storeTagRepository.findByStore_SnoAndTag_Tno(tno, store.getSno());
+            StoreTag storeTag = storeTagRepository.findStoreTagByStoreSnoAndTagTno(store.getSno(), tno);
 
-    /*        System.out.println("서비스 단계에서 " + store.getSname() +"의 별점 평균: " + store.getScoreArg());
-            System.out.println("서비스 단계에서 " + store.getSname() +"의 픽 수: " + store.getPickNum());*/
+            System.out.println("서비스 단계에서 " + store.getSname() +"의 별점 평균: " + store.getScoreArg());
+            System.out.println("서비스 단계에서 " + store.getSname() +"의 픽 수: " + store.getPickNum());
 
 
             // 해당 가게의 전체 리뷰수를 가져와서 태그가 리뷰의 30%이상을 차지했을 때 대표 태그로 판단
