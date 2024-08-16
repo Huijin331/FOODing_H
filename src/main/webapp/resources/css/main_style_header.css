@@ -29,6 +29,9 @@ header {
     align-items : center;
     font-size : 70px;
     font-weight : bold;
+
+    /* 알림 기능 추가(희진) */
+    position: relative; /* 이 요소를 기준으로 .anb의 위치를 설정합니다. */
 }
 
 .header1:link {  color : #ffea00; text-decoration : none; }
@@ -76,20 +79,21 @@ header {
 .helloBox:active { color : orange; text-decoration : none; }
 .helloBox:hover { color : #ffea00;; text-decoration : none; }
 
-<!-- 알림 기능 추가 희진 -->
-.bell {
-    position: relative;
+/* 알림 기능 추가 (희진) */
+.header2 img {
+    display: block; /* 이미지가 블록 요소로 설정되어 있어, 아래 요소와의 간격을 조정할 수 있습니다. */
 }
 
 .anb {
     display: flex;
     flex-direction: column;
+    align-items: center;
     position: absolute;
-    top: 100%;
-    left: 3%;
+    top: 90%;
+    left: 80%;
     background-color : white;
-    border : 1px solid rgb(222, 201, 171);
-    width : 50%;
+    border : 1px solid rgb(209, 168, 111);
+    width : 15%;
     text-align : center;
     z-index : 1;
     margin-top : 0;
@@ -105,4 +109,5 @@ header {
     flex-direction: column;
     justify-content : center;
     align-items : center;
+    margin : 5px 0;
 }

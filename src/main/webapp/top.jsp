@@ -14,6 +14,17 @@
         <a class = "header2" href = "${pageContext.request.contextPath}/main">ing</a>
         <a class = "header2" href = "${pageContext.request.contextPath}/main">
             <img src = "${pageContext.request.contextPath}/resources/images/chefudding.png" width = "100px" height = "100px">
+
+            <!-- 알림 기능 추가(희진) -->
+            <div class="anb">
+                <div class="subalarm">
+                    알림 내용
+                </div>
+                <div class="subalarm">
+                    알림 내용
+                </div>
+            </div>
+
         </a>
         <div class = "hello2">
             <table border = "0" align = "center">
@@ -60,17 +71,6 @@
                     </td>
                 </tr>
             </table>
-
-            <!-- 알림 기능 추가(희진) -->
-            <div class="anb">
-                <div class="subalarm">
-                    알림 내용
-                </div>
-                <div class="subalarm">
-                    알림 내용
-                </div>
-            </div>
-
         </div>
     </div>
 </header>
