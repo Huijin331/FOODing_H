@@ -75,3 +75,34 @@ header {
 .helloBox:visited { color : saddlebrown; text-decoration : none; }
 .helloBox:active { color : orange; text-decoration : none; }
 .helloBox:hover { color : #ffea00;; text-decoration : none; }
+
+<!-- 알림 기능 추가 희진 -->
+.bell {
+    position: relative;
+}
+
+.anb {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 3%;
+    background-color : white;
+    border : 1px solid rgb(222, 201, 171);
+    width : 50%;
+    text-align : center;
+    z-index : 1;
+    margin-top : 0;
+}
+
+.anb .subalarm {
+    color : black;
+    text-align : center;
+    vertical-align : top;
+    font-size : 15px;
+    font-weight : normal;
+    display : flex;
+    flex-direction: column;
+    justify-content : center;
+    align-items : center;
+}

@@ -28,12 +28,17 @@
                 </tr>
                 <tr>
                     <td align = "center">
-                        <span>
-                            <a class = "bell" href = "#">
-                                <img src = "${pageContext.request.contextPath}/resources/images/bell.png" width = "30px" height = "30px">
-                            </a>
-                        </span>
-                        <span>|</span>
+
+                        <!-- 알림 기능 추가(희진) -->
+                        <c:if test="${sessionScope.loggedInMember != null}">
+                            <span>
+                                <a class = "bell" href = "#">
+                                    <img src = "${pageContext.request.contextPath}/resources/images/bell.png" width = "30px" height = "30px">
+                                </a>
+                            </span>
+                            <span>|</span>
+                        </c:if>
+
                         <span>
                              <c:if test="${sessionScope.loggedInMember != null}">
                                  <a class="helloBox" href="<%= request.getContextPath() %>/myPage">마이페이지</a>
