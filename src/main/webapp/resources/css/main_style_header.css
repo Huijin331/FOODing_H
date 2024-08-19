@@ -85,7 +85,7 @@ header {
 }
 
 .anb {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     position: absolute;

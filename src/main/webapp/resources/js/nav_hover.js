@@ -31,4 +31,17 @@ $(document).ready(function() {
             $(this).stop(true, true).slideUp(500);
         }
     );
+
+    // 추가할 코드: 종 모양 이미지를 클릭했을 때 anb 보이기/숨기기
+    $(".bell").click(function(event) {
+        event.preventDefault(); // 링크 기본 동작 막기
+        $(".anb").toggle(); // anb를 보이거나 숨김
+    });
+
+    // anb가 아닌 다른 곳을 클릭했을 때 anb 숨기기
+    $(document).click(function(event) {
+        if (!$(event.target).closest('.bell, .anb').length) {
+            $(".anb").hide(); // anb 숨기기
+        }
+    });
 });
