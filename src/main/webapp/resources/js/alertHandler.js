@@ -16,15 +16,15 @@ function  groupForm() {
     return valid;
 }
 
-function  memberAddForm() {
+function  memberInviteForm() {
     var fields = ["member.mid"];
     var fieldLabel = {
-        "member.mid" : "추가할 회원ID"
+        "member.mid" : "초대할 회원ID"
     };
     var valid = true;
 
     fields.forEach(function (field) {
-        var value = document.forms["member-addForm"][field].value;
+        var value = document.forms["member-inviteForm"][field].value;
         if (value === null || value === "") {
             alert(fieldLabel[field] + "를 입력해 주세요.");
             valid = false;

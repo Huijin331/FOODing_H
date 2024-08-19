@@ -22,7 +22,7 @@ body {
     padding : 0 20px;
 }
 
-.groupMember-add-area {
+.groupMember-invite-area {
     min-height : 600px;
     padding : 0 20px;
 }
@@ -102,7 +102,7 @@ h1 {
     margin: 0 auto;
 }
 
-.groupMember-add-area input[type="submit"] {
+.groupMember-invite-area input[type="submit"] {
     display: block;
     margin: 0 auto;
 }

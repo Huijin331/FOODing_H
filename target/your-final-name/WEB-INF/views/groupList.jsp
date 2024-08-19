@@ -67,9 +67,9 @@
                 </table>
             </div>
         </form:form>
-        <form:form name="member-addForm" action="${pageContext.request.contextPath}/addMember" modelAttribute="memberGroup" method="post" onsubmit="return memberAddForm()">
-            <div class="groupMember-add-area">
-                <h1>모임 회원 추가</h1>
+        <form:form name="member-inviteForm" action="${pageContext.request.contextPath}/inviteMember" modelAttribute="memberGroup" method="post" onsubmit="return memberInviteForm()">
+            <div class="groupMember-invite-area">
+                <h1>모임 회원 초대</h1>
                 <table class="groupMember-table">
                     <tr>
                         <td><form:label path="group.gno">모임명</form:label></td>
@@ -88,7 +88,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="center">
-                            <input type="submit" value="추가"/>
+                            <input type="submit" value="초대"/>
                         </td>
                     </tr>
                 </table>
