@@ -37,6 +37,7 @@ public class GroupController {
         if (member == null) {
             return "redirect:/login";
         }
+
         String nick = member.getMnick();
         System.out.println("Member의 이름: " + nick);
 
@@ -56,7 +57,8 @@ public class GroupController {
             gnos.add(memberGroup.getGroup().getGno());
         }
 
-        List<MemberGroup> allMembers = memberService.getMemberGroupsByGnos(gnos);
+
+        List<MemberGroup> allMembers = memberGroupService.getMemberGroupsByGnos(gnos);
 
         List<MemberGroup> leaderList = new ArrayList<>();
         for (MemberGroup memberGroup : allMembers) {

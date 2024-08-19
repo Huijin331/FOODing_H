@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class MemberService {
     private MemberGroupRepository memberGroupRepository;
 
     public Member saveMember(Member member) {
-        member.setMdate(LocalDate.now()); // 가입 날짜를 현재 날짜로 설정
+        member.setMdate(LocalDateTime.now()); // 가입 날짜를 현재 날짜로 설정
         return memberRepository.save(member);
     }
 
@@ -95,10 +96,6 @@ public class MemberService {
         return memberRepository.findByMidAndMnameAndMemail(mid, mname, memail);
     }
 
-    // 모임방 기능을 위한 추가 (수정자 : 희진)
-    public List<MemberGroup> getMemberGroupsByGnos(List<Integer> gnos) {
-        return memberGroupRepository.findByGroupGnoIn(gnos);
-    }
 
     // 모임방 기능을 위한 추가 (수정자 : 희진)
     public Member getMemberById(String mid) {
