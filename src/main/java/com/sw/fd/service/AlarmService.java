@@ -24,4 +24,8 @@ public class AlarmService {
         List<Alarm> alarms = getAlarms(member);
         return !alarms.isEmpty();
     }
+
+    public void saveAlarm(Alarm alarm) {
+        alarmRepository.save(alarm);
+    }
 }

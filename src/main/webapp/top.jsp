@@ -17,18 +17,16 @@
 
             <!-- 알림 기능 추가(희진) -->
             <div class="anb">
+                <div class="subalarm">
                 <c:choose>
-                    <c:when test="${hasAlarms}">
-                        <div class="subalarm">
-                            알림 내용
-                        </div>
+                    <c:when test="${hasAlarms == true}">
+                        알림 내용
                     </c:when>
                     <c:otherwise>
-                        <div class="subalarm">
-                            알림이 없습니다.
-                        </div>
+                        알림이 없습니다.
                     </c:otherwise>
                 </c:choose>
+                </div>
             </div>
 
         </a>

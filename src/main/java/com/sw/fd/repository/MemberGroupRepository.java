@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberGroupRepository extends JpaRepository<MemberGroup, Integer> {
@@ -36,4 +37,9 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
 
     @Query("SELECT COUNT(mg) FROM MemberGroup mg WHERE mg.group.gno = :gno")
     int countByGroupGno(@Param("gno") int gno);
+
+    /*-------------------------------------- 메인화면에 모임방을 위해 추가한 메서드들 (다혜) ------------------------------------------------*/
+
+    @Query("SELECT mg FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.jauth = 1")
+    List<MemberGroup> findByGroupGnoAndJauthIsOne(@Param("gno") int gno);
  }

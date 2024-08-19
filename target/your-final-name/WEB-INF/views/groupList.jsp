@@ -74,7 +74,7 @@
                     <tr>
                         <td><form:label path="group.gno">모임명</form:label></td>
                         <td>
-                            <%--아래의 form안의 group.gno은 get컨트롤러에서 가져온 것! 위의  group.gno는 modelAttribute="memberGroup"에 담겨서 /addMember post 컨트롤러로 보내질 것!--%>
+                            <%--아래의 form안의 group.gno은 get컨트롤러에서 가져온 것! 위의  group.gno는 modelAttribute="memberGroup"에 담겨서 /inviteMember post 컨트롤러로 보내질 것!--%>
                             <form:select path="group.gno">
                                 <form:options items="${memberGroups}" itemValue="group.gno" itemLabel="group.gname"/>
                             </form:select>
@@ -101,13 +101,6 @@
         </form:form>
         <div class="groupMember-leave-area">
             <h1>모임 탈퇴</h1>
-  <%--          <script>
-                var memberCount = {
-                    <c:forEach var="entry" items="${memberCount}">
-                    "${entry.key}": ${entry.value}<c:if test="${!entry.last}">,</c:if>
-                    </c:forEach>
-                };
-            </script>--%>
             <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group" onsubmit="submitLeaveForm(event)">
                 <table class="groupMember-leave-table">
                     <tr>

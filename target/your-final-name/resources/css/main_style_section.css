@@ -105,39 +105,261 @@ section {
     background-color: transparent; /* 배경 색상 투명으로 설정 */
 }
 
+
+/*---------------------------메인 콘텐츠를 위해 추가(다혜)--------------------------------*/
 .show-area2{
+    gap: 130px;
     display: flex;
     justify-content: center;
     min-height: 160px;
 }
 
-.show-area2 > div{
-    margin: 0 auto;
-    width: 45%;
-    border: 2px solid #f5ba00;
+.show-area2 > div:first-child{
+    height: max-content;
+    width: 30%;
+    border: transparent;
+    background-color: #f0f0f0;
     border-radius: 30px;
+}
+
+.show-area2 > div:nth-child(2){
+    width: 30%;
+    border-top: 3px solid #f5ba00;
+    border-bottom: 3px solid #f5ba00;
+}
+
+#category-title{
+    margin-top: 10px;
+    border: none;
+    background: wheat;
+    border-radius: 50%;
+    width: 160px;
+    font-size: 20px;
+    height: 40px;
+    font-weight: bold;
 }
 .category-area table{
     width: 100%;
-    height: 100%
+}
+
+.category-area tbody{
+    display: inline-block;
 }
 
 .category-area tr{
-
+    height: 120px;
+    display: table-row;
 }
 
 .category-area td {
+    width: 120px;
+    border-collapse: collapse;
+    margin: auto;
     text-align: center;
-    vertical-align: middle;
 }
 
 .category-area td img,
 .category-area td button {
     display: block;
-    margin: 0 auto;
+    margin: 4px auto;
 }
 
 .category-area table img{
     width: 40px;
     height: 40px;
 }
+
+.category-area td button {
+    background-color: white;
+    border-radius: 40%;
+    width: max-content;
+    border: transparent;
+    background-color: transparent;
+}
+
+.each-group-area{
+    margin-bottom: 20px;
+    text-align: -webkit-center;
+}
+
+.groupshow-area table {
+    border: none;
+/*    width : 100%;
+    height : 100%;*/
+    margin-top : 5px;
+}
+
+.groupshow-area table th, .groupshow-area table td {
+    border: none;
+/*    padding : 12px;*/
+    text-align : center;
+}
+
+.group-img{
+    width: 70px;
+    height: 70px;
+    border-radius: 40%;
+}
+
+#grouparea-title {
+    margin-bottom: 20px;
+    margin-top: 10px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+
+/*----------------------------랭킹 박스를 위해 추가----------------------------------------*/
+.show-area3 {
+/*    height: 100%;
+    width: 100%;
+    min-height: 100vh;*/
+    width: 26%;
+    background-color: #fbfaff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ranking-box {
+    width: 26%;
+/*    width: 40rem;
+    height: 43rem;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
+    box-shadow: 0px 5px 15px 8px #e4e7fb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0.5rem;*/
+}
+
+.show-area3 #header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.5rem 2rem;
+}
+
+.show-area3 h1 {
+    font-family: "Rubik", sans-serif;
+    font-size: 1.7rem;
+    color: #141a39;
+    text-transform: uppercase;
+    cursor: default;
+}
+
+.show-area3 #leaderboard {
+    width: 100%;
+    position: relative;
+}
+
+.show-area3 table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    color: #141a39;
+    cursor: default;
+}
+
+.show-area3 tr {
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.2rem;
+}
+
+.show-area3 tr:not(:first-child):hover {
+    background-color: #fff;
+    transform: scale(1.1);
+    -webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
+    box-shadow: 0px 5px 15px 8px #e4e7fb;
+}
+
+.show-area3 tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.show-area3 tr:nth-child(1) {
+    color: #fff;
+}
+
+.show-area3 td {
+    height: 5rem;
+    font-family: "Rubik", sans-serif;
+    font-size: 1.4rem;
+    padding: 1rem 2rem;
+    position: relative;
+}
+
+.show-area3 .number {
+    width: 1rem;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+.show-area3 .name {
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.show-area3 .points {
+    font-weight: bold;
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.show-area3 .points:first-child {
+    width: 10rem;
+}
+
+.show-area3 .gold-medal {
+    height: 3rem;
+    margin-left: 1.5rem;
+}
+
+.show-area3 .ribbon {
+    width: 33rem;
+    height: 5.5rem;
+    top: -0.5rem;
+    background-color: #5c5be5;
+    position: absolute;
+    left: -1rem;
+    -webkit-box-shadow: 0px 15px 11px -6px #7a7a7d;
+    box-shadow: 0px 15px 11px -6px #7a7a7d;
+}
+
+.show-area3 .ribbon::before {
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    bottom: -0.8rem;
+    left: 0.35rem;
+    transform: rotate(45deg);
+    background-color: #5c5be5;
+    position: absolute;
+    z-index: -1;
+}
+
+.show-area3 .ribbon::after {
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    bottom: -0.8rem;
+    right: 0.35rem;
+    transform: rotate(45deg);
+    background-color: #5c5be5;
+    position: absolute;
+    z-index: -1;
+}
+
+.show-area3 #buttons {
+    width: 100%;
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+

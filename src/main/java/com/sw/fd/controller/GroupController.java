@@ -2,14 +2,8 @@ package com.sw.fd.controller;
 
 import com.sw.fd.dto.GroupDTO;
 import com.sw.fd.dto.MemberGroupDTO;
-import com.sw.fd.entity.Group;
-import com.sw.fd.entity.Invite;
-import com.sw.fd.entity.Member;
-import com.sw.fd.entity.MemberGroup;
-import com.sw.fd.service.GroupService;
-import com.sw.fd.service.InviteService;
-import com.sw.fd.service.MemberGroupService;
-import com.sw.fd.service.MemberService;
+import com.sw.fd.entity.*;
+import com.sw.fd.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +29,9 @@ public class GroupController {
 
     @Autowired
     private InviteService inviteService;
+
+    @Autowired
+    private AlarmService alarmService;
 
     @GetMapping("/groupList")
     public String groupList(Model model, HttpSession session) {
@@ -146,6 +143,16 @@ public class GroupController {
 
         // 초대 정보 저장
         inviteService.saveInvite(invite);
+
+        // 알림 엔티티 생성 및 설정
+        Alarm alarm = new Alarm();
+        alarm.setLinkedPk(String.valueOf(invite.getIno())); // 초대 엔티티의 ino 값을 문자열로 설정
+        alarm.setAtype(inviteType == 6 ? "모임장 초대" : "일반 회원 초대"); // 초대 유형에 따라 알림 유형 설정
+        alarm.setMember(newMember); // 알림을 받을 회원
+        alarm.setIsChecked(0); // 확인 여부는 0 (미확인 상태)
+
+        // 알림 정보 저장
+        alarmService.saveAlarm(alarm);
 
         return "redirect:/groupList";
     }

@@ -53,24 +53,13 @@ public class MemberGroupService {
         return groups;
     }
 
-    // 특정 그룹(gno)의 모든 회원 목록을 조회하는 메서드
-    public String findMnicksByGroupGno(Integer gno) {
-        List<MemberGroup> memberGroups = memberGroupRepository.findByGroupGnoIn(List.of(gno));
-        StringJoiner allMemberString = new StringJoiner(" ");
-
-        for (MemberGroup memberGroup : memberGroups) {
-            allMemberString.add(memberGroup.getMember().getMnick());
-        }
-
-        return allMemberString.toString();
-    }
 
     // 특정 그룹(gno)의 모든 회원 목록을 조회하는 메서드
     public List<MemberGroup> findMembersByGroupGno(Integer gno) {
         return memberGroupRepository.findByGroupGnoIn(List.of(gno));
     }
 
-    // 모임방 기능을 위한 추가 (수정자 : 희진) //member에 있던걸 MemebrGroup으로 이동(다혜)
+    // 모임방 기능을 위한 추가 (수정자 : 희진)
     public List<MemberGroup> getMemberGroupsByGnos(List<Integer> gnos) {
         return memberGroupRepository.findByGroupGnoIn(gnos);
     }
@@ -179,5 +168,27 @@ public class MemberGroupService {
     public int getMemberJauth(String memberId, int gno) {
         MemberGroup memberGroup = memberGroupRepository.findByGroupGnoAndMemberMid(gno, memberId);
         return memberGroup != null ? memberGroup.getJauth() : -1; // 권한이 없는 경우 -1 반환
+    }
+
+
+    /*-------------------------------------- 메인화면에 모임방을 위해 추가한 메서드들 (다혜) ------------------------------------------------*/
+
+    public String findMnicksByGroupGno(Integer gno) {
+        List<MemberGroup> memberGroups = memberGroupRepository.findByGroupGnoIn(List.of(gno));
+        StringJoiner allMemberString = new StringJoiner(" ");
+
+        for (MemberGroup memberGroup : memberGroups) {
+            allMemberString.add(memberGroup.getMember().getMnick());
+        }
+        return allMemberString.toString();
+    }
+
+    public MemberGroup getLeaderByGno(int gno) {
+        List<MemberGroup> memberGroups = memberGroupRepository.findByGroupGnoAndJauthIsOne(gno);
+
+        if (memberGroups == null || memberGroups.isEmpty()) {
+            return null;
+        }
+        return memberGroups.get(0);
     }
 }
