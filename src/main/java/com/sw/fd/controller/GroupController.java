@@ -125,16 +125,26 @@ public class GroupController {
             return groupList(model, session);
         }
 
-        // 초대 유형 설정
-        int inviteType = memberGroupService.isMemberInGroup(member.getMid(), group.getGno()) ? 6 : 0;
+        // 현재 로그인한 회원의 모임에서의 권한 조회
+        int currentMemberJauth = memberGroupService.getMemberJauth(member.getMid(), group.getGno());
 
+        // 초대하는 회원의 MemberGroup 객체를 데이터베이스에서 조회
+        MemberGroup inviterMemberGroup = memberGroupService.getMemberGroupByGroupGnoAndMemberMid(group.getGno(), member.getMid());
+        if (inviterMemberGroup == null) {
+            model.addAttribute("error", "초대하는 회원의 모임 정보가 존재하지 않습니다.");
+            return "groupList";
+        }
+
+        // 초대 유형 설정
+        int inviteType = (currentMemberJauth == 1) ? 6 : 0;
+
+        // Invite 엔티티 생성 및 설정
         Invite invite = new Invite();
-        invite.setMemberGroup(new MemberGroup()); // 적절한 생성 및 설정 필요
-        invite.getMemberGroup().setGroup(group); // 설정
-        invite.getMemberGroup().setMember(member); // 설정
-        invite.setMember(newMember);
+        invite.setMemberGroup(inviterMemberGroup); // 초대하는 회원의 정보를 jno로 설정
+        invite.setMember(newMember); // 초대받는 회원의 정보를 mno로 설정
         invite.setItype(inviteType);
 
+        // 초대 정보 저장
         inviteService.saveInvite(invite);
 
         return "redirect:/groupList";
