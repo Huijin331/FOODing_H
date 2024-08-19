@@ -32,6 +32,7 @@ $(document).ready(function() {
         }
     );
 
+    <!-- 알림 기능 추가(희진) -->
     // 추가할 코드: 종 모양 이미지를 클릭했을 때 anb 보이기/숨기기
     $(".bell").click(function(event) {
         event.preventDefault(); // 링크 기본 동작 막기
