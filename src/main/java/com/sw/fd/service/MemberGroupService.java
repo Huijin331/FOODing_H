@@ -170,6 +170,11 @@ public class MemberGroupService {
         return memberGroup != null ? memberGroup.getJauth() : -1; // 권한이 없는 경우 -1 반환
     }
 
+    // 특정 모임의 모임장 정보 조회
+    public MemberGroup getGroupLeaderMemberGroup(int groupId) {
+        return memberGroupRepository.findLeaderMemberGroupByGroupId(groupId);
+    }
+
 
     /*-------------------------------------- 메인화면에 모임방을 위해 추가한 메서드들 (다혜) ------------------------------------------------*/
 
@@ -190,10 +195,5 @@ public class MemberGroupService {
             return null;
         }
         return memberGroups.get(0);
-    }
-
-    // 특정 모임의 모임장 정보 조회
-    public MemberGroup getGroupLeaderMemberGroup(int groupId) {
-        return memberGroupRepository.findLeaderMemberGroupByGroupId(groupId);
     }
 }
