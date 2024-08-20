@@ -21,17 +21,19 @@
                     <c:choose>
                         <c:when test="${hasAlarms}">
                             <c:forEach items="${alarms}" var="alarm">
-                                <c:choose>
-                                    <c:when test="${alarm.atype == '모임장 초대'}">
-                                        <div>모임장 초대 알림</div>
-                                    </c:when>
-                                    <c:when test="${alarm.atype == '일반 회원 초대'}">
-                                        <div>일반회원 초대 알림</div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div>알림 내용</div>
-                                    </c:otherwise>
-                                </c:choose>
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${alarm.atype == '모임장 초대'}">
+                                            <c:out value="${alarm.message} (모임장)"/>
+                                        </c:when>
+                                        <c:when test="${alarm.atype == '일반 회원 초대'}">
+                                            <c:out value="${alarm.message} (일반회원)"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div>알림 내용</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>

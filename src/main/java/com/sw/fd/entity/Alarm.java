@@ -21,6 +21,9 @@ public class Alarm {
 
     private String atype; // 알림유형
 
+    @Transient
+    private String message;
+
     @ManyToOne
     @JoinColumn(name = "mno")
     private Member member; // 회원

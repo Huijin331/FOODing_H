@@ -1,11 +1,9 @@
 package com.sw.fd.controller;
 
 import com.sw.fd.dto.MemberGroupDTO;
-import com.sw.fd.entity.Alarm;
-import com.sw.fd.entity.Member;
-import com.sw.fd.entity.MemberGroup;
-import com.sw.fd.entity.Store;
+import com.sw.fd.entity.*;
 import com.sw.fd.service.AlarmService;
+import com.sw.fd.service.InviteService;
 import com.sw.fd.service.MemberGroupService;
 import com.sw.fd.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,8 @@ public class MainController {
     private StoreService storeService;
     @Autowired
     private AlarmService alarmService;
+    @Autowired
+    private InviteService inviteService;
 
     @GetMapping("/main")
     public String showMainPage(Model model, HttpSession session) {
@@ -41,6 +41,12 @@ public class MainController {
             if (hasAlarms) {
                 List<Alarm> alarms = alarmService.getAlarmsByMember(loggedInMember.getMid());
                 model.addAttribute("alarms", alarms);
+                for (Alarm alarm : alarms) {
+                    Invite invite = inviteService.getInviteByIno(Integer.parseInt(alarm.getLinkedPk()));
+                    String inviterName = invite.getMemberGroup().getMember().getMnick();
+                    String groupName = invite.getMemberGroup().getGroup().getGname();
+                    alarm.setMessage(inviterName + "님이 " + groupName + " 모임에 회원님을 초대하였습니다.");
+                }
             }
             else {
                 model.addAttribute("hasAlarms", false);

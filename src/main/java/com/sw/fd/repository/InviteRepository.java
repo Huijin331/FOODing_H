@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InviteRepository extends JpaRepository<Invite, Integer> {
+    // Invite 엔티티를 ino로 찾는 메소드
+    Invite findByIno(int ino);
 }
