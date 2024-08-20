@@ -1,6 +1,7 @@
 package com.sw.fd.controller;
 
 import com.sw.fd.dto.MemberGroupDTO;
+import com.sw.fd.entity.Alarm;
 import com.sw.fd.entity.Member;
 import com.sw.fd.entity.MemberGroup;
 import com.sw.fd.entity.Store;
@@ -36,6 +37,14 @@ public class MainController {
             boolean hasAlarms = alarmService.hasAlarms(loggedInMember);
             System.out.println("hasAlarms  = " + hasAlarms);
             model.addAttribute("hasAlarms", hasAlarms);
+
+            if (hasAlarms) {
+                List<Alarm> alarms = alarmService.getAlarmsByMember(loggedInMember.getMid());
+                model.addAttribute("alarms", alarms);
+            }
+            else {
+                model.addAttribute("hasAlarms", false);
+            }
         }
 
         if (loggedInMember != null) {

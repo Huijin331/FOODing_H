@@ -18,14 +18,26 @@
             <!-- 알림 기능 추가(희진) -->
             <div class="anb">
                 <div class="subalarm">
-                <c:choose>
-                    <c:when test="${hasAlarms == true}">
-                        알림 내용
-                    </c:when>
-                    <c:otherwise>
-                        알림이 없습니다.
-                    </c:otherwise>
-                </c:choose>
+                    <c:choose>
+                        <c:when test="${hasAlarms}">
+                            <c:forEach items="${alarms}" var="alarm">
+                                <c:choose>
+                                    <c:when test="${alarm.atype == '모임장 초대'}">
+                                        <div>모임장 초대 알림</div>
+                                    </c:when>
+                                    <c:when test="${alarm.atype == '일반 회원 초대'}">
+                                        <div>일반회원 초대 알림</div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div>알림 내용</div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div>알림이 없습니다.</div>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 

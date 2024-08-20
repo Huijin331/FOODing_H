@@ -28,4 +28,9 @@ public class AlarmService {
     public void saveAlarm(Alarm alarm) {
         alarmRepository.save(alarm);
     }
+
+    // 회원의 ID로 알림을 조회
+    public List<Alarm> getAlarmsByMember(String memberId) {
+        return alarmRepository.findByMember_Mid(memberId);
+    }
 }
