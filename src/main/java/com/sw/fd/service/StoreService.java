@@ -8,6 +8,7 @@ import com.sw.fd.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,10 +41,37 @@ public class StoreService {
     @Autowired
     private TagRepository tagRepository;
 
+    // Store 객체 캐시를 위한 맵
+    private Map<Integer, Store> storeCache = new HashMap<>();
+
+    // 처음 프로그램을 시작할 때 pick수와 별점 평균을 계산해서 캐시로 저장하기 위해 추가함
+    @PostConstruct
+    public void initializeStoreScores() {
+        List<Store> stores = storeRepository.findAll();
+        for (Store store : stores) {
+            updateStoreTags(store);
+            calculateAndCacheStoreScores(store);
+        }
+    }
+
+    @Transactional
+    public void calculateAndCacheStoreScores(Store store) {
+        Double averageScore = reviewRepository.findAverageScoreBySno(store.getSno());
+        store.setScoreArg(averageScore != null ? averageScore : 0);
+
+        int pickCount = pickRepository.countBySno(store.getSno());
+        store.setPickNum(pickCount);
+
+        // 캐시에 저장
+        storeCache.put(store.getSno(), store);
+    }
+
+
     public void saveStore(Store store) {
 //        System.out.println("saveStore에 진입");
         storeRepository.save(store);
         updateStoreTags(store);
+        calculateAndCacheStoreScores(store);
     }
 
     public List<StoreTag> getStoreTagsByStoreSno(int sno) {
@@ -53,13 +81,12 @@ public class StoreService {
     public List<StoreTag> getStoreTagsByTno(int tno) {
         List<StoreTag> storeTags = storeTagRepository.findByTag_Tno(tno);
         for (StoreTag storeTag : storeTags) {
-            Double averageScore = reviewRepository.findAverageScoreBySno(storeTag.getStore().getSno());
-            System.out.println("averageScore = "+averageScore);
-            storeTag.getStore().setScoreArg(averageScore);
+            Store cachedStore = storeCache.get(storeTag.getStore().getSno());
 
-            int pickCount = pickRepository.countBySno(storeTag.getStore().getSno());
-            System.out.println("pickCount = "+pickCount);
-            storeTag.getStore().setPickNum(pickCount);
+            // 캐시된 값을 사용하여 별점 평균과 pick수를 set
+            storeTag.getStore().setScoreArg(cachedStore.getScoreArg());
+            storeTag.getStore().setPickNum(cachedStore.getPickNum());
+
         }
         return storeTags;
     }
@@ -68,7 +95,7 @@ public class StoreService {
     public void updateStoreTags(Store store) {
         List<ReviewTag> reviewTags = reviewTagRepository.findByReview_Store_Sno(store.getSno());
 
-        if (reviewTags ==null && reviewTags.isEmpty()) {
+        if (reviewTags == null || reviewTags.isEmpty()) {
             return;
         }
 
@@ -91,28 +118,34 @@ public class StoreService {
                 storeTag.setTag(tag);
                 storeTag.setTagCount((int) count);
             } else {
-                /*System.out.println("값 갱신전: " + storeTag.getTag().getTtag() + "의 수: " + storeTag.getTagCount());*/
                 storeTag.setTagCount((int) count);
-                /*System.out.println("값 갱신후: " + storeTag.getTag().getTtag() + "의 수: " + storeTag.getTagCount());*/
             }
 
             storeTagRepository.save(storeTag);
         }
-
         /*System.out.println("updateStoreTags 동작 완료");*/
     }
 
-    public List<Store> getAllStores() {
-//        System.out.println("getAllStores에 진입");
-        List<Store> stores = storeRepository.findAll();
-        for (Store store : stores) {
-            updateStoreTags(store);
-        }
-        return stores;
-    }
 
-    public List<Store> getAllStoresWithRank(){
-/*        System.out.println("getAllStoresWithRank에 진입");*/
+    public List<Store> getAllStores() {
+        //        System.out.println("getAllStores에 진입");
+        if (storeCache.isEmpty()) {
+            initializeStoreScores();
+        }
+
+        // 그냥 list로 return하면 불변 list라서 정렬이 안 되기 때문에 복사해서 return함
+        return new ArrayList<>(storeCache.values());
+    }
+    public Store getStoreAllInfo(int sno) {
+        if (storeCache.isEmpty()) {
+            initializeStoreScores();
+        }
+        return storeCache.get(sno);
+    }
+/*-----------------------별점과 Pick수를 초기화할 때마다 미리 계산해두어서 더이상 필요없어진 부분----------------*/
+
+    /*    public List<Store> getAllStoresWithRank(){
+        *//*        System.out.println("getAllStoresWithRank에 진입");*//*
         List<Store> stores = storeRepository.findAll();
         for (Store store : stores) {
             Double averageScore = reviewRepository.findAverageScoreBySno(store.getSno());
@@ -124,10 +157,10 @@ public class StoreService {
             updateStoreTags(store);
         }
         return stores;
-    }
+    }*/
 
-    public Store getStoreAllInfo(int sno) {
-/*        System.out.println("getStoreAllInfo에 진입");*/
+/*    public Store getStoreAllInfo(int sno) {
+        *//*        System.out.println("getStoreAllInfo에 진입");*//*
         Store store = storeRepository.findBySno(sno).orElse(null);
         if (store != null) {
             updateStoreTags(store);
@@ -142,7 +175,7 @@ public class StoreService {
         }
 
         return store;
-    }
+    }*/
 
     public List<StoreTag> getStoreTagsByTnos(List<Integer> tnos){
         return storeTagRepository.findByTag_tno(tnos);
@@ -171,21 +204,26 @@ public class StoreService {
     }
 
     public Store getStoreById(int sno) {
-        System.out.println("getStoreById에 진입");
-        Store store = storeRepository.findBySno(sno).orElse(null);
-        if (store != null) {
-            updateStoreTags(store);
+        if (storeCache.isEmpty()) {
+            initializeStoreScores();
         }
-        return store;
+        return storeCache.get(sno);
     }
 
     public List<Store> getStoresByCategory(String scate) {
-//        System.out.println("getStoresByCategory에 진입");
-        List<Store> stores = storeRepository.findByScate(scate);
-        for (Store store : stores) {
-            updateStoreTags(store);
+        if (storeCache.isEmpty()) {
+            initializeStoreScores();
         }
-        return stores;
+        List<Store> resultStores = new ArrayList<>();
+
+        for (Store store : storeCache.values()) {
+
+            // 카테고리가 일치하는 가게만 리스트에 추가
+            if (store.getScate().equals(scate)) {
+                resultStores.add(store);
+            }
+        }
+        return resultStores;
     }
 
     public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
@@ -200,10 +238,11 @@ public class StoreService {
     }
 
     public List<Store> getNearbyStores(double userLat, double userLon) {
-        List<Store> allStores = storeRepository.findAll();
+        if (storeCache.isEmpty()) {
+            initializeStoreScores();
+        }
         List<Store> nearbyStores = new ArrayList<>();
-
-        for (Store store : allStores) {
+        for (Store store : storeCache.values()) {
             double[] coordinates = locationService.getCoordinates(store.getSaddr());
             double distance = calculateDistance(userLat, userLon, coordinates[0], coordinates[1]);
             if (distance <= 2) {

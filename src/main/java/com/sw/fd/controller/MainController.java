@@ -72,7 +72,7 @@ public class MainController {
         }
 
 
-        List<Store> stores = storeService.getAllStoresWithRank();
+        List<Store> stores = storeService.getAllStores();
         stores.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
         List<Store> rankedStores = stores.subList(0, 5);
 
