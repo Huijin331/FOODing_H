@@ -35,6 +35,9 @@ public class Review {
     private String rcomm;
     private LocalDateTime rdate;
 
+    private Integer mdelete;
+    private Integer adelete;
+
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
     private List<ReviewTag> reviewTags;
 

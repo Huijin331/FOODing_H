@@ -36,6 +36,8 @@ public class Member {
     private String memail;
     private String maddr;
     private LocalDateTime mdate;
+    private String mimage;
+
 
     private int mwarning;
 

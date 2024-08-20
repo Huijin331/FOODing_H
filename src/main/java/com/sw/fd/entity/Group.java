@@ -28,6 +28,8 @@ public class Group {
     @Column(name = "gdate", nullable = false)
     private LocalDateTime gdate;
 
+    private String gimage;
+
     @PrePersist
     protected void onCreate() {
         gdate = LocalDateTime.now();

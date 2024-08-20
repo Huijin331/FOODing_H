@@ -191,4 +191,9 @@ public class MemberGroupService {
         }
         return memberGroups.get(0);
     }
+
+    // 특정 모임의 모임장 정보 조회
+    public MemberGroup getGroupLeaderMemberGroup(int groupId) {
+        return memberGroupRepository.findLeaderMemberGroupByGroupId(groupId);
+    }
 }
