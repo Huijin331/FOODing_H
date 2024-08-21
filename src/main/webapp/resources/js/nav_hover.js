@@ -39,7 +39,6 @@ $(document).ready(function() {
         $(".anb").toggle(); // anb를 보이거나 숨김
     });
 
-    // anb가 아닌 다른 곳을 클릭했을 때 anb 숨기기
     $(document).click(function(event) {
         if (!$(event.target).closest('.bell, .anb').length) {
             $(".anb").hide(); // anb 숨기기
