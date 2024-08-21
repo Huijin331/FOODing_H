@@ -35,7 +35,7 @@
                                     </c:choose>
                                 </div>
                                 <!-- 확인 및 삭제 버튼 추가 -->
-                                <div class="button-group">
+                                <div>
                                     <button type="button" class="btn btn-primary btn-sm">확인</button>
                                     <button type="button" class="btn btn-danger btn-sm">삭제</button>
                                 </div>
