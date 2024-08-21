@@ -38,4 +38,8 @@ public class AlarmService {
     public Alarm findById(int alarmId) {
         return alarmRepository.findByAno(alarmId);
     }
+
+    public void deleteAlarm(int alarmId) {
+        alarmRepository.delete(alarmId);
+    }
 }

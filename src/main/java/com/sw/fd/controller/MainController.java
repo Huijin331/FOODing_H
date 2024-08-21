@@ -100,4 +100,14 @@ public class MainController {
         }
         return "redirect:/main";
     }
+
+    @PostMapping("/alarmDelete")
+    public String alarmDelete(@RequestParam("alarmId") int alarmId, HttpSession session) {
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember != null) {
+            alarmService.deleteAlarm(alarmId); // 알림을 삭제하는 서비스 호출
+        }
+        return "redirect:/main";
+    }
 }

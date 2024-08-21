@@ -44,7 +44,11 @@
                                             </form>
                                         </c:when>
                                     </c:choose>
-                                    <button type="button" class="btn btn-danger btn-sm">삭제</button>
+                                    <!-- 삭제 버튼 -->
+                                    <form action="${pageContext.request.contextPath}/alarmDelete" method="post" style="display:inline;">
+                                        <input type="hidden" name="alarmId" value="${alarm.ano}"/>
+                                        <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                                    </form>
                                 </div>
                             </div>
                         </c:forEach>
