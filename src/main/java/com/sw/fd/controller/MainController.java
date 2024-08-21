@@ -45,7 +45,7 @@ public class MainController {
                     Invite invite = inviteService.getInviteByIno(Integer.parseInt(alarm.getLinkedPk()));
                     String inviterName = invite.getMemberGroup().getMember().getMnick();
                     String groupName = invite.getMemberGroup().getGroup().getGname();
-                    alarm.setMessage(inviterName + "님이 " + groupName + " 모임에 회원님을 초대하였습니다.");
+                    alarm.setMessage(inviterName + "님이 " + groupName + " 모임에<br>회원님을 초대하였습니다.");
                 }
             }
             else {
