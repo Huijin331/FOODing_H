@@ -36,7 +36,10 @@
                                 </div>
                                 <!-- 확인 및 삭제 버튼 추가 -->
                                 <div>
-                                    <button type="button" class="btn btn-primary btn-sm">확인</button>
+                                    <form action="${pageContext.request.contextPath}/alarmChecked" method="post" style="display:inline;">
+                                        <input type="hidden" name="alarmId" value="${alarm.ano}"/>
+                                        <button type="submit" class="btn btn-primary btn-sm">확인</button>
+                                    </form>
                                     <button type="button" class="btn btn-danger btn-sm">삭제</button>
                                 </div>
                             </div>

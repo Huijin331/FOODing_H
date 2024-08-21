@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -82,5 +84,20 @@ public class MainController {
 
 
         return "main";
+    }
+
+    // 확인 버튼 클릭 시 알림의 isChecked 상태를 1로 변경 (희진 추가)
+    @PostMapping("/alarmChecked")
+    public String alarmChecked(@RequestParam("alarmId") int alarmId, HttpSession session) {
+        Member loggedInMember = (Member) session.getAttribute("loggedInMember");
+
+        if (loggedInMember != null) {
+            Alarm alarm = alarmService.findById(alarmId);
+            if (alarm != null) {
+                alarm.setIsChecked(1); // 확인된 상태로 설정
+                alarmService.saveAlarm(alarm);
+            }
+        }
+        return "redirect:/main";
     }
 }

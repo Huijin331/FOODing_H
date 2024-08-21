@@ -33,4 +33,9 @@ public class AlarmService {
     public List<Alarm> getAlarmsByMember(String memberId) {
         return alarmRepository.findByMember_Mid(memberId);
     }
+
+    // 알림 ID로 알림 조회
+    public Alarm findById(int alarmId) {
+        return alarmRepository.findByAno(alarmId);
+    }
 }

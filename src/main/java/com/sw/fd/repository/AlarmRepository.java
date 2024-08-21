@@ -12,4 +12,7 @@ public interface AlarmRepository extends JpaRepository<Alarm, Integer> {
 
     // 회원 ID로 알림 조회
     List<Alarm> findByMember_Mid(String memberId);
+
+    // 알림 ID로 알림 조회
+    Alarm findByAno(int ano);
 }
