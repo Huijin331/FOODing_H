@@ -77,7 +77,7 @@ header {
 .helloBox:link { color : saddlebrown; text-decoration : none; }
 .helloBox:visited { color : saddlebrown; text-decoration : none; }
 .helloBox:active { color : orange; text-decoration : none; }
-.helloBox:hover { color : #ffea00;; text-decoration : none; }
+.helloBox:hover { color : #ffea00; text-decoration : none; }
 
 /* 알림 기능 추가 (희진) */
 .header2 img {
@@ -112,3 +112,8 @@ header {
     align-items : center;
     margin : 10px 0;
 }
+
+.anb .subalarm a:link { color : black; text-decoration : none; }
+.anb .subalarm a:visited { color : black; text-decoration : none; }
+.anb .subalarm a:active { color : orange; text-decoration : none; }
+.anb .subalarm a:hover { color : #ffea00; text-decoration : none; }

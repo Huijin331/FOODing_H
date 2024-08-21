@@ -24,10 +24,14 @@
                                 <div>
                                     <c:choose>
                                         <c:when test="${alarm.atype == '모임장 초대'}">
-                                            <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
+                                            <a href="${pageContext.request.contextPath}/inviteManage">
+                                                <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
+                                            </a>
                                         </c:when>
                                         <c:when test="${alarm.atype == '일반 회원 초대'}">
-                                            <c:out value="${alarm.message} (일반회원)" escapeXml="false"/>
+                                            <a href="${pageContext.request.contextPath}/inviteManage">
+                                                <c:out value="${alarm.message} (일반회원)" escapeXml="false"/>
+                                            </a>
                                         </c:when>
                                         <c:otherwise>
                                             <div>알림 내용</div>
