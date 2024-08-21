@@ -143,7 +143,7 @@
             <div class = "submenu">
                 <li><a href = "${pageContext.request.contextPath}/groupList">내 모임</a></li>
                 <li><a href = "${pageContext.request.contextPath}/groupManage">모임 관리</a></li>
-                <li><a href = "#">내 초대 관리</a></li>
+                <li><a href = "${pageContext.request.contextPath}/inviteManage">내 초대 관리</a></li>
             </div>
             <div class = "submenu">
                 <li><a href = "#">찜 기능</a></li>
