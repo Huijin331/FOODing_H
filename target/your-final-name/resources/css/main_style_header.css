@@ -97,6 +97,7 @@ header {
     text-align : center;
     z-index : 1;
     margin-top : 0;
+    gap: 10px;
 }
 
 .anb .subalarm {
@@ -109,5 +110,5 @@ header {
     flex-direction: column;
     justify-content : center;
     align-items : center;
-    margin : 5px 0;
+    margin : 10px 0;
 }
