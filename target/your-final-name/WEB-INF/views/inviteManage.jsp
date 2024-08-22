@@ -38,14 +38,31 @@
                                 </c:choose>
                             </td>
                             <td>
-                                <form action="${pageContext.request.contextPath}/acceptInvite" method="post" style="display:inline;">
-                                    <input type="hidden" name="inviteId" value="${invite.ino}" />
-                                    <button type="submit" class="btn btn-success">수락</button>
-                                </form>
-                                <form action="${pageContext.request.contextPath}/rejectInvite" method="post" style="display:inline;">
-                                    <input type="hidden" name="inviteId" value="${invite.ino}" />
-                                    <button type="submit" class="btn btn-warning">거절</button>
-                                </form>
+                                <c:if test="${invite.itype == 0 || invite.itype == 6}">
+                                    <form action="${pageContext.request.contextPath}/acceptInvite" method="post" style="display:inline;">
+                                        <input type="hidden" name="inviteId" value="${invite.ino}" />
+                                        <button type="submit" class="btn btn-success">수락</button>
+                                    </form>
+                                    <form action="${pageContext.request.contextPath}/rejectInvite" method="post" style="display:inline;">
+                                        <input type="hidden" name="inviteId" value="${invite.ino}" />
+                                        <button type="submit" class="btn btn-warning">거절</button>
+                                    </form>
+                                </c:if>
+                                <c:if test="${invite.itype == 1}">
+                                    모임장 수락 대기
+                                </c:if>
+                                <c:if test="${invite.itype == 2 || invite.itype == 8}">
+                                    초대 거절
+                                </c:if>
+                                <c:if test="${invite.itype == 3}">
+                                    모임장 수락 완료
+                                </c:if>
+                                <c:if test="${invite.itype == 4 || invite.itype == 8}">
+                                    모임장 수락 거절
+                                </c:if>
+                                <c:if test="${invite.itype == 7}">
+                                    초대 수락
+                                </c:if>
                             </td>
                             <td>
                                 <form action="${pageContext.request.contextPath}/deleteInvite" method="post" style="display:inline;">
