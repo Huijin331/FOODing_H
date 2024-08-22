@@ -141,10 +141,16 @@ input[type="submit"]:hover {
     font-weight : bold;
 }
 
+.success-message {
+    color: green;
+    font-weight: bold;
+}
+
 .error-message {
     text-align: center;
     color:red;
 }
+
 
 section {
     height: 600px;

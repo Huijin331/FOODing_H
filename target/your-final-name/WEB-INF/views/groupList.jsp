@@ -92,6 +92,11 @@
                         </td>
                     </tr>
                 </table>
+                <c:if test="${not empty successMessage}">
+                    <p id="temporaryText" class="success-message">
+                        <c:out value="${successMessage}" />
+                    </p>
+                </c:if>
                 <c:if test="${not empty error}">
                     <p id="temporaryText" class="error-message">
                         <c:out value="${error}" />
