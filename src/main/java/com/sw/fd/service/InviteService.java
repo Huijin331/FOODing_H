@@ -16,6 +16,10 @@ public class InviteService {
     @Autowired
     private AlarmService alarmService;
 
+    public Invite findById(int inviteId) {
+        return inviteRepository.findByIno(inviteId);
+    }
+
     public void saveInvite(Invite invite) {
         inviteRepository.save(invite);
     }

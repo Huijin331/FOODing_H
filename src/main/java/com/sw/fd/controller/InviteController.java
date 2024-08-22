@@ -37,6 +37,38 @@ public class InviteController {
         return "inviteManage";
     }
 
+    @PostMapping("/acceptInvite")
+    public String acceptInvite(@RequestParam("inviteId") int inviteId, HttpSession session) {
+
+        Invite invite = inviteService.findById(inviteId);
+        if (invite != null) {
+            if (invite.getItype() == 0) {
+                invite.setItype(1); // itype을 1로 변경
+            } else if (invite.getItype() == 6) {
+                invite.setItype(7); // itype을 7로 변경
+            }
+            inviteService.saveInvite(invite); // 업데이트된 엔티티를 저장
+        }
+
+        return "redirect:/inviteManage";
+    }
+
+    @PostMapping("/rejectInvite")
+    public String rejecttInvite(@RequestParam("inviteId") int inviteId, HttpSession session) {
+
+        Invite invite = inviteService.findById(inviteId);
+        if (invite != null) {
+            if (invite.getItype() == 0) {
+                invite.setItype(2); // itype을 2로 변경
+            } else if (invite.getItype() == 6) {
+                invite.setItype(8); // itype을 8로 변경
+            }
+            inviteService.saveInvite(invite); // 업데이트된 엔티티를 저장
+        }
+
+        return "redirect:/inviteManage";
+    }
+
     @PostMapping("/deleteInvite")
     public String deleteInvite(@RequestParam("inviteId") int inviteId) {
         inviteService.deleteInvite(inviteId);

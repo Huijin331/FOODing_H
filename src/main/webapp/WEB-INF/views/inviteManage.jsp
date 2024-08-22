@@ -57,7 +57,7 @@
                                 <c:if test="${invite.itype == 3}">
                                     모임장 수락 완료
                                 </c:if>
-                                <c:if test="${invite.itype == 4 || invite.itype == 8}">
+                                <c:if test="${invite.itype == 4}">
                                     모임장 수락 거절
                                 </c:if>
                                 <c:if test="${invite.itype == 7}">
