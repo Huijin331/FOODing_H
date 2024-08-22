@@ -26,4 +26,8 @@ public class InviteService {
     public List<Invite> getInvitesByMemberMno(int mno) {
         return inviteRepository.findByMember_Mno(mno);
     }
+
+    public void deleteInvite(int ino) {
+        inviteRepository.delete(ino);
+    }
 }
