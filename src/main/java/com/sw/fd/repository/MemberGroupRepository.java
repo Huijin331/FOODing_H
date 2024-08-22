@@ -41,8 +41,9 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.group.gno = :groupId AND mg.jauth = 1")
     MemberGroup findLeaderMemberGroupByGroupId(@Param("groupId") int groupId);
 
+    Optional<MemberGroup> findByJno(int jno);
     /*-------------------------------------- 메인화면에 모임방을 위해 추가한 메서드들 (다혜) ------------------------------------------------*/
 
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.jauth = 1")
     List<MemberGroup> findByGroupGnoAndJauthIsOne(@Param("gno") int gno);
- }
+}

@@ -175,6 +175,13 @@ public class MemberGroupService {
         return memberGroupRepository.findLeaderMemberGroupByGroupId(groupId);
     }
 
+    public Member findMemberByJno(int jno) {
+        MemberGroup memberGroup = memberGroupRepository.findByJno(jno)
+                .orElseThrow(() -> new IllegalArgumentException("No MemberGroup found for jno: " + jno));
+
+        return memberGroup.getMember();
+    }
+
 
     /*-------------------------------------- 메인화면에 모임방을 위해 추가한 메서드들 (다혜) ------------------------------------------------*/
 

@@ -144,7 +144,7 @@ public class GroupController {
         // 모임장의 MemberGroup 객체를 가져와서 leaderNum을 설정
         MemberGroup groupLeaderMemberGroup = memberGroupService.getGroupLeaderMemberGroup(groupDTO.getGno());
         if (groupLeaderMemberGroup != null) {
-            invite.setLeaderNum(groupLeaderMemberGroup.getJno()); // 모임장의 jno를 설정
+            invite.setLeadNum(groupLeaderMemberGroup.getJno()); // 모임장의 jno를 설정
         } else {
             model.addAttribute("error", "모임장 정보를 찾을 수 없습니다.");
             return "redirect:/groupList";

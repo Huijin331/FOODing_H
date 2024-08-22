@@ -5,6 +5,7 @@ import com.sw.fd.entity.Invite;
 import com.sw.fd.entity.Member;
 import com.sw.fd.service.AlarmService;
 import com.sw.fd.service.InviteService;
+import com.sw.fd.service.MemberGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ public class InviteController {
     private InviteService inviteService;
     @Autowired
     private AlarmService alarmService;
+    @Autowired
+    private MemberGroupService memberGroupService;
 
     @GetMapping("/inviteManage")
     public String inviteManage(Model model, HttpSession session) {
@@ -48,7 +51,21 @@ public class InviteController {
         if (invite != null) {
             if (invite.getItype() == 0) {
                 invite.setItype(1); // itype을 1로 변경
+
+                // 새로운 알림 엔티티 생성 및 설정
+                Alarm alarm = new Alarm();
+                alarm.setLinkedPk(String.valueOf(invite.getIno())); // 초대 엔티티의 ino 값을 문자열로 설정
+                alarm.setAtype("모임장 수락 대기");
+                // 알림을 받을 회원 (초대한 회원의 mno를 통해 찾아야 함)
+                Member inviter = memberGroupService.findMemberByJno(invite.getLeadNum());
+                alarm.setMember(inviter); // 초대한 회원을 알림의 대상자로 설정
+                alarm.setIsChecked(0); // 알림 확인 여부를 미확인 상태로 설정 (0)
+
+                // 알림 정보 저장
+                alarmService.saveAlarm(alarm);
+
             } else if (invite.getItype() == 6) {
+                System.out.println("else if문 들어왔음");
                 invite.setItype(7); // itype을 7로 변경
             }
             inviteService.saveInvite(invite); // 업데이트된 엔티티를 저장

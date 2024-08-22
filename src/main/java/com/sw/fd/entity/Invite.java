@@ -27,7 +27,7 @@ public class Invite {
     private int itype; // 처리유형
 
     @Column(name = "leadnum")
-    private int leaderNum;
+    private int leadNum;
 
     @Override
     public String toString() {
