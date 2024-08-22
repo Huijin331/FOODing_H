@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title>FOODing 내 초대 관리</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/inviteManage.css">
+    <link href = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <c:import url="/top.jsp"/>
@@ -37,10 +38,20 @@
                                 </c:choose>
                             </td>
                             <td>
-                                수락 버튼 / 거절 버튼
+                                <form action="${pageContext.request.contextPath}/acceptInvite" method="post" style="display:inline;">
+                                    <input type="hidden" name="inviteId" value="${invite.ino}" />
+                                    <button type="submit" class="btn btn-success">수락</button>
+                                </form>
+                                <form action="${pageContext.request.contextPath}/rejectInvite" method="post" style="display:inline;">
+                                    <input type="hidden" name="inviteId" value="${invite.ino}" />
+                                    <button type="submit" class="btn btn-warning">거절</button>
+                                </form>
                             </td>
                             <td>
-                                삭제 버튼
+                                <form action="${pageContext.request.contextPath}/deleteInvite" method="post" style="display:inline;">
+                                    <input type="hidden" name="inviteId" value="${invite.ino}" />
+                                    <button type="submit" class="btn btn-danger">삭제</button>
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>
