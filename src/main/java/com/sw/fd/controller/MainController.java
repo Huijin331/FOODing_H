@@ -101,6 +101,7 @@ public class MainController {
         return "redirect:/main";
     }
 
+    /* 알림 기능 추가 (희진) */
     @PostMapping("/alarmDelete")
     public String alarmDelete(@RequestParam("alarmId") int alarmId, HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
