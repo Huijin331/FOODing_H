@@ -6,6 +6,7 @@ import com.sw.fd.repository.AlarmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -41,5 +42,12 @@ public class AlarmService {
 
     public void deleteAlarm(int alarmId) {
         alarmRepository.delete(alarmId);
+    }
+
+    @Transactional
+    public void deleteAlarmsByInviteId(int inviteId) {
+        // 초대 ID를 문자열로 변환하여 linkedPk로 사용
+        String linkedPk = String.valueOf(inviteId);
+        alarmRepository.deleteByLinkedPk(linkedPk);
     }
 }

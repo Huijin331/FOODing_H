@@ -5,6 +5,7 @@ import com.sw.fd.repository.InviteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -12,6 +13,8 @@ public class InviteService {
 
     @Autowired
     private InviteRepository inviteRepository;
+    @Autowired
+    private AlarmService alarmService;
 
     public void saveInvite(Invite invite) {
         inviteRepository.save(invite);
@@ -27,7 +30,9 @@ public class InviteService {
         return inviteRepository.findByMember_Mno(mno);
     }
 
+    @Transactional
     public void deleteInvite(int ino) {
+        alarmService.deleteAlarmsByInviteId(ino);
         inviteRepository.delete(ino);
     }
 }
