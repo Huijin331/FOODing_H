@@ -15,24 +15,35 @@
             <h1>내 초대 관리</h1>
             <table class="inviteManage-table">
                 <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>초대한 회원</th>
-                    <th>초대하는 모임명</th>
-                    <th>초대 유형</th>
-                    <th>수락 / 거절</th>
-                    <th>삭제</th>
-                </tr>
+                    <tr>
+                        <th>번호</th>
+                        <th>초대한 회원</th>
+                        <th>초대하는 모임명</th>
+                        <th>초대 유형</th>
+                        <th>수락 / 거절</th>
+                        <th>삭제</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>번호</td>
-                    <td>초대자</td>
-                    <td>모임명</td>
-                    <td>초대 유형</td>
-                    <td>수락 버튼 / 거절 버튼</td>
-                    <td>삭제 버튼</td>
-                </tr>
+                    <c:forEach var="invite" items="${invites}" varStatus="status">
+                        <tr>
+                            <td>${status.index + 1}</td>
+                            <td>${invite.memberGroup.member.mnick}</td>
+                            <td>${invite.memberGroup.group.gname}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${invite.memberGroup.jauth == 1}">모임장 초대</c:when>
+                                    <c:otherwise>일반 회원 초대</c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                수락 버튼 / 거절 버튼
+                            </td>
+                            <td>
+                                삭제 버튼
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
