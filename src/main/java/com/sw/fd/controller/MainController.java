@@ -43,7 +43,14 @@ public class MainController {
             if (hasAlarms) {
                 List<Alarm> alarms = alarmService.getAlarmsByMember(loggedInMember.getMid());
                 model.addAttribute("alarms", alarms);
+
+                boolean alarmChecked = true;
+
                 for (Alarm alarm : alarms) {
+                    if (alarm.getIsChecked() == 0) {
+                        alarmChecked = false;
+                    }
+
                     Invite invite = inviteService.getInviteByIno(Integer.parseInt(alarm.getLinkedPk()));
                     String inviterName = invite.getMemberGroup().getMember().getMnick();
                     String groupName = invite.getMemberGroup().getGroup().getGname();
@@ -55,7 +62,12 @@ public class MainController {
                         String inviteeName = invite.getMember().getMnick();
                         alarm.setMessage(inviteeName + "님이 초대를 거절하였습니다");
                     }
+                    else if (alarm.getAtype().equals("모임장 수락 대기")) {
+                        String inviteeName = invite.getMember().getMnick();
+                        alarm.setMessage(inviteeName + "님이<br>모임장 수락을 요청하였습니다.");
+                    }
                 }
+                model.addAttribute("alarmChecked", alarmChecked);
             }
             else {
                 model.addAttribute("hasAlarms", false);

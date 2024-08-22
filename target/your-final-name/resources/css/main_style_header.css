@@ -117,3 +117,26 @@ header {
 .anb .subalarm a:visited { color : black; text-decoration : none; }
 .anb .subalarm a:active { color : orange; text-decoration : none; }
 .anb .subalarm a:hover { color : #ffea00; text-decoration : none; }
+
+.alarmButton-area {
+    display: flex;
+    width: max-content;
+    height: max-content;
+}
+
+.alarmButton {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.alarmButton img {
+    width: 30px;
+}
+
+.alarmButton:active,
+.alarmButton:focus,
+.alarmButton:hover {
+    border: none;
+    outline: none;
+}

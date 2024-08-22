@@ -1,6 +1,7 @@
 package com.sw.fd.controller;
 
 import com.sw.fd.entity.Alarm;
+import com.sw.fd.entity.Group;
 import com.sw.fd.entity.Invite;
 import com.sw.fd.entity.Member;
 import com.sw.fd.service.AlarmService;
@@ -65,8 +66,14 @@ public class InviteController {
                 alarmService.saveAlarm(alarm);
 
             } else if (invite.getItype() == 6) {
-                System.out.println("else if문 들어왔음");
                 invite.setItype(7); // itype을 7로 변경
+
+                // 초대받은 회원과 모임 정보 가져오기
+                Member invitedMember = invite.getMember();
+                Group group = invite.getMemberGroup().getGroup();
+
+                // 초대받은 회원을 모임에 일반회원으로 추가
+                memberGroupService.addMemberToGroup(invitedMember, group, 0); // 0은 일반회원 권한
             }
             inviteService.saveInvite(invite); // 업데이트된 엔티티를 저장
         }

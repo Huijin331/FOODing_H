@@ -34,21 +34,30 @@
                                     <c:if test="${alarm.atype == '초대 거절'}">
                                         <c:out value="${alarm.message}" escapeXml="false"/>
                                     </c:if>
+                                    <c:if test="${alarm.atype == '모임장 수락 대기'}">
+                                        <a href="${pageContext.request.contextPath}/groupManage">
+                                            <c:out value="${alarm.message}" escapeXml="false"/>
+                                        </a>
+                                    </c:if>
                                 </div>
                                 <!-- 확인 및 삭제 버튼 추가 -->
-                                <div>
+                                <div class="alarmButton-area">
                                     <c:choose>
                                         <c:when test="${alarm.isChecked == 0}">
                                             <form action="${pageContext.request.contextPath}/alarmChecked" method="post" style="display:inline;">
                                                 <input type="hidden" name="alarmId" value="${alarm.ano}"/>
-                                                <button type="submit" class="btn btn-primary btn-sm">확인</button>
+                                                <button type="submit" class="alarmButton">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/check-icon.png"/>
+                                                </button>
                                             </form>
                                         </c:when>
                                     </c:choose>
                                     <!-- 삭제 버튼 -->
                                     <form action="${pageContext.request.contextPath}/alarmDelete" method="post" style="display:inline;">
                                         <input type="hidden" name="alarmId" value="${alarm.ano}"/>
-                                        <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                                        <button type="submit" class="alarmButton">
+                                            <img src="${pageContext.request.contextPath}/resources/images/delete-icon.png"/>
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -82,7 +91,14 @@
                         <c:if test="${sessionScope.loggedInMember != null}">
                             <span>
                                 <a class = "bell" href = "#">
-                                    <img src = "${pageContext.request.contextPath}/resources/images/bell.png" width = "30px" height = "30px">
+                                    <c:choose>
+                                        <c:when test="${alarmChecked == false}">
+                                            <img src = "${pageContext.request.contextPath}/resources/images/non-check-bell.png" width = "30px" height = "30px">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src = "${pageContext.request.contextPath}/resources/images/bell.png" width = "30px" height = "30px">
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                             </span>
                             <span>|</span>

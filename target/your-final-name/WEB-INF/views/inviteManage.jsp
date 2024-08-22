@@ -67,7 +67,7 @@
                             <td>
                                 <form action="${pageContext.request.contextPath}/deleteInvite" method="post" style="display:inline;">
                                     <input type="hidden" name="inviteId" value="${invite.ino}" />
-                                    <button type="submit" class="btn btn-danger">삭제</button>
+                                    <button type="submit" class="btn btn-danger">X</button>
                                 </form>
                             </td>
                         </tr>
