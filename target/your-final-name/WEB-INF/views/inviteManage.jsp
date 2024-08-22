@@ -21,6 +21,7 @@
                     <th>초대하는 모임명</th>
                     <th>초대 유형</th>
                     <th>수락 / 거절</th>
+                    <th>삭제</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,7 @@
                     <td>모임명</td>
                     <td>초대 유형</td>
                     <td>수락 버튼 / 거절 버튼</td>
+                    <td>삭제 버튼</td>
                 </tr>
                 </tbody>
             </table>
