@@ -47,7 +47,14 @@ public class MainController {
                     Invite invite = inviteService.getInviteByIno(Integer.parseInt(alarm.getLinkedPk()));
                     String inviterName = invite.getMemberGroup().getMember().getMnick();
                     String groupName = invite.getMemberGroup().getGroup().getGname();
-                    alarm.setMessage(inviterName + "님이 " + groupName + " 모임에<br>회원님을 초대하였습니다.");
+                    System.out.println("alarm.getAtype() = " + alarm.getAtype());
+                    if (alarm.getAtype().equals("일반 회원 초대") || alarm.getAtype().equals("모임장 초대")) {
+                        alarm.setMessage(inviterName + "님이 " + groupName + " 모임에<br>회원님을 초대하였습니다.");
+                    }
+                    else if (alarm.getAtype().equals("초대 거절")) {
+                        String inviteeName = invite.getMember().getMnick();
+                        alarm.setMessage(inviteeName + "님이 초대를 거절하였습니다");
+                    }
                 }
             }
             else {

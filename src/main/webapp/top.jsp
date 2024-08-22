@@ -22,21 +22,18 @@
                         <c:forEach items="${alarms}" var="alarm">
                             <div class="subalarm">
                                 <div>
-                                    <c:choose>
-                                        <c:when test="${alarm.atype == '모임장 초대'}">
-                                            <a href="${pageContext.request.contextPath}/inviteManage">
-                                                <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
-                                            </a>
-                                        </c:when>
-                                        <c:when test="${alarm.atype == '일반 회원 초대'}">
-                                            <a href="${pageContext.request.contextPath}/inviteManage">
-                                                <c:out value="${alarm.message} (일반회원)" escapeXml="false"/>
-                                            </a>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div>알림 내용</div>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <c:if test="${alarm.atype == '모임장 초대'}">
+                                        <a href="${pageContext.request.contextPath}/inviteManage">
+                                            <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
+                                        </a>
+                                    </c:if>
+                                    <c:if test="${alarm.atype == '일반 회원 초대'}">
+                                        <a href="${pageContext.request.contextPath}/inviteManage">
+                                            <c:out value="${alarm.message} (일반회원)" escapeXml="false"/></a>
+                                    </c:if>
+                                    <c:if test="${alarm.atype == '초대 거절'}">
+                                        <c:out value="${alarm.message}" escapeXml="false"/>
+                                    </c:if>
                                 </div>
                                 <!-- 확인 및 삭제 버튼 추가 -->
                                 <div>

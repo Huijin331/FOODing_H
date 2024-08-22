@@ -1,7 +1,9 @@
 package com.sw.fd.controller;
 
+import com.sw.fd.entity.Alarm;
 import com.sw.fd.entity.Invite;
 import com.sw.fd.entity.Member;
+import com.sw.fd.service.AlarmService;
 import com.sw.fd.service.InviteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,8 @@ import java.util.List;
 public class InviteController {
     @Autowired
     private InviteService inviteService;
+    @Autowired
+    private AlarmService alarmService;
 
     @GetMapping("/inviteManage")
     public String inviteManage(Model model, HttpSession session) {
@@ -64,6 +68,18 @@ public class InviteController {
                 invite.setItype(8); // itype을 8로 변경
             }
             inviteService.saveInvite(invite); // 업데이트된 엔티티를 저장
+
+            // 알림 엔티티 생성 및 설정
+            Alarm alarm = new Alarm();
+            alarm.setLinkedPk(String.valueOf(invite.getIno())); // 초대 엔티티의 ino 값을 문자열로 설정
+            alarm.setAtype("초대 거절");
+            // 초대한 회원의 mno로 알림을 받을 회원 설정
+            Member invitingMember = invite.getMemberGroup().getMember(); // 초대한 회원
+            alarm.setMember(invitingMember); // 알림을 받을 회원
+            alarm.setIsChecked(0); // 확인 여부는 0 (미확인 상태)
+
+            // 알림 정보 저장
+            alarmService.saveAlarm(alarm);
         }
 
         return "redirect:/inviteManage";
