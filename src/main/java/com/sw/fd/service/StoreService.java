@@ -5,6 +5,9 @@ import com.sw.fd.entity.Store;
 import com.sw.fd.entity.StoreTag;
 import com.sw.fd.entity.Tag;
 import com.sw.fd.repository.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.strtree.STRtree;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +46,7 @@ public class StoreService {
 
     // Store 객체 캐시를 위한 맵
     private Map<Integer, Store> storeCache = new HashMap<>();
+    private STRtree storeTree = new STRtree();
 
     // 처음 프로그램을 시작할 때 pick수와 별점 평균을 계산해서 캐시로 저장하기 위해 추가함
     @PostConstruct
@@ -51,12 +55,30 @@ public class StoreService {
         for (Store store : stores) {
             updateStoreTags(store);
             calculateAndCacheStoreScores(store);
+
+            // STRtree에 가게 위치를 추가 (거리 계산은 필요 없음)
+            double[] coordinates = locationService.getCoordinates(store.getSaddr());
+            Coordinate coord = new Coordinate(coordinates[0], coordinates[1]);
+            storeTree.insert(new Envelope(coord), store);
         }
     }
 
     @Transactional
+    public void updateStoreInCache(int sno) {
+        Store store = storeRepository.findBySno(sno).orElse(null);
+        if (store != null) {
+            // 별점 평균과 Pick 수를 다시 계산
+            calculateAndCacheStoreScores(store);
+
+            // 태그 수 갱신
+            updateStoreTags(store);
+        }
+    }
+
+
+    @Transactional
     public void calculateAndCacheStoreScores(Store store) {
-        Double averageScore = reviewRepository.findAverageScoreBySno(store.getSno());
+        Double averageScore = reviewRepository.findAverageRstarBySno(store.getSno());
         store.setScoreArg(averageScore != null ? averageScore : 0);
 
         int pickCount = pickRepository.countBySno(store.getSno());
@@ -93,7 +115,7 @@ public class StoreService {
 
     @Transactional
     public void updateStoreTags(Store store) {
-        List<ReviewTag> reviewTags = reviewTagRepository.findByReview_Store_Sno(store.getSno());
+        List<ReviewTag> reviewTags = reviewTagRepository.findValidReviewTagsByStoreSno(store.getSno());
 
         if (reviewTags == null || reviewTags.isEmpty()) {
             return;
@@ -241,16 +263,35 @@ public class StoreService {
         if (storeCache.isEmpty()) {
             initializeStoreScores();
         }
-        List<Store> nearbyStores = new ArrayList<>();
-        for (Store store : storeCache.values()) {
+
+        System.out.println("getNearbyStores으로 진입");
+        // 사용자의 위치를 기반으로 검색할 영역 설정 (2km 반경)
+        double searchRadius = 0.018; // 위도와 경도의 1도가 약 111km이므로 2km에 해당하는 도수
+        Envelope searchEnv = new Envelope(
+                userLat - searchRadius, userLat + searchRadius,
+                userLon - searchRadius, userLon + searchRadius
+        );
+
+
+        // STRtree를 사용하여 근처 가게 검색
+        @SuppressWarnings("unchecked")
+        List<Store> nearbyStores = storeTree.query(searchEnv);
+        for (Store store : nearbyStores) {
+            System.out.println(store);
+        }
+
+        // 정확한 거리 계산 후 2km 이내 가게 필터링
+        List<Store> filteredStores = new ArrayList<>();
+        for (Store store : nearbyStores) {
             double[] coordinates = locationService.getCoordinates(store.getSaddr());
             double distance = calculateDistance(userLat, userLon, coordinates[0], coordinates[1]);
             if (distance <= 2) {
                 store.setDistance(distance); // 거리 저장하는 부분
-                nearbyStores.add(store);
+                filteredStores.add(store);
             }
         }
-        return nearbyStores;
+
+        return filteredStores;
     }
 
 }

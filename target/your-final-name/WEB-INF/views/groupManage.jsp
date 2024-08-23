@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -18,25 +19,44 @@
             <h1>관리할 모임 리스트</h1>
             <table class="groupManage-table">
                 <thead>
+                <%------그룹 이미지를 띄워주는 것으로 수정(다혜)------%>
                 <tr>
-                    <th>번호</th>
+                    <th>그룹 이미지</th>
                     <th colspan="2" align="center">모임명</th>
                     <th>모임 생성 날짜</th>
                 </tr>
                 </thead>
+                <%--------------희진씨의 원래 모임이름 수정 코드---------------%>
                 <tbody>
-                    <c:forEach var="group" items="${leaderGroups}" varStatus="status">
-                        <tr>
-                            <td>${status.index + 1}</td>
+                <c:forEach var="group" items="${leaderGroups}" varStatus="status">
+                    <tr>
+                        <td>
+                            <c:choose>
+                                <c:when test="${not empty group.gimage}">
+                                    <img src="${pageContext.request.contextPath}${group.gimage}" alt="Group Image" style="max-width: 100px; max-height: 100px;">
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/resources/images/default-group.png" alt="Default Group Image" style="max-width: 100px; max-height: 100px;">
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                             <td>${group.gname}</td>
-                            <td>
+                            <%--------------희진씨의 원래 모임이름 수정 코드---------------%>
+                            <%--<td>
                                 <form action="${pageContext.request.contextPath}/updateGroupName" method="post">
                                     <input type="hidden" name="gno" value="${group.gno}">
                                     <input type="text" name="newGname" value="${group.gname}" required>
                                     <input type="submit" value="수정">
                                 </form>
                             </td>
-                            <td>${group.gdate}</td>
+                            <td>${group.gdate}</td>--%>
+                            <td>
+                                <form id="editForm${group.gno}">
+                                    <input type="hidden" name="gno" value="${group.gno}">
+                                    <input type="button" value="수정" onclick="openEditWindow(${group.gno});">
+                                </form>
+                            </td>
+                            <td><<%--fmt:formatDate pattern="yy년 MM월 dd일" value="--%>${group.gdate}"<%--/>--%></td>
                         </tr>
                         <c:set var="mnickString" value=""/>
                         <c:forEach var="memberGroup" items="${allMemberGroups}">
@@ -115,4 +135,15 @@
         </div>
     </div>
 </section>
+
+<%--모임방 프로필 설정을 위해 추가한 부분(다혜)--%>
+<script>
+    function openEditWindow(gno) {
+        var url = "${pageContext.request.contextPath}/editGroup?gno=" + gno;
+        var name = "editGroup";
+        var specs = "width=750,height=400";
+        window.open(url, name, specs);
+    }
+
+</script>
 <c:import url="/bottom.jsp"/>

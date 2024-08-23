@@ -14,12 +14,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +48,9 @@ public class MemberController {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private ServletContext servletContext;
 
     @GetMapping("/registerSelect")
     public String selectRegister() {
@@ -67,6 +78,15 @@ public class MemberController {
 
     @PostMapping("/register/user")
     public String registerUser(@Valid @ModelAttribute("member") Member member, BindingResult bindingResult, Model model) {
+        // 생년월일 형식 검증
+        try {
+            if (member.getMbirth() != null) {
+                LocalDate.parse(member.getMbirth().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+            }
+        } catch (DateTimeParseException e) {
+            bindingResult.rejectValue("mbirth", "error.member", "생년월일이 올바른 형식이 아닙니다. (예: YYYYMMDD)");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("memberType", "손님");
             return "registerUser";
@@ -97,6 +117,15 @@ public class MemberController {
 
     @PostMapping("/register/owner")
     public String registerOwner(@Valid @ModelAttribute("member") Member member, BindingResult bindingResult, Model model) {
+        // 생년월일 형식 검증
+        try {
+            if (member.getMbirth() != null) {
+                LocalDate.parse(member.getMbirth().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+            }
+        } catch (DateTimeParseException e) {
+            bindingResult.rejectValue("mbirth", "error.member", "생년월일이 올바른 형식이 아닙니다. (예: YYYYMMDD)");
+        }
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("memberType", "사장님");
             return "registerOwner";
@@ -187,17 +216,18 @@ public class MemberController {
 
         } else {
 
-            loggedInMember.setMpass("");
-            model.addAttribute("member", loggedInMember);
+            //프로필 파일을 표시하기 위해 추가&수정(다혜)
+            Member viewMember = memberService.findMemberByMno(loggedInMember.getMno());
+            viewMember.setMpass("");
+            model.addAttribute("member", viewMember);
+
             return "editMember"; // 수정 폼으로 이동
         }
     }
 
     @PostMapping("/member/edit")
     public String updateMember(@ModelAttribute("member") @Valid Member updatedMember,
-                               BindingResult bindingResult, Model model) {
-
-
+                               BindingResult bindingResult, Model model, /*프로필 업로드를 위해 추가(다혜)*/ @RequestParam("mimageFile") MultipartFile mimageFile){
         if (bindingResult.hasErrors()) {
             return "editMember"; // 입력 폼으로 다시 이동
         }
@@ -215,6 +245,27 @@ public class MemberController {
             existingMember.setMphone(updatedMember.getMphone());
             existingMember.setMemail(updatedMember.getMemail());
             existingMember.setMaddr(updatedMember.getMaddr());
+
+
+            /*------------ 프로필 파일을 업로드하기 위해 추가(다혜)-----------*/
+            if (!mimageFile.isEmpty()) {
+                try {
+                    String fileName = mimageFile.getOriginalFilename();
+                    String uploadDir = servletContext.getRealPath("/resources/images/");
+                    System.out.println("File saved at: " + uploadDir);
+                    String filePath = Paths.get(uploadDir, fileName).toString();
+
+                    mimageFile.transferTo(new File(filePath));
+
+                    String fileUrl = "/resources/images/" + fileName;
+                    existingMember.setMimage(fileUrl);  // String 형태로 파일 경로를 설정
+                }catch (IOException e) {
+                    e.printStackTrace();
+                    return "redirect:/errorPage";
+                }
+            }
+            /*------------ ------------------------------------------------*/
+
 
             memberService.updateMember(existingMember); // 회원 정보 업데이트
             model.addAttribute("message", "회원 정보가 성공적으로 수정되었습니다.");

@@ -10,7 +10,6 @@
 }
 
 .section-mypage h2 {
-    font-size: 24px;
     margin-bottom: 15px;
     color : saddlebrown;
     font-weight: bold;
@@ -49,3 +48,8 @@
 .section-mypage a:hover {
     background-color: rgb(222, 201, 171);
 }
+
+.section-mypage a:link { color : white; text-decoration : none }
+.section-mypage a:visited { color : white; text-decoration : none }
+.section-mypage a:active { color : orange; text-decoration : none }
+.section-mypage a:hover { color : #ffea00; text-decoration : none }

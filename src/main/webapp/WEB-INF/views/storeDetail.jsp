@@ -29,6 +29,18 @@
             <c:when test="${store.scate == '중식'}">
                 <img id="store-img" src="${pageContext.request.contextPath}/resources/store_images/chinese_food.jpg">
             </c:when>
+            <c:when test="${store.scate == '중식'}">
+                <img id="store-img" src="${pageContext.request.contextPath}/resources/store_images/chinese_food.jpg">
+            </c:when>
+            <c:when test="${store.scate == '중식'}">
+                <img id="store-img" src="${pageContext.request.contextPath}/resources/store_images/chinese_food.jpg">
+            </c:when>
+            <c:when test="${store.scate == '중식'}">
+                <img id="store-img" src="${pageContext.request.contextPath}/resources/store_images/chinese_food.jpg">
+            </c:when>
+            <c:when test="${store.scate == '중식'}">
+                <img id="store-img" src="${pageContext.request.contextPath}/resources/store_images/chinese_food.jpg">
+            </c:when>
             <c:otherwise>
                 <img id="store-img" src="${pageContext.request.contextPath}/resources/store_images/fastfood.jpg">
             </c:otherwise>

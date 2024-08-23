@@ -6,18 +6,18 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>FOODing 가게리스트 - 찜별</title>
+    <title>FOODing 가게리스트 - 순위별</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/storeList.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <c:import url="/top.jsp" />
 <section class="content">
-    <h1>순위별 가게 리스트</h1>
+    <h1>순위별 맛집</h1>
     <div class="sort-area">
-        <a class="sort-element" id="sort_by_pick" href="#">찜 많은순</a>
+        <a class="sort-element ${sortStandard == 'pick' ? 'active' : ''}" id="sort_by_pick" href="#">찜 많은순</a>
         <p class="sort-element">|</p>
-        <a class="sort-element" id="sort_by_score" href="#">별점 높은순</a>
+        <a class="sort-element ${sortStandard == 'score' ? 'active' : ''}" id="sort_by_score" href="#">별점 높은순</a>
     </div>
     <table class="store-table">
         <thead>
@@ -68,7 +68,7 @@
                             <img src="${pageContext.request.contextPath}/resources/store_images/pub_icon.png" alt="술집">
                         </c:when>
                         <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/resources/store_images/global_food_icon.png" alt="기타음식">
+                            <img src="${pageContext.request.contextPath}/resources/store_images/other_food_icon.png" alt="기타음식">
                         </c:otherwise>
                     </c:choose>
                 </td>
@@ -98,31 +98,44 @@
 <c:import url="/bottom.jsp" />
 
 <script>
-    $(document).ready(function() {
-        function loadStoreList(sortBy) {
-            $.ajax({
-                url: '${pageContext.request.contextPath}/storeListByRank',
-                type: 'GET',
-                data: { sortBy: sortBy },
-                success: function(response) {
-                    $('#store-list').html($(response).find('#store-list').html());
-                    $('#sort-header').html($(response).find('#sort-header').html());
-                },
-                error: function(xhr, status, error) {
-                    console.log('Error loading stores:', status, error);
+    var sortStandard = '${sortStandard}';
+
+    $
+    function loadStoreList(sortBy) {
+        $('#waiting-comment').text('가게 목록을 불러오는 중입니다. 잠시만 기다려주세요...');
+        $.ajax({
+            url: '${pageContext.request.contextPath}/storeListByRank',
+            type: 'GET',
+            data: {
+                sortBy: sortBy
+            },
+            success: function(response) {
+                $('#store-list').html($(response).find('#store-list').html());
+                $('#sort-header').html($(response).find('#sort-header').html());
+
+                // 정렬 기준에 따라 활성화된 버튼 상태 유지
+                if (sortBy === 'score') {
+                    $('#sort_by_score').addClass('active');
+                    $('#sort_by_pick').removeClass('active');
+                } else {
+                    $('#sort_by_pick').addClass('active');
+                    $('#sort_by_score').removeClass('active');
                 }
-            });
-        }
-
-        $('#sort_by_pick').click(function(event) {
-            event.preventDefault();
-            loadStoreList('pick');
+            },
+            error: function(xhr, status, error) {
+                console.log('Error loading stores:', status, error);
+            }
         });
+    }
 
-        $('#sort_by_score').click(function(event) {
-            event.preventDefault();
-            loadStoreList('score');
-        });
+    $('#sort_by_pick').click(function(event) {
+        event.preventDefault();
+        loadStoreList('pick');
+    });
+
+    $('#sort_by_score').click(function(event) {
+        event.preventDefault();
+        loadStoreList('score');
     });
 </script>
 </body>

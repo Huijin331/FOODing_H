@@ -34,4 +34,9 @@ public class Store {
 
     @Transient
     private double scoreArg;
+
+    @Override
+    public String toString() {
+        return "Store{ sno=" + sno + ", sname=" + sname + ", pickNum=" + pickNum + "scoreArg=" + scoreArg + " }";
+    }
 }

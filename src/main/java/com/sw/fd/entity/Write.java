@@ -35,6 +35,9 @@ public class Write {
     @Column(name = "wcontent", nullable = false)
     private String wcontent;
 
+    @Transient
+    private String dateToString;
+
     @PrePersist
     protected void onCreate() {
         wdate = LocalDateTime.now();

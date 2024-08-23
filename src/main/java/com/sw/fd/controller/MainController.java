@@ -77,35 +77,39 @@ public class MainController {
         if (loggedInMember != null) {
             myMemberGroups = memberGroupService.getMemberGroupsWithGroup(loggedInMember);
 
-            for (MemberGroupDTO memberGroup : myMemberGroups) {
-                int thisGno = memberGroup.getGroup().getGno();
-                // 해당 gno 그룹의 모든 맴버 닉네임을 한줄의 String으로 만들어서 gno와 함께 Map화 (key= gno, value= 모임방의 모든 맴버 닉네임)
-                allMemberList.put(thisGno, memberGroupService.findMnicksByGroupGno(thisGno));
-                // 해당 gno 그룹의 모임장을 찾아서 모임장의 닉네임을 gno와 함께 Map화 (key= gno, value= 모임장 닉네임)
-                if(memberGroupService.getLeaderByGno(thisGno) != null) {
-                    leaderList.put(thisGno, memberGroupService.getLeaderByGno(thisGno).getMember().getMnick());
-                    model.addAttribute("leaderList", leaderList);
+            if (myMemberGroups.isEmpty())
+                model.addAttribute("myMemberGroups", null);
+            else {
+                for (MemberGroupDTO memberGroup : myMemberGroups) {
+                    int thisGno = memberGroup.getGroup().getGno();
+                    // 해당 gno 그룹의 모든 맴버 닉네임을 한줄의 String으로 만들어서 gno와 함께 Map화 (key= gno, value= 모임방의 모든 맴버 닉네임)
+                    allMemberList.put(thisGno, memberGroupService.findMnicksByGroupGno(thisGno));
+                    // 해당 gno 그룹의 모임장을 찾아서 모임장의 닉네임을 gno와 함께 Map화 (key= gno, value= 모임장 닉네임)
+                    if (memberGroupService.getLeaderByGno(thisGno) != null) {
+                        leaderList.put(thisGno, memberGroupService.getLeaderByGno(thisGno).getMember().getMnick());
+                    }
                 }
-                else {
-                    model.addAttribute("leaderList", null);
-                }
+                model.addAttribute("myMemberGroups", myMemberGroups);
+                model.addAttribute("leaderList", leaderList);
+                model.addAttribute("allMemberList", allMemberList);
             }
         }
 
+        List<Store> stores1 = storeService.getAllStores();
+        List<Store> stores2 = storeService.getAllStores();
+        stores1.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
+        List<Store> rankedByScoreStores = stores1.subList(0, 5);
+        stores2.sort(Comparator.comparingDouble(Store::getPickNum).reversed());
+        List<Store> rankedByPickStores = stores2.subList(0, 5);
 
-        List<Store> stores = storeService.getAllStores();
-        stores.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
-        List<Store> rankedStores = stores.subList(0, 5);
-
-        model.addAttribute("myMemberGroups", myMemberGroups);
-        model.addAttribute("allMemberList", allMemberList);
-        model.addAttribute("stores", rankedStores);
+        model.addAttribute("rankByScore", rankedByScoreStores);
+        model.addAttribute("rankByPick", rankedByPickStores);
 
 
         return "main";
     }
-
-    // 확인 버튼 클릭 시 알림의 isChecked 상태를 1로 변경 (희진 추가)
+	
+	// 확인 버튼 클릭 시 알림의 isChecked 상태를 1로 변경 (희진 추가)
     @PostMapping("/alarmChecked")
     public String alarmChecked(@RequestParam("alarmId") int alarmId, HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
@@ -119,8 +123,9 @@ public class MainController {
         }
         return "redirect:/main";
     }
-
-    /* 알림 기능 추가 (희진) */
+	
+	
+	/* 알림 기능 추가 (희진) */
     @PostMapping("/alarmDelete")
     public String alarmDelete(@RequestParam("alarmId") int alarmId, HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");

@@ -26,16 +26,21 @@ public class PickService {
     @Autowired
     public PfolderRepository pfolderRepository;
 
+    @Autowired
+    private StoreService storeService;
+
 
     public boolean togglePick(int mno, int sno, int pfno) {
         Member member = memberRepository.findByMno(mno).orElseThrow(() -> new RuntimeException("로그인 정보를 불러오는 데 실패했습니다."));;
         Store store = storeRepository.findBySno(sno).orElseThrow(() -> new RuntimeException("가게 정보를 불러오는 데 실패했습니다."));;
         Pfolder pfolder = pfolderRepository.findByPfno(pfno).orElseThrow(() -> new RuntimeException("폴더 정보를 불러오는 데 실패했습니다."));;
 
-
         Pick existingPick = pickRepository.findByMemberAndStore(member, store);
         if (existingPick != null) {
             pickRepository.delete(existingPick);
+
+            // 가게 Pick수 계산을 위해 추가(다혜)
+            storeService.updateStoreInCache(existingPick.getStore().getSno());
             return false;
 /*            try {
                 // 참조된 레코드를 먼저 처리 (예: pfno를 NULL로 설정)
@@ -54,8 +59,12 @@ public class PickService {
         } else {
             Pick newPick = new Pick(member, store, pfolder);
             pickRepository.save(newPick);
+
+            // 가게 Pick수 계산을 위해 추가(다혜)
+            storeService.updateStoreInCache(newPick.getStore().getSno());
             return true;
         }
+
     }
 
     public boolean isPicked(int mno, int sno) {

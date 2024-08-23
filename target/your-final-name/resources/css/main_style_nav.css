@@ -50,7 +50,7 @@ nav {
 .nav:hover { color : #ffea00; text-decoration : none; }
 
 ul li { list-style : none; }
-a { text-decoration : none; }
+.nav a { text-decoration : none; }
 
 .snb {
     display : flex;

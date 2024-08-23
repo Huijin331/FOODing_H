@@ -13,7 +13,7 @@
 <body>
 <c:import url="/top.jsp" />
 <section class="content">
-    <h1>태그별 가게 리스트</h1>
+    <h1>태그별 맛집</h1>
     <div class="stag-area">
         <c:forEach var="stag" items="${allTags}">
                 <button type="button" class="main-tag-button" data-tno="${stag.tno}">${stag.ttag}</button>
@@ -74,7 +74,7 @@
                             <img src="${pageContext.request.contextPath}/resources/store_images/pub_icon.png" alt="술집">
                         </c:when>
                         <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/resources/store_images/global_food_icon.png" alt="기타음식">
+                            <img src="${pageContext.request.contextPath}/resources/store_images/other_food_icon.png" alt="기타음식">
                         </c:otherwise>
                     </c:choose>
                 </td>

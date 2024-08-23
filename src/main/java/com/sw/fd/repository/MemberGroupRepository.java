@@ -46,4 +46,4 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Intege
 
     @Query("SELECT mg FROM MemberGroup mg WHERE mg.group.gno = :gno AND mg.jauth = 1")
     List<MemberGroup> findByGroupGnoAndJauthIsOne(@Param("gno") int gno);
-}
+ }

@@ -33,6 +33,7 @@
             if (addr.trim() === "") {
                 alert("주소를 입력하세요.");
             } else {
+                $('#waiting-comment').text('가게 목록을 불러오는 중입니다. 잠시만 기다려주세요...');
                 document.getElementById("inputLocationForm").submit();
             }
         }
@@ -45,6 +46,7 @@
                     var lon = position.coords.longitude;
                     document.getElementById('userLat').value = lat;
                     document.getElementById('userLon').value = lon;
+                    $('#waiting-comment').text('가게 목록을 불러오는 중입니다. 잠시만 기다려주세요...');
                     document.getElementById('userLocationForm').submit();
                 });
             } else {
@@ -56,20 +58,32 @@
 <body>
 <c:import url="/top.jsp" />
 <section class="content">
-    <h1>위치별 가게 리스트</h1>
-    <p>현재 위치: ${nowAddr}</p>
-    <div class="location-set">
-    <form id="inputLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
-        <input type="text" id="inputAddr" name="inputAddr" placeholder="주소"/>
-        <button class="location-btn" type="button" onclick="sample5_execDaumPostcode()">주소 찾기</button>
-        <button class="location-btn" type="button" onclick="validateAndSubmitForm()">해당 주소로 검색</button>
-    </form>
-    <form id="userLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
-        <input type="hidden" id="userLat" name="userLat" value="${defaultLat}" />
-        <input type="hidden" id="userLon" name="userLon" value="${defaultLon}" />
-        <button class="location-btn" type="button" onclick="getLocationAndSubmit()">내 위치로 검색</button>
-    </form>
+    <h1>위치별 맛집</h1>
+    <div class="now-location-area">
+        <img src="${pageContext.request.contextPath}/resources/store_images/where_now.png"><p>현재 위치 :</p><p style="font-weight: bolder">${nowAddr}<p>
     </div>
+    <div class="location-set">
+        <form id="inputLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
+            <input type="text" id="inputAddr" name="inputAddr" placeholder="주소"/>
+            <button class="location-btn" type="button" onclick="sample5_execDaumPostcode()">
+                <img src="${pageContext.request.contextPath}/resources/store_images/addr_setting_icon.png">
+                <p>주소 찾기</p>
+            </button>
+            <button class="location-btn" type="button" onclick="validateAndSubmitForm()">
+                <img src="${pageContext.request.contextPath}/resources/store_images/addr_search_icon.png">
+                <p>해당 주소로 검색</p>
+            </button>
+        </form>
+        <form id="userLocationForm" action="${pageContext.request.contextPath}/storeListByLocation" method="get">
+            <input type="hidden" id="userLat" name="userLat" value="${defaultLat}"/>
+            <input type="hidden" id="userLon" name="userLon" value="${defaultLon}"/>
+            <button class="location-btn" type="button" onclick="getLocationAndSubmit()">
+                <img src="${pageContext.request.contextPath}/resources/store_images/gps_icon.png">
+                <p>내 위치로 검색</p>
+            </button>
+        </form>
+    </div>
+    <p id="waiting-comment"> </p>
     <table class="store-table">
         <thead>
         <tr>
@@ -114,7 +128,7 @@
                             <img src="${pageContext.request.contextPath}/resources/store_images/pub_icon.png" alt="술집">
                         </c:when>
                         <c:otherwise>
-                            <img src="${pageContext.request.contextPath}/resources/store_images/global_food_icon.png" alt="기타음식">
+                            <img src="${pageContext.request.contextPath}/resources/store_images/other_food_icon.png" alt="기타음식">
                         </c:otherwise>
                     </c:choose>
                 </td>

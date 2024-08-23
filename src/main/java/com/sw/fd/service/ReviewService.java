@@ -24,7 +24,7 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private StoreRepository storeRepository;
+    private StoreService storeService;
 
     @Autowired
     private TagRepository tagRepository;
@@ -37,6 +37,9 @@ public class ReviewService {
         if (review.getRno() == 0) {
             review.setRdate(LocalDateTime.now());
         }
+        // 가게 별점 평균 계산을 위해 추가(다혜)
+        storeService.updateStoreInCache(review.getStore().getSno());
+
         return reviewRepository.save(review);
     }
 
@@ -48,24 +51,24 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public List<Review> getReviewsBySno(int sno) {
-        return reviewRepository.findByStore_Sno(sno);
-    }
-
-
-    @Transactional
-    public List<Review> getReviewsByMno(int mno) {
-        return reviewRepository.findByMember_Mno(mno);
-    }
-
-    public void deleteReviewByRno(int rno) {
-        reviewRepository.delete(rno);
-    }
-
     @Transactional
     public void deleteReviewTags(Review review) {
         reviewTagRepository.deleteTags(review);
     }
 
+    /*--------------------------- 리뷰 미삭제 처리를 위해서 수정한 함수들 (다혜) ------------------------*/
+
+    public List<Review> getReviewsBySno(int sno) {
+        return reviewRepository.findValidReviewsByStoreSno(sno);
+    }
+
+    @Transactional
+    public List<Review> getReviewsByMno(int mno) {
+        return reviewRepository.findValidReviewsByMemberMno(mno);
+    }
+
+    public void deleteReviewByRno(int rno) {
+        reviewRepository.markReviewAsDeleted(rno);
+    }
 
 }

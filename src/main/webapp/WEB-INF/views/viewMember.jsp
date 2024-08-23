@@ -37,6 +37,22 @@
                         </p>
                     </td>
                 </tr>
+                <%-------------- 프로필 파일을 표시하기 위해 추가(다혜)-------------%>
+                <tr>
+                    <td><label for="mimage">프로필 이미지</label></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${not empty member.mimage}">
+                                <!-- 설정된 이미지가 있을 경우 -->
+                                <img src="${pageContext.request.contextPath}${member.mimage}" alt="Profile Image" style="max-width: 150px; max-height: 150px;">
+                            </c:when>
+                            <c:otherwise>
+                                <!-- 기본 이미지(빈 이미지)를 표시 -->
+                                <img src="${pageContext.request.contextPath}/resources/images/default-profile.png" alt="Default Profile Image" style="max-width: 150px; max-height: 150px;">
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
                 <tr>
                     <td><label for="mnick">닉네임</label></td>
                     <td><input type="text" id="mnick" value="${member.mnick}" readonly></td>

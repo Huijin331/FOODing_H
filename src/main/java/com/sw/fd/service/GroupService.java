@@ -76,4 +76,9 @@ public class GroupService {
     public int groupMemberCount(int gno) {
         return memberGroupRepository.countByGroupGno(gno);
     }
+
+    // 모임방 수정을 위해 추가(다혜)
+    public Group findGroupByGno(int gno) {
+        return groupRepository.findByGno(gno).orElse(null);
+    }
 }
