@@ -1,6 +1,7 @@
 package com.sw.fd.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,4 +14,12 @@ public class GroupDTO {
     private int gno;
     private String gname;
     private LocalDateTime gdate;
+
+    private String gimage;
+
+    public GroupDTO(int gno, String gname, LocalDateTime gdate) {
+        this.gno = gno;
+        this.gname = gname;
+        this.gdate = gdate;
+    }
 }

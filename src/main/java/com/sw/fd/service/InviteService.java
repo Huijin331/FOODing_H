@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,5 +39,26 @@ public class InviteService {
     public void deleteInvite(int ino) {
         alarmService.deleteAlarmsByInviteId(ino);
         inviteRepository.delete(ino);
+    }
+
+    /*----------------모임장 수락을 위해 추가한 부분(다혜)-----------------------*/
+    public List<Invite> getInvitesByLeadNum(int mno) {
+        List<Invite> invites = inviteRepository.findByLeadNum(mno);
+
+        invites.removeIf(invite -> invite.getItype() != 1);
+
+        return invites;
+    }
+
+    public boolean checkInviteExists(int mno, int gno) {
+        return inviteRepository.existsByMnoAndGno(mno, gno);
+    }
+
+    public void deleteInviteWithoutAlarm(int ino) {
+        inviteRepository.delete(ino);
+    }
+
+    public void deleteAlarmsByIno(int ino) {
+        alarmService.deleteAlarmsByInviteId(ino);
     }
 }

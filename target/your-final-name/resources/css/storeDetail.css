@@ -25,6 +25,30 @@ section {
     display: flex;
     flex-direction: row;
     height: 100px;
+    justify-content: space-between;
+}
+
+.s-first-area {
+    display: flex;
+    flex-direction: row;
+}
+
+.pickNum-area{
+    display: inline-flex;
+    align-items: center;
+    margin-top: 20px;
+    height: fit-content;
+}
+
+.pickNum-area p{
+    margin-left: 6px;
+    margin-bottom: 10%;
+    font-weight: bold;
+    color: #e8ab00;
+}
+
+.pickNum-area img{
+    width: 36px;
 }
 
 #store-img {

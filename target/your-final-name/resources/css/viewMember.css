@@ -4,6 +4,18 @@ section {
     align-content: center;
     flex: 1;
 }
+
+@font-face {
+    font-family: 'TTLaundryGothicB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.head{
+    font-family: 'TTLaundryGothicB';
+}
+
 .view-container {
     width: 650px;
     margin: 50px auto; /* 가운데 정렬을 위해 margin 사용 */

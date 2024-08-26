@@ -191,31 +191,33 @@ public class StoreController {
         return "storeListByScate";
     }
 
-   /* @GetMapping("/searchStore")
-    public String searchStoreByKeyword(@RequestParam(value = "sortBy", required = false) String sortBy, @RequestParam(value = "scates", required = false) String scates, Model model) {
-        List<Store> storesByScate = new ArrayList<>();
-        if (scates != null && !scates.trim().isEmpty()) {
-            String[] selectedScates = scates.split(",");
 
-            for (String scate : selectedScates) {
-                storesByScate.addAll(storeService.getStoresByCategory(scate));
+    @GetMapping("/searchResultView")
+    public String searchStoreByKeyword(@RequestParam(value = "sortBy", required = false) String sortBy, @RequestParam(value = "searchKeyword", required = false) String searchKeyword, Model model) {
+
+        model.addAttribute("searchKeyword", searchKeyword);
+        List<Store> storesBykeyword = storeService.getAllStores();
+        if (searchKeyword != null && !searchKeyword.isEmpty()) {
+            searchKeyword = searchKeyword.replaceAll("[^a-zA-Z0-9가-힣\\s]", "");
+            String[] keywords = searchKeyword.split("\\s+");
+
+            for (String keyword : keywords) {
+                System.out.println("검색 키워드: "+ keyword);
+                storesBykeyword = storeService.getStoresBykeyword(keyword, storesBykeyword);
             }
         }
-        else{
-            storesByScate = storeService.getAllStores();
-        }
 
-        storesByScate.sort(Comparator.comparingDouble(Store::getSno).reversed());
+        storesBykeyword.sort(Comparator.comparingDouble(Store::getSno).reversed());
         if ("score".equals(sortBy)) {
-            storesByScate.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
+            storesBykeyword.sort(Comparator.comparingDouble(Store::getScoreArg).reversed());
             model.addAttribute("sortStandard", "score");
         } else {
-            storesByScate.sort(Comparator.comparingInt(Store::getPickNum).reversed());
+            storesBykeyword.sort(Comparator.comparingInt(Store::getPickNum).reversed());
             model.addAttribute("sortStandard", "pick");
         }
 
-        model.addAttribute("stores", storesByScate);
+        model.addAttribute("stores", storesBykeyword);
 
-        return "storeListByScate";
-    }*/
+        return "searchResultView";
+    }
 }

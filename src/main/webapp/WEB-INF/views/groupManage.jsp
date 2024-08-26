@@ -2,7 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="tf" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +21,7 @@
                 <thead>
                 <%------그룹 이미지를 띄워주는 것으로 수정(다혜)------%>
                 <tr>
+                    <th>번호</th>
                     <th>그룹 이미지</th>
                     <th colspan="2" align="center">모임명</th>
                     <th>모임 생성 날짜</th>
@@ -30,6 +31,7 @@
                 <tbody>
                 <c:forEach var="group" items="${leaderGroups}" varStatus="status">
                     <tr>
+                        <td>${status.index + 1}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${not empty group.gimage}">
@@ -56,7 +58,7 @@
                                     <input type="button" value="수정" onclick="openEditWindow(${group.gno});">
                                 </form>
                             </td>
-                            <td><<%--fmt:formatDate pattern="yy년 MM월 dd일" value="--%>${group.gdate}"<%--/>--%></td>
+                        <td><tf:formatDateTime value="${group.gdate}" pattern="yyyy-MM-dd" /></td>
                         </tr>
                         <c:set var="mnickString" value=""/>
                         <c:forEach var="memberGroup" items="${allMemberGroups}">
@@ -67,11 +69,31 @@
                             </c:choose>
                         </c:forEach>
                         <tr>
-                            <td colspan="4" align="center">
+                            <td colspan="5" align="center">
                                     ${mnickString}
                             </td>
                         </tr>
+                    <c:forEach var="invite" items="${invites}">
+                        <c:if test="${invite.memberGroup.group.gno == group.gno}">
+                            <tr>
+                                <td>초대 대상</td>
+                                <td>${invite.member.mnick}</td>
+                                <td colspan="3">
+                                        <form action="${pageContext.request.contextPath}/leaderAcceptInvite" method="post"
+                                              style="display:inline;">
+                                            <input type="hidden" name="inviteId" value="${invite.ino}"/>
+                                            <button type="submit" class="btn btn-success">모임장 수락</button>
+                                        </form>
+                                        <form action="${pageContext.request.contextPath}/leaderRejectInvite" method="post"
+                                              style="display:inline;">
+                                            <input type="hidden" name="inviteId" value="${invite.ino}"/>
+                                            <button type="submit" class="btn btn-warning">모임장 거절</button>
+                                        </form>
+                                </td>
+                            </tr>
+                        </c:if>
                     </c:forEach>
+                </c:forEach>
                 </tbody>
             </table>
             <c:if test="${not empty error}">
@@ -135,7 +157,6 @@
         </div>
     </div>
 </section>
-
 <%--모임방 프로필 설정을 위해 추가한 부분(다혜)--%>
 <script>
     function openEditWindow(gno) {

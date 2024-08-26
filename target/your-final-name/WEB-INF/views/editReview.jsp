@@ -6,15 +6,29 @@
 <script>
     var selectedTags = [];
 
+    function toggleTagList() {
+        var tagList = document.getElementById('tagList');
+        if (tagList.style.display === 'none' || tagList.style.display === '') {
+            tagList.style.display = 'block';
+        } else {
+            tagList.style.display = 'none';
+        }
+    }
+
+    var selectedTags = [];
+
     function toggleTag(tno, button) {
         var index = selectedTags.indexOf(tno);
         if (index === -1) {
+            // 태그가 선택되지 않았으면 추가
             selectedTags.push(tno);
             button.classList.add('selected');
         } else {
+            // 태그가 이미 선택되었으면 제거
             selectedTags.splice(index, 1);
             button.classList.remove('selected');
         }
+        // 선택된 태그 ID를 hidden input에 설정
         document.getElementById('tnos').value = selectedTags.join(',');
     }
 
@@ -61,17 +75,37 @@
             <form:textarea path="rcomm" id="rcomm" class="custom-textarea" placeholder="리뷰 내용을 입력하세요."></form:textarea>
         </div>
         <div class="form group">
-            <p>태그를 선택하세요</p>
-            <div class="tag-buttons">
-                <c:forEach var="tag" items="${tags}">
-                    <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">${tag.ttag}</button>
-                </c:forEach>
+            <button type="button" class="toggle-button" onclick="toggleTagList()">태그를 선택하세요 ▼</button>
+            <div class="tag-buttons" id="tagList">
+                <div class="tag-group">
+                    <c:forEach var="tag" items="${tags}">
+                        <c:if test="${tag.tno >=101 && tag.tno <=107}">
+                            <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">
+                                <img src="${pageContext.request.contextPath}/resources/tag_images/${tag.tno}.svg" class="tag-icon">${tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="tag-group">
+                    <c:forEach var="tag" items="${tags}">
+                        <c:if test="${tag.tno >=201 && tag.tno <=207}">
+                            <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">
+                                <img src="${pageContext.request.contextPath}/resources/tag_images/${tag.tno}.svg" class="tag-icon">${tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
+                <div class="tag-group">
+                    <c:forEach var="tag" items="${tags}">
+                        <c:if test="${tag.tno >=301 && tag.tno <=307}">
+                            <button type="button" class="tag-button" onclick="toggleTag(${tag.tno}, this)">
+                                <img src="${pageContext.request.contextPath}/resources/tag_images/${tag.tno}.svg" class="tag-icon">${tag.ttag}</button>
+                        </c:if>
+                    </c:forEach>
+                </div>
             </div>
         </div>
         <div class="form-group">
             <button type="submit" class="submit-button">리뷰 수정</button>
         </div>
         <input type="hidden" name="tnos" id="tnos" />
-
     </form:form>
 </div>

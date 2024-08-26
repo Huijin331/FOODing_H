@@ -43,12 +43,10 @@
                     <td>
                         <c:choose>
                             <c:when test="${not empty member.mimage}">
-                                <!-- 설정된 이미지가 있을 경우 -->
-                                <img src="${pageContext.request.contextPath}${member.mimage}" alt="Profile Image" style="max-width: 150px; max-height: 150px;">
+                                <img src="${pageContext.request.contextPath}${member.mimage}" alt="회원 프로필 이미지" style="max-width: 150px; max-height: 150px;">
                             </c:when>
                             <c:otherwise>
-                                <!-- 기본 이미지(빈 이미지)를 표시 -->
-                                <img src="${pageContext.request.contextPath}/resources/images/default-profile.png" alt="Default Profile Image" style="max-width: 150px; max-height: 150px;">
+                                <img src="${pageContext.request.contextPath}/resources/images/default-profile.png" alt="기본 프로필 이미지" style="max-width: 150px; max-height: 150px;">
                             </c:otherwise>
                         </c:choose>
                     </td>

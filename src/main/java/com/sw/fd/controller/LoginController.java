@@ -36,7 +36,7 @@ public class LoginController {
             model.addAttribute("member", member);
             model.addAttribute("message", "로그인 성공!!");
 
-            return "redirect:/main"; // 대시보드 페이지로 리다이렉트
+            return "redirect:/main";
         } else {
             // 로그인 실패 처리
             model.addAttribute("error", "아이디 또는 비밀번호가 <br> 일치하지 않습니다.");
@@ -44,18 +44,20 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/dashboard")
+    /*@GetMapping("/dashboard")
     public String showDashboard(HttpServletRequest request, Model model) {
         // 세션에서 로그인된 회원 정보 가져오기
         HttpSession session = request.getSession(false);
+        System.out.println("이거 드들어가자 ?" +  session);
         if (session != null && session.getAttribute("loggedInMember") != null) {
             Member loggedInMember = (Member) session.getAttribute("loggedInMember");
             model.addAttribute("member", loggedInMember);
+            System.out.println("나오냐고" + loggedInMember);
             return "dashboard"; // 대시보드 페이지로 이동
         } else {
             return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
-    }
+    }*/
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {

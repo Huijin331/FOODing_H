@@ -1,23 +1,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri = "http://java.sun.com/jstl/core_rt" prefix = "c"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ include file="/WEB-INF/views/includes/cacheControl.jsp" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="tf" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset = "UTF-8">
+    <meta charset="UTF-8">
     <title>FOODing 메인화면</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel = "stylesheet" href = "${pageContext.request.contextPath}/resources/css/main_style_section.css" type = "text/css">
-    <link rel = "stylesheet" href = "${pageContext.request.contextPath}/resources/css/main_ranking_box.css" type = "text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main_style_section.css"
+          type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main_ranking_box.css" type="text/css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/slider.js"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap"  rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet"/>
 </head>
 <body>
-<c:import url = "/top.jsp" />
+<c:import url="/top.jsp"/>
 <c:if test="${not empty error}">
 <script>
     alert('${error}');
@@ -171,50 +173,48 @@
                 <c:when test="${myMemberGroups==null}">
                     <p style="height: 100px; align-content: center">해당 서비스는 로그인 후 이용 가능합니다.</p>
                 </c:when>
+                <c:when test="${myMemberGroups=='모임방x'}">
+                    <p style="height: 100px; align-content: center">참여한 모임방이 없습니다.<br>모임방에 참여해보세요!</p>
+                </c:when>
                 <c:otherwise>
-                    <c:forEach var="memberGroup" items="${myMemberGroups}">
-                        <p style="color: #dddddd">--------------------------------------------------------</p>
-                        <div class="each-group-area">
-                            <img class="group-img"
-                                 src="${pageContext.request.contextPath}/resources/images/group-thumbnail1.png"/>
-                            <table class="group-table">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${memberGroup.jauth == 1}">
-                                                ★
-                                            </c:when>
-                                            <c:otherwise>
-                                                ☆
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td><a href="#">${memberGroup.group.gname}</a></td>
-                                    <td>
-                                        <c:forEach var="entry" items="${leaderList}">
-                                            <c:if test="${entry.key == memberGroup.group.gno}">
-                                                ${entry.value}
+                    <div class="row row-cols-1 row-cols-md-2 g-4 gy-4">
+                        <c:forEach var="memberGroup" items="${myMemberGroups}">
+                            <div class="col">
+                                <div class="card h-100">
+                                    <c:choose>
+                                        <c:when test="${not empty memberGroup.group.gimage}">
+                                            <img src="${pageContext.request.contextPath}${memberGroup.group.gimage}" class="card-img-top">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="${pageContext.request.contextPath}/resources/images/default-group.png" class="card-img-top">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <c:if test="${memberGroup.jauth == 1}">
+                                            <img src="${pageContext.request.contextPath}/resources/images/leader_icon2.png">
                                             </c:if>
-                                        </c:forEach>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4" align="center">
-                                        <c:forEach var="entry" items="${allMemberList}">
-                                            <c:if test="${entry.key == memberGroup.group.gno}">
-                                                ${entry.value}
-                                            </c:if>
-                                        </c:forEach>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </c:forEach>
+                                            <a href="${pageContext.request.contextPath}/board?gno=${memberGroup.group.gno}">${memberGroup.group.gname}</a>
+                                        </h5>
+                                        <p class="card-text">
+                                            <c:forEach var="entry" items="${allMemberList}">
+                                                <c:if test="${entry.key == memberGroup.group.gno}">
+                                                    ${entry.value}
+                                                </c:if>
+                                            </c:forEach>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">
+                                            생성일: <tf:formatDateTime value="${memberGroup.group.gdate}" pattern="yyyy-MM-dd" /></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </c:otherwise>
             </c:choose>
         </div>
     </div>
 </section>
-<c:import url = "/bottom.jsp" />
+<c:import url="/bottom.jsp"/>

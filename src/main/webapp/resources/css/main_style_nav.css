@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
 
 body {
     background : white;
@@ -15,7 +16,11 @@ nav {
     align-items : center;
 }
 
+
 .nav-div {
+/*    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;*/
     color : saddlebrown;
     background : rgb(222, 201, 171);
     text-align : center;
@@ -26,7 +31,7 @@ nav {
     align-items : center;
     border-radius : 20px;
     font-size : 30px;
-    font-weight : bold;
+/*    font-weight : bold;*/
     position : relative;
 }
 
@@ -41,7 +46,8 @@ nav {
     align-items : center;
     border-radius : 20px;
     font-size : 30px;
-    font-weight : bold;
+    font-family: "Jua", sans-serif;
+    font-weight: 400;
 }
 
 .nav:link { color : saddlebrown; text-decoration : none; }

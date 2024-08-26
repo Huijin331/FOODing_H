@@ -11,6 +11,10 @@ import com.sw.fd.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PickService {
 
@@ -73,5 +77,42 @@ public class PickService {
 
         Pick existingPick = pickRepository.findByMemberAndStore(member, store);
         return existingPick != null;
+    }
+
+    public List<Pick> getPicksByMno(int mno) {
+        return pickRepository.findByMemberMno(mno);
+    }
+
+    public List<Pick> getPicksByPfolder(Pfolder pfolder) {
+        return pickRepository.findByPfolder(pfolder);
+    }
+
+    public Pick findPickByMemberAndStore(Member member, Store store) {
+        return pickRepository.findByMemberAndStore(member, store);
+    }
+
+
+
+    @Transactional
+    public void savePick(Pick pick) {
+        List<Pick> existingPicks = pickRepository.findByPfolder_PfnoAndMember_MnoAndStore_Sno(
+                pick.getPfolder().getPfno(), pick.getMember().getMno(), pick.getStore().getSno());
+        if (existingPicks.isEmpty()) {
+            pickRepository.save(pick);
+        }
+    }
+
+    public List<Pick> getPicksByPfnoAndMno(int pfno, int mno) {
+        return pickRepository.findByPfolder_PfnoAndMember_Mno(pfno, mno);
+    }
+
+    @Transactional
+    public void removePicksBySno(int sno) {
+        pickRepository.removeByStore_Sno(sno);
+    }
+
+    @Transactional
+    public void removePicksByPfolderAndSno(Integer pfno, Integer sno) {
+        pickRepository.deleteByPfolder_PfnoAndStore_Sno(pfno, sno);
     }
 }

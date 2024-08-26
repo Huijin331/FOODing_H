@@ -13,10 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StoreService {
@@ -56,7 +54,7 @@ public class StoreService {
             updateStoreTags(store);
             calculateAndCacheStoreScores(store);
 
-            // STRtree에 가게 위치를 추가 (거리 계산은 필요 없음)
+            // STRtree에 가게 위치를 추가
             double[] coordinates = locationService.getCoordinates(store.getSaddr());
             Coordinate coord = new Coordinate(coordinates[0], coordinates[1]);
             storeTree.insert(new Envelope(coord), store);
@@ -78,10 +76,12 @@ public class StoreService {
 
     @Transactional
     public void calculateAndCacheStoreScores(Store store) {
+        // review의 mdelete나 adelete 값이 1이 아닌 경우로 예외처리 완료
         Double averageScore = reviewRepository.findAverageRstarBySno(store.getSno());
         store.setScoreArg(averageScore != null ? averageScore : 0);
 
-        int pickCount = pickRepository.countBySno(store.getSno());
+        // pick 폴더가 기본폴더(pfno =1)인 경우만 count 되도록 예외처리 완료
+        int pickCount = pickRepository.countBySnoAndPfno(store.getSno());
         store.setPickNum(pickCount);
 
         // 캐시에 저장
@@ -115,6 +115,7 @@ public class StoreService {
 
     @Transactional
     public void updateStoreTags(Store store) {
+        // review의 mdelete나 adelete 값이 1이 아닌 경우로 예외처리 완료
         List<ReviewTag> reviewTags = reviewTagRepository.findValidReviewTagsByStoreSno(store.getSno());
 
         if (reviewTags == null || reviewTags.isEmpty()) {
@@ -280,7 +281,7 @@ public class StoreService {
             System.out.println(store);
         }
 
-        // 정확한 거리 계산 후 2km 이내 가게 필터링
+        // 2km 이내 가게 필터링
         List<Store> filteredStores = new ArrayList<>();
         for (Store store : nearbyStores) {
             double[] coordinates = locationService.getCoordinates(store.getSaddr());
@@ -294,4 +295,29 @@ public class StoreService {
         return filteredStores;
     }
 
+    public List<Store> findStoresBySnos(String snos) {
+        if (snos == null || snos.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        String[] snoArray = snos.split(",");
+        List<Integer> snoList = Arrays.stream(snoArray).map(Integer::parseInt).collect(Collectors.toList());
+        return storeRepository.findBySno(snoList);
+    }
+
+
+    public List<Store> getStoresBykeyword(String keyword, List<Store> stores) {
+        String processedKeyword = keyword.toLowerCase();
+        List<Store> filteredStores = new ArrayList<>();
+
+        System.out.print("검색결과 가게 sno = ");
+        for (Store store : stores) {
+            if (store.getSname().toLowerCase().contains(processedKeyword)) {
+                System.out.print(store.getSno() + " ");
+                filteredStores.add(store);
+            }
+        }
+
+        return filteredStores;
+    }
 }

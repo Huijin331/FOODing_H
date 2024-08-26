@@ -253,4 +253,44 @@ slider-div button:hover {
     align-self: center;
 }
 
+/*--------------------모임 스타일을 위해 추가-------------------------*/
 
+.group-show-area .card-footer{
+    padding: 4px 1.25rem;
+}
+
+.group-show-area .row > .col {
+    margin-bottom: 20px;
+}
+
+.group-show-area .card-title{
+    font-weight: bold;
+    display: flow;
+}
+.group-show-area .card-title a{
+    align-self: center;
+}
+.group-show-area .card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    border-radius: .25rem;
+    border: none;
+}
+
+.group-show-area .card .card-img-top{
+    border-radius: 100%;
+    max-width: 180px;
+    margin: 0 auto;
+    object-fit: cover;
+    aspect-ratio: 1;
+}
+
+.group-show-area .card-title img{
+    height: 30px !important;
+    width: 30px !important;
+}

@@ -34,4 +34,8 @@ public class Group {
     protected void onCreate() {
         gdate = LocalDateTime.now();
     }
+
+    public String toString() {
+        return "Group( gno = " + gno + ", gname = " + gname +" )";
+    }
 }

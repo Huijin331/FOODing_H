@@ -18,4 +18,9 @@ public class Pfolder {
     public int pfno;
 
     public String pfname;
+
+    @ManyToOne
+    @JoinColumn(name = "mno", nullable = true)
+    public Member member;
+
 }

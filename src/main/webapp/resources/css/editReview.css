@@ -3,10 +3,12 @@ body {
 }
 
 h2 {
-    text-align: left;
+    text-align: center;
     color: #333;
+    margin-top: 15px;
     background-color: cornsilk;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .form-group {
@@ -71,7 +73,7 @@ h2 {
     padding: 5px 10px;
     margin: 3px;
     color: black;
-    background-color: rgba(255,186,51,0.53);
+    background-color: whitesmoke;
     border-radius: 30px;
     border: 2px solid transparent;
 }
@@ -81,7 +83,7 @@ h2 {
 }
 
 .tag-button:hover {
-    background-color: #f5ba00;
+    background-color: lightgray;
 }
 
 .tag-button:active {
@@ -89,25 +91,95 @@ h2 {
 }
 
 .tag-button.selected {
-    background-color: #f5ba00;
+    background-color: lightgray;
     border: 2px solid darkgray;
+}
+
+.tag-buttons {
+    margin-top: 30px;
+    display: none; /* 기본적으로 태그 목록을 숨김 */
+}
+
+.tag-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.tag-group {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+    width: 230px;
+    text-align: left;
+    margin-top: 70px;
+    margin-bottom: 30px;
 }
 
 
 /* 리뷰 작성 버튼 스타일 */
-.submit-button {
-    width: 700px;
-    padding: 10px;
-    margin: 20px;
-    background-color: saddlebrown;
-    color: white;
-    border-radius: 5px;
+/*.submit-button {
+        width: 100px;
+        padding: 6px;
+        background-color: saddlebrown;
+        color: white;
+        border-radius: 4px;
+        position: absolute;
+        right: 10%;
 }
 
 .submit-button:hover {
-    background-color: saddlebrown;
+        background-color: saddlebrown;
+}*/
+.submit-button {
+    width: 120px;
+    padding: 8px 12px;
+    background-color: #a0522d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    position: absolute;
+    right: 1%;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+.submit-button:hover {
+    background-color: #8b4513;
+    transform: translateY(-2px);
+}
+
+/*.toggle-button {
+        left: 120px;
+        position: absolute;
+        border: none;
+        background-color: white;
+        font-size: 18px;
+
+}*/
+.toggle-button {
+    left: 1%;
+    position: absolute;
+    border: 2px solid #ccc;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #e2e6ea; /* 호버 시 배경 색상 변경 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 호버 시 그림자 강화 */
+}
 
 .review-container {
     border: 1px solid #ccc;
@@ -168,6 +240,7 @@ h2 {
 .all-review-div {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .review-tags {
@@ -205,3 +278,84 @@ h2 {
 .review-actions-right button:hover {
     text-decoration: underline;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-content li {
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-content li:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-btn:hover {
+    background-color: #3e8e41;
+}
+
+.review-container {
+    position: relative;
+    width: 100%;
+}
+
+.review-list {
+    margin-top: 20px;
+}
+
+.review-item {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.sort-area {
+    text-align: right;
+    margin-top: 100px;
+    right: 10%;
+}
+
+.h6, h6 {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.h2, h2 {
+    margin-top: 50px;
+    left: 30px;
+}
+

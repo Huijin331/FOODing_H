@@ -22,23 +22,39 @@
                         <c:forEach items="${alarms}" var="alarm">
                             <div class="subalarm">
                                 <div>
-                                    <c:if test="${alarm.atype == '모임장 초대'}">
-                                        <a href="${pageContext.request.contextPath}/inviteManage">
-                                            <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
-                                        </a>
-                                    </c:if>
-                                    <c:if test="${alarm.atype == '일반 회원 초대'}">
-                                        <a href="${pageContext.request.contextPath}/inviteManage">
-                                            <c:out value="${alarm.message} (일반회원)" escapeXml="false"/></a>
-                                    </c:if>
-                                    <c:if test="${alarm.atype == '초대 거절'}">
-                                        <c:out value="${alarm.message}" escapeXml="false"/>
-                                    </c:if>
-                                    <c:if test="${alarm.atype == '모임장 수락 대기'}">
-                                        <a href="${pageContext.request.contextPath}/groupManage">
+                                    <c:choose>
+                                        <c:when test="${alarm.atype == '모임장 초대'}">
+                                            <a href="${pageContext.request.contextPath}/inviteManage">
+                                                <c:out value="${alarm.message} (모임장)" escapeXml="false"/>
+                                            </a>
+                                        </c:when>
+                                        <c:when test="${alarm.atype == '일반 회원 초대'}">
+                                            <a href="${pageContext.request.contextPath}/inviteManage">
+                                                <c:out value="${alarm.message} (일반회원)" escapeXml="false"/></a>
+                                        </c:when>
+                                        <c:when test="${alarm.atype == '초대 거절'}">
                                             <c:out value="${alarm.message}" escapeXml="false"/>
-                                        </a>
-                                    </c:if>
+                                        </c:when>
+                                        <c:when test="${alarm.atype == '모임장 수락 대기'}">
+                                            <a href="${pageContext.request.contextPath}/groupManage">
+                                                <c:out value="${alarm.message}" escapeXml="false"/>
+                                            </a>
+                                        </c:when>
+                                        <%--     모임장 수락을 위해 추가한 부분(다혜)--%>
+                                        <c:when test="${alarm.atype == '모임장 수락'}">
+                                            <a href="${pageContext.request.contextPath}/groupList">
+                                                <c:out value="${alarm.message}" escapeXml="false"/>
+                                            </a>
+                                        </c:when>
+                                        <c:when test="${alarm.atype == '모임장 수락 거절1' || alarm.atype == '모임장 수락 거절2'}">
+                                            <a href="#">
+                                                <c:out value="${alarm.message}" escapeXml="false"/>
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a style="color: dimgray">메세지를 불러오지 못 하였습니다</a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                                 <!-- 확인 및 삭제 버튼 추가 -->
                                 <div class="alarmButton-area">
@@ -77,6 +93,16 @@
                 <tr>
                     <td align = "center">
                         <c:if test="${sessionScope.loggedInMember != null}">
+                            <c:choose>
+                                <c:when test="${not empty sessionScope.loggedInMember.mimage}">
+                                    <!-- 설정된 이미지가 있을 경우 -->
+                                    <img class="login-image" src="${pageContext.request.contextPath}${sessionScope.loggedInMember.mimage}" alt="Profile Image" style="max-width: 150px; max-height: 150px;">
+                                </c:when>
+                                <c:otherwise>
+                                    <!-- 기본 이미지(빈 이미지)를 표시 -->
+                                    <img class="login-image" src="${pageContext.request.contextPath}/resources/images/default-profile.png" alt="Default Profile Image" style="max-width: 150px; max-height: 150px;">
+                                </c:otherwise>
+                            </c:choose>
                             ${sessionScope.loggedInMember.mname}님, 안녕하세요!
                         </c:if>
                         <c:if test="${sessionScope.loggedInMember == null}">
@@ -132,14 +158,13 @@
         <a class = "nav" href="${pageContext.request.contextPath}/storeListByScate">카테고리별 맛집</a>
         <a class = "nav" href="${pageContext.request.contextPath}/storeList">맛집 찾기</a>
         <a class = "nav" href = "${pageContext.request.contextPath}/groupList">모임</a>
-        <a class = "nav" href = "#">찜</a>
-        <form class="d-flex">
-<%--<form:form name="store-searchForm" action="${pageContext.request.contextPath}/searchStore">--%>
-            <div class = "search-form">
-                <input class="form-control me-2" type="search" placeholder="가게를 검색하세욧" aria-label="Search">
-                <a class = "btn btn-link" href = "#" role = "button">
-                    <img src = "${pageContext.request.contextPath}/resources/images/search.png" alt="Search">
-                </a>
+        <a class = "nav" href = "${pageContext.request.contextPath}/pickList">찜</a>
+        <form action="${pageContext.request.contextPath}/searchResultView" method="GET" class="d-flex">
+            <div class="search-form">
+                <input class="form-control me-2" name="searchKeyword" type="search" placeholder="가게를 검색하세욧" aria-label="Search">
+                <button type="submit" class="btn btn-link">
+                    <img src="${pageContext.request.contextPath}/resources/images/search.png" alt="Search">
+                </button>
             </div>
         </form>
         <ul class = "snb">
@@ -164,7 +189,7 @@
                 <li><a href = "${pageContext.request.contextPath}/inviteManage">내 초대 관리</a></li>
             </div>
             <div class = "submenu">
-                <li><a href = "#">찜 기능</a></li>
+                <li><a href = "${pageContext.request.contextPath}/pickList">찜 폴더 관리</a></li>
                 <li><a href = "#"></a></li>
                 <li><a href = "#"></a></li>
             </div>

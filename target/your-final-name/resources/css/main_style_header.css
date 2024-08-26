@@ -1,4 +1,20 @@
 @charset "UTF-8";
+@font-face {
+    font-family: 'TTLaundryGothicB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+section h1{
+    font-family: 'TTLaundryGothicB';
+}
 
 body {
     background : white;
@@ -29,9 +45,13 @@ header {
     align-items : center;
     font-size : 70px;
     font-weight : bold;
-
     /* 알림 기능 추가(희진) */
     position: relative; /* 이 요소를 기준으로 .anb의 위치를 설정합니다. */
+}
+
+.header1, .header2{
+    font-family: 'yg-jalnan';
+    font-weight: normal;
 }
 
 .header1:link {  color : #ffea00; text-decoration : none; }
@@ -98,6 +118,7 @@ header {
     z-index : 1;
     margin-top : 0;
     gap: 10px;
+    font-family: sans-serif;
 }
 
 .anb .subalarm {
@@ -139,4 +160,12 @@ header {
 .alarmButton:hover {
     border: none;
     outline: none;
+}
+
+.login-image {
+    width: 30px;
+    border-radius: 80%;
+    aspect-ratio: 1;
+    margin-right: 4px;
+    margin-bottom: 4px;
 }

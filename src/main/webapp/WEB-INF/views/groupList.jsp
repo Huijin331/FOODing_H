@@ -25,6 +25,7 @@
                 <thead>
                 <tr>
                     <th>번호</th>
+                    <th>그룹 이미지</th>
                     <th>모임명</th>
                     <th>모임장</th>
                     <th>모임 생성 날짜</th>
@@ -34,20 +35,37 @@
                 <c:forEach var="memberGroup" items="${leaderList}" varStatus="status">
                     <tr>
                         <td>${status.index + 1}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${not empty memberGroup.group.gimage}">
+                                    <img id="group-img" src="${pageContext.request.contextPath}${memberGroup.group.gimage}" alt="Group Image" style="object-fit:cover; width: 100px; height: 100px;">
+                                </c:when>
+                                <c:otherwise>
+                                    <img id="group-img" src="${pageContext.request.contextPath}/resources/images/default-group.png" alt="Default Group Image" style="max-width: 100px; max-height: 100px;">
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td><a href="${pageContext.request.contextPath}/board?gno=${memberGroup.group.gno}">${memberGroup.group.gname}</a></td>
                         <td>${memberGroup.member.mnick}</td>
-                        <td>${memberGroup.group.gdate}</td>
+                        <td>${formattedDate}</td>
                     </tr>
                     <c:set var="mnickString" value=""/>
                     <c:forEach var="allMemberGroup" items="${allMembers}" varStatus="status">
                         <c:choose>
                             <c:when test="${allMemberGroup.group.gno == memberGroup.group.gno}">
-                                <c:set var="mnickString" value="${mnickString}${allMemberGroup.member.mnick} "/>
+                                <c:choose>
+                                    <c:when test="${empty mnickString}">
+                                        <c:set var="mnickString" value="${allMemberGroup.member.mnick}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="mnickString" value="${mnickString} / ${allMemberGroup.member.mnick}"/>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:when>
                         </c:choose>
                     </c:forEach>
                     <tr>
-                        <td colspan="4" align="center">
+                        <td colspan="5" align="center">
                                 ${mnickString}
                         </td>
                     </tr>
@@ -103,13 +121,7 @@
         </form:form>
         <div class="groupMember-leave-area">
             <h1>모임 탈퇴</h1>
-  <%--          <script>
-                var memberCount = {
-                    <c:forEach var="entry" items="${memberCount}">
-                    "${entry.key}": ${entry.value}<c:if test="${!entry.last}">,</c:if>
-                    </c:forEach>
-                };
-            </script>--%>
+
             <form:form name="group-leaveForm" action="${pageContext.request.contextPath}/leaveGroup" method="post" modelAttribute="group" onsubmit="submitLeaveForm(event)">
                 <table class="groupMember-leave-table">
                     <tr>
@@ -121,7 +133,6 @@
                                     "${entry.key}": ${entry.value},
                                     </c:forEach>
                                 };
-                                console.log(memberCount);
                             </script>
                             <form:select path="gno" id="leaveGnoSelect">
                                 <c:forEach var="memberGroup" items="${memberGroups}">

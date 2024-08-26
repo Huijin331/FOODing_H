@@ -151,3 +151,9 @@ section {
     align-content: center;
     flex: 1;
 }
+
+#group-img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
