@@ -78,6 +78,8 @@ h1 {
 .sort-area {
     display: flex;
     justify-content: flex-end;
+    font-size: 18px;
+
 }
 
 .sort-element {

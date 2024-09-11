@@ -25,7 +25,7 @@
             <input id="currentPassword" name="currentPassword" type="password" required><br/>
 
             <form:label path="mpass">비밀번호</form:label>
-            <form:input path="mpass" type="password" /><br/>
+            <form:input path="mpass" type="password" value=""/><br/>
 
             <form:label path="mpassConfirm">비밀번호 확인</form:label>
             <form:input path="mpassConfirm" id="mpassConfirm" name="mpassConfirm" type="password" />

@@ -34,72 +34,24 @@ public class MainController {
         Map<Integer, String> leaderList = new HashMap<>();
         Map<Integer, String> allMemberList = new HashMap<>();
 
-        /* 알림 기능 추가 (희진) */
+
         if (loggedInMember != null) {
-            boolean hasAlarms = alarmService.hasAlarms(loggedInMember);
-/*            System.out.println("hasAlarms  = " + hasAlarms);*/
+            /*----------알림처리를 위한 부분-----------*/
+            Boolean hasAlarms = (Boolean) session.getAttribute("hasAlarms");
+            if (hasAlarms == null) {
+                hasAlarms = false; // null이면 false로 처리
+            }
             model.addAttribute("hasAlarms", hasAlarms);
 
             if (hasAlarms) {
-                List<Alarm> alarms = alarmService.getAlarmsByMember(loggedInMember.getMid());
+                List<Alarm> alarms = (List<Alarm>) session.getAttribute("alarms");
+                boolean alarmChecked = (Boolean) session.getAttribute("alarmChecked");
+
                 model.addAttribute("alarms", alarms);
-
-                boolean alarmChecked = true;
-
-                for (Alarm alarm : alarms) {
-                    if (alarm.getIsChecked() == 0) {
-                        alarmChecked = false;
-                    }
-
-                    // invite가 이미 지워져서 invite가 null이 될 경우 오류가 나서 추가(다혜)
-                    String inviterName = "";
-                    String groupName = "";
-                    String inviteeName = "";
-
-                    Invite invite = inviteService.getInviteByIno(Integer.parseInt(alarm.getLinkedPk()));
-                    if (invite != null) {
-                        inviterName = invite.getMemberGroup().getMember().getMnick();
-                        groupName = invite.getMemberGroup().getGroup().getGname();
-                        inviteeName = invite.getMember().getMnick();
-
-
-                        if (alarm.getAtype().equals("일반 회원 초대") || alarm.getAtype().equals("모임장 초대")) {
-                            alarm.setMessage(inviterName + "님이 " + groupName + " 모임에<br>회원님을 초대하였습니다.");
-                        }
-                        else if (alarm.getAtype().equals("초대 거절")) {
-                            alarm.setMessage(inviteeName + "님이 초대를 거절하였습니다");
-                        }
-                        else if (alarm.getAtype().equals("모임장 수락 대기")) {
-                            alarm.setMessage(inviteeName + "님이<br>모임장 수락을 요청하였습니다.");
-                        }
-                    }
-                    else{
-                        /*----------모임장 수락 이후에는 관련 알림이 삭제되므로 처리하지 않음(다혜)----------------*/
-
-                    /*    else if (alarm.getAtype().equals("모임장 수락")) {
-                        alarm.setMessage(inviteeName + "님의 초대를<br>모임장이 수락하였습니다.");
-                        }*/
-                        /*----------모임장 수락 승인을 위해 수락한 부분(다혜)----------------*/
-                        if (alarm.getAtype().equals("모임장 수락 거절1")) {
-                            alarm.setMessage("회원님이 받은 초대를 모임장이 수락 거절하였습니다.");
-                        }
-                        else if (alarm.getAtype().equals("모임장 수락 거절2")) {
-                            alarm.setMessage("회원님의 초대를 모임장이 수락 거절하였습니다.");
-                        }
-                        else{
-                            alarm.setMessage("이미 삭제된 초대에 대한 알림입니다.");
-                        }
-                    }
-
-                }
                 model.addAttribute("alarmChecked", alarmChecked);
             }
-            else {
-                model.addAttribute("hasAlarms", false);
-            }
-        }
+            /*---------------------------------------*/
 
-        if (loggedInMember != null) {
             myMemberGroups = memberGroupService.getMemberGroupsWithGroup(loggedInMember);
 
             if (myMemberGroups.isEmpty())
@@ -137,7 +89,7 @@ public class MainController {
 	
 	// 확인 버튼 클릭 시 알림의 isChecked 상태를 1로 변경 (희진 추가)
     @PostMapping("/alarmChecked")
-    public String alarmChecked(@RequestParam("alarmId") int alarmId, HttpSession session) {
+    public String alarmChecked(@RequestParam("alarmId") int alarmId, @RequestParam("returnUrl") String returnUrl, HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 
         if (loggedInMember != null) {
@@ -146,19 +98,45 @@ public class MainController {
                 alarm.setIsChecked(1); // 확인된 상태로 설정
                 alarmService.saveAlarm(alarm);
             }
+
+            List<Alarm> alarms = alarmService.getAlarmsByMember(loggedInMember.getMid());
+            session.setAttribute("alarms", alarms);
+
+            boolean alarmChecked = true;
+            for (Alarm a : alarms) {
+                if (a.getIsChecked() == 0) {
+                    alarmChecked = false;
+                    break;
+                }
+            }
+            session.setAttribute("alarmChecked", alarmChecked);
         }
-        return "redirect:/main";
+        return "redirect:" + returnUrl;
     }
-	
 	
 	/* 알림 기능 추가 (희진) */
     @PostMapping("/alarmDelete")
-    public String alarmDelete(@RequestParam("alarmId") int alarmId, HttpSession session) {
+    public String alarmDelete(@RequestParam("alarmId") int alarmId, @RequestParam("returnUrl") String returnUrl, HttpSession session) {
         Member loggedInMember = (Member) session.getAttribute("loggedInMember");
 
         if (loggedInMember != null) {
-            alarmService.deleteAlarm(alarmId); // 알림을 삭제하는 서비스 호출
+            alarmService.deleteAlarm(alarmId);
+
+            List<Alarm> alarms = alarmService.getAlarmsByMember(loggedInMember.getMid());
+            session.setAttribute("alarms", alarms);
+
+            boolean alarmChecked = true;
+            for (Alarm a : alarms) {
+                if (a.getIsChecked() == 0) {
+                    alarmChecked = false;
+                    break;
+                }
+            }
+            session.setAttribute("alarmChecked", alarmChecked);
+
+            // 알림이 더 이상 없으면 hasAlarms를 false로 설정
+            session.setAttribute("hasAlarms", !alarms.isEmpty());
         }
-        return "redirect:/main";
+        return "redirect:" + returnUrl;
     }
 }

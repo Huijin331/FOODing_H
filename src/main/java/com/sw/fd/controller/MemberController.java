@@ -282,7 +282,7 @@ public class MemberController {
             return "editMember";
 
         } else {
-
+            loggedInMember.setMpass(null);
             model.addAttribute("member", loggedInMember);
             return "editChangePass"; // 수정 폼으로 이동
         }

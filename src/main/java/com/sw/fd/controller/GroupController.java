@@ -214,6 +214,10 @@ public class GroupController {
             allMemberGroups.addAll(memberGroupsForGroup);
         }
 
+        for(MemberGroup memberGroup : allMemberGroups){
+            System.out.println(memberGroup.getMember().getMnick());
+        }
+
         // 모임장 수락을 위해 추가한 부분(다혜)
         List<Invite> inviteList = inviteService.getInvitesByLeadNum(member.getMno());
 

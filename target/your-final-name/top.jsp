@@ -58,19 +58,31 @@
                                 </div>
                                 <!-- 확인 및 삭제 버튼 추가 -->
                                 <div class="alarmButton-area">
+                                    <script>
+                                        function setReturnUrl(form) {
+                                            var currentPage = window.location.href; // 현재 페이지 URL을 가져옵니다.
+                                            form.returnUrl.value = currentPage; // 히든 필드에 현재 페이지 URL을 설정합니다.
+                                            form.submit(); // 폼을 제출합니다.
+                                        }
+                                    </script>
+
+                                    <!-- 알림 확인 버튼 -->
                                     <c:choose>
                                         <c:when test="${alarm.isChecked == 0}">
-                                            <form action="${pageContext.request.contextPath}/alarmChecked" method="post" style="display:inline;">
+                                            <form action="${pageContext.request.contextPath}/alarmChecked" method="post" style="display:inline;" onsubmit="setReturnUrl(this);">
                                                 <input type="hidden" name="alarmId" value="${alarm.ano}"/>
+                                                <input type="hidden" name="returnUrl" value=""/>
                                                 <button type="submit" class="alarmButton">
                                                     <img src="${pageContext.request.contextPath}/resources/images/check-icon.png"/>
                                                 </button>
                                             </form>
                                         </c:when>
                                     </c:choose>
-                                    <!-- 삭제 버튼 -->
-                                    <form action="${pageContext.request.contextPath}/alarmDelete" method="post" style="display:inline;">
+
+                                    <!-- 알림 삭제 버튼 -->
+                                    <form action="${pageContext.request.contextPath}/alarmDelete" method="post" style="display:inline;" onsubmit="setReturnUrl(this);">
                                         <input type="hidden" name="alarmId" value="${alarm.ano}"/>
+                                        <input type="hidden" name="returnUrl" value=""/>
                                         <button type="submit" class="alarmButton">
                                             <img src="${pageContext.request.contextPath}/resources/images/delete-icon.png"/>
                                         </button>

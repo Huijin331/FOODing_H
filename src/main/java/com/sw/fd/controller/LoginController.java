@@ -1,6 +1,10 @@
 package com.sw.fd.controller;
 
+import com.sw.fd.entity.Alarm;
+import com.sw.fd.entity.Invite;
 import com.sw.fd.entity.Member;
+import com.sw.fd.service.AlarmService;
+import com.sw.fd.service.InviteService;
 import com.sw.fd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,12 +15,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class LoginController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private AlarmService alarmService;
+    @Autowired
+    private InviteService inviteService;
 
     @GetMapping("/login")
     public String login() {
@@ -33,6 +43,56 @@ public class LoginController {
             // 로그인 성공
             HttpSession session = request.getSession();
             session.setAttribute("loggedInMember", member); // 세션에 로그인 정보 저장
+
+
+            // 알림이 있는지 여부를 세션에 저장
+            boolean hasAlarms = alarmService.hasAlarms(member);
+            session.setAttribute("hasAlarms", hasAlarms);  // 세션에 알림 여부 저장
+
+            if (hasAlarms) {
+                List<Alarm> alarms = alarmService.getAlarmsByMember(member.getMid());
+
+                boolean alarmChecked = true;
+                for (Alarm alarm : alarms) {
+                    if (alarm.getIsChecked() == 0) {
+                        alarmChecked = false;
+                    }
+
+                    // invite가 null일 경우 처리
+                    String inviterName = "";
+                    String groupName = "";
+                    String inviteeName = "";
+
+                    Invite invite = inviteService.getInviteByIno(Integer.parseInt(alarm.getLinkedPk()));
+                    if (invite != null) {
+                        inviterName = invite.getMemberGroup().getMember().getMnick();
+                        groupName = invite.getMemberGroup().getGroup().getGname();
+                        inviteeName = invite.getMember().getMnick();
+
+                        if (alarm.getAtype().equals("일반 회원 초대") || alarm.getAtype().equals("모임장 초대")) {
+                            alarm.setMessage(inviterName + "님이 " + groupName + " 모임에<br>회원님을 초대하였습니다.");
+                        } else if (alarm.getAtype().equals("초대 거절")) {
+                            alarm.setMessage(inviteeName + "님이 초대를 거절하였습니다");
+                        } else if (alarm.getAtype().equals("모임장 수락 대기")) {
+                            alarm.setMessage(inviteeName + "님이<br>모임장 수락을 요청하였습니다.");
+                        }
+                    } else {
+                        if (alarm.getAtype().equals("모임장 수락 거절1")) {
+                            alarm.setMessage("회원님이 받은 초대를 모임장이<br>수락 거절하였습니다.");
+                        } else if (alarm.getAtype().equals("모임장 수락 거절2")) {
+                            alarm.setMessage("회원님의 초대를 모임장이<br>수락 거절하였습니다.");
+                        } else {
+                            alarm.setMessage("이미 삭제된 초대에 대한 알림입니다.");
+                        }
+                    }
+                }
+                session.setAttribute("alarms", alarms);  // 세션에 알림 리스트 저장
+                session.setAttribute("alarmChecked", alarmChecked);  // 세션에 알림 확인 여부 저장
+            } else {
+                session.setAttribute("hasAlarms", false);  // 세션에 알림 없음 저장
+            }
+
+
             model.addAttribute("member", member);
             model.addAttribute("message", "로그인 성공!!");
 

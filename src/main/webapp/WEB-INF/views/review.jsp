@@ -88,7 +88,7 @@
                                         <button type="button" onclick="openReportWindow(${review.rno}, ${sno})">신고</button>
                                 </c:if>
                                 <c:if test="${loggedInMember == null}">
-                                    <button type="submit" onclick="alert('로그인 후 이용 가능합니다.'); window.location.href='${pageContext.request.contextPath}/login';">신고하기</button>
+                                    <button type="submit" onclick="alert('로그인 후 이용 가능합니다.'); window.location.href='${pageContext.request.contextPath}/login';">신고</button>
                                 </c:if>
                             </div>
                         </div>

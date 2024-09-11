@@ -32,7 +32,7 @@ public class LocationService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 
-        // JSON 파싱하여 위도와 경도 추출
+        // 위치 정보에 대한 JSON 파일을 파싱하여 위도와 경도 추출
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(response.getBody());

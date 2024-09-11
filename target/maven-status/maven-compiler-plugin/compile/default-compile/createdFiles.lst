@@ -2,7 +2,6 @@ com\sw\fd\controller\LoginController.class
 com\sw\fd\entity\Business.class
 com\sw\fd\entity\Group.class
 com\sw\fd\repository\GroupRepository.class
-com\sw\fd\dto\MemberGroupDTO.class
 com\sw\fd\repository\PickRepository.class
 com\sw\fd\entity\StoreTag.class
 com\sw\fd\entity\Menu.class

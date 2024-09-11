@@ -19,7 +19,7 @@
                 <tr>
                     <td>
                         <input type="checkbox" name="selectedStore" value="${pick.store.sno}" />
-                        <button class="storeName">${pick.store.sname}</button>
+                        <button class="storeName" onclick="location.href='${pageContext.request.contextPath}/storeDetail?sno=${pick.store.sno}'">${pick.store.sname}</button>
                     </td>
                 </tr>
                 </c:forEach>

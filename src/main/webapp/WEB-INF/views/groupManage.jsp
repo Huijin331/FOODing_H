@@ -62,11 +62,16 @@
                         </tr>
                         <c:set var="mnickString" value=""/>
                         <c:forEach var="memberGroup" items="${allMemberGroups}">
-                            <c:choose>
-                                <c:when test="${memberGroup.group.gno == group.gno}">
-                                    <c:set var="mnickString" value="${mnickString}${memberGroup.member.mnick} "/>
-                                </c:when>
-                            </c:choose>
+                                <c:if test="${memberGroup.group.gno == group.gno}">
+                                    <c:choose>
+                                        <c:when test="${empty mnickString}">
+                                            <c:set var="mnickString" value="${memberGroup.member.mnick}"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="mnickString" value="${mnickString} / ${memberGroup.member.mnick}"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:if>
                         </c:forEach>
                         <tr>
                             <td colspan="5" align="center">
